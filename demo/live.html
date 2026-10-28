@@ -66,7 +66,7 @@
     <div class="card go"><h3>Moved off Utah's rush hour</h3>
       <div class="tot"><b id="totN">0</b><span>AI jobs sent to grids<br>with room to spare</span></div>
       <div class="dests" id="dests"></div>
-      <div class="go-note">counted only during Utah's rush hours · this week so far</div>
+      <div class="go-note">counted only during Utah's rush hours · since this map opened</div>
     </div>
     <div class="card saved"><h3>What Utah saves</h3>
       <div class="usd">$10M<small> a year</small></div>
@@ -101,21 +101,19 @@ function ledger(utc) {
   const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
   $("tUsd").textContent = usd(l.usd + cap);
   $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
-  if (l.to && proj) counts(l.to);
 }
 
-// jobs moved off Utah's rush hours this week so far, per site (deck/utah_savings.ts, same basis as the savings box):
-// map labels, route lines and the panel bars
-const arcD = {}, flow = {};
-function counts(to) {
-  const total = Object.values(to).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(to));
+// jobs Utah has handed to each other site since this page opened: map labels, route lines and the panel bars
+const sent = {}, arcD = {}, flow = {};
+function tally(dest) {
+  sent[dest] = (sent[dest] ?? 0) + 1; const total = Object.values(sent).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(sent));
+  const n = sent[dest], f = flow[dest];
+  f?.transition().duration(500).attr("stroke-opacity", Math.min(.4 + n * .05, .85)).attr("stroke-width", Math.min(3 + n * .5, 12));
+  nodes[dest]?.cnt.text(`+${n} from Utah's rush`);
+  nodes.PACE?.cnt.text(`${total} job${total === 1 ? "" : "s"} moved off the rush`);
   $("totN").textContent = total;
-  nodes.PACE?.cnt.text(total ? `${total} job${total === 1 ? "" : "s"} moved off the rush` : "");
-  for (const id in to) { const n = to[id];
-    flow[id]?.attr("stroke-opacity", n ? Math.min(.4 + n * .02, .85) : 0).attr("stroke-width", Math.min(3 + n * .3, 12));
-    nodes[id]?.cnt.text(n ? `+${n} from Utah's rush` : "");
-    const row = $(`d-${id}`); if (!row) continue;
-    row.querySelector(".n").firstChild.textContent = n; row.querySelector(".bar span").style.width = `${n / top * 100}%`; }
+  for (const id in sent) { const row = $(`d-${id}`); if (!row) continue;
+    row.querySelector(".n").firstChild.textContent = sent[id]; row.querySelector(".bar span").style.width = `${sent[id] / top * 100}%`; }
 }
 
 const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
@@ -209,7 +207,7 @@ function fly(dest, big, label, gpus) {
   const dot = g.append("circle").attr("r", big ? 14 : 5).attr("fill", big ? C.copper : C.stone).attr("fill-opacity", big ? 1 : .6).attr("filter", big ? "url(#glow)" : null);
   dot.transition().duration(dur).ease(d3.easeCubicInOut).attr("fill", big ? C.sage : C.stone).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
     .on("end", () => {
-      dot.remove(); if (!big) return;
+      dot.remove(); if (!big) return; tally(dest);
       g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 12).attr("fill", "none").attr("stroke", C.sage).attr("stroke-width", 4)
         .transition().duration(800).attr("r", 56).attr("stroke-opacity", 0);
       g.append("text").attr("class", "plus").attr("x", b[0]).attr("y", b[1] - 26).attr("text-anchor", "middle").text("+1")

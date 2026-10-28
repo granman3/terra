@@ -41,7 +41,7 @@
   .call .ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--copper); color: #1a120c; flex: none; }
   .call small { display: block; font-size: 12.5px; color: var(--stone); font-weight: 400; margin-top: 1px; }
   .card { margin-top: 14px; border: 1px solid var(--line); border-radius: 18px; padding: 16px; background: rgba(27,26,23,.88); }
-  .lbl { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); }
+  .lbl { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); }
   /* without vs with */
   .vs-top { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
   .vs-top span:first-child { color: var(--warn); } .vs-top span:last-child { color: var(--sage); }
@@ -62,7 +62,7 @@
   .peakbar span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font: 500 12px "JetBrains Mono", monospace; color: var(--sand); }
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; } .pair div { background: var(--soil-2); border-radius: 10px; padding: 10px 12px; }
   .pair b { display: block; font-size: 24px; font-weight: 300; font-variant-numeric: tabular-nums; } .pair b.c { color: var(--copper); } .pair b.g { color: var(--sage); } .pair span { font-size: 12.5px; color: var(--stone); line-height: 1.3; display: block; }
-  .src { font-size: 11.5px; color: #807a73; margin-top: 10px; line-height: 1.4; }
+  .src { font-size: 12.5px; color: var(--stone); margin-top: 10px; line-height: 1.4; }
   /* model size */
   .eff { display: grid; gap: 10px; margin-top: 12px; }
   .eff-r { display: grid; grid-template-columns: 92px 1fr; gap: 10px; align-items: center; font-size: 13px; color: var(--stone-2); }
@@ -73,7 +73,7 @@
   .fit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
   .fit div { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-size: 12.5px; color: var(--stone); line-height: 1.3; }
   .fit b { display: block; font-size: 14px; white-space: nowrap; font-weight: 500; color: var(--sand); } .fit .t { border-color: var(--sage); } .fit .t b { color: var(--sage); }
-  footer { color: #807a73; font-size: 12px; line-height: 1.5; margin-top: 16px; }
+  footer { color: var(--stone); font-size: 12px; line-height: 1.5; margin-top: 16px; }
   /* tap a region: bottom sheet */
   .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 10; }
   .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 11; max-width: 560px; margin: 0 auto; background: #1b1a17; border: 1px solid var(--line); border-bottom: 0;
@@ -83,7 +83,7 @@
   .sheet h2 { font-size: 22px; font-weight: 400; margin-bottom: 4px; } .sheet .gs { color: var(--stone); font-size: 14px; margin-bottom: 14px; }
   .bars { display: flex; align-items: flex-end; gap: 2px; height: 70px; margin: 8px 0 4px; } .bars i { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; }
   .axis { display: flex; justify-content: space-between; font: 11px "JetBrains Mono", monospace; color: var(--stone); }
-  .kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; } .kv div { background: var(--soil-2); border-radius: 10px; padding: 9px; } .kv b { display: block; font-size: 18px; font-weight: 400; } .kv span { font-size: 11.5px; color: var(--stone); }
+  .kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; } .kv div { background: var(--soil-2); border-radius: 10px; padding: 9px; } .kv b { display: block; font-size: 18px; font-weight: 400; } .kv span { font-size: 12px; color: var(--stone); }
   .close { width: 100%; margin-top: 14px; padding: 14px; }
 </style>
 </head>
@@ -179,7 +179,7 @@ const RUSH_LIKELY = 0.5, DR_USD_KW_YEAR = 100;  // Wattsmart Business: $100 per 
 const calls = utc => W.events.has(utc);
 let W, i = 0, auto = true, shedding = false, dodged = 0, hitNo = 0, proj, pos = {};
 // energy per forecast vs Terra, same MacBook (deck/numbers.json model_sizes, tiny_efficiency)
-const MODEL_SIZES = [["Terra", 1, "561K settings"], ["Transformer", 590, "4.8M"], ["Fine-tuned LLM", 690000, "4 billion"]], YEAR_JOULES = 19.8;
+const MODEL_SIZES = [["Terra", 1, "561K parameters"], ["Transformer", 590, "4.8M"], ["Fine-tuned LLM", 690000, "4B"]], YEAR_JOULES = 19.8;
 // what it's worth (the deck's Torus-fit and problem slides): $100/kW-yr, $728–1,969 per kW of new gas peaker, 972 MW used 153 h in 2025
 const PEAKER_USD_KW = [728, 1969], UTAH_TOP10_MW = 972;
 

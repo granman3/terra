@@ -43,7 +43,8 @@ to build. Duke found 98 gigawatts of new data centers fit on today's grid if the
 So I built a custom model for that one job: 33 million public data points, five training runs, three designs,
 trained at home on my own graphics card. 561,000 parameters, made for one job. Underneath is one equation: for every job, pick the region and hour with the
 least chance of rush hour. It makes 29 percent fewer mistakes than the utility's own forecast. And I tested going
-bigger: a 4-billion-parameter model used 690,000 times the energy and barely beat the utility. We don't spend energy
+bigger: a 4-billion-parameter model used 690,000 times the energy and barely beat the utility. Even the small
+frontier models, like GPT-4.1 nano, use about 13 million times the energy per answer. We don't spend energy
 to save energy.
 
 **5 · Live demo (1:45–2:30)**
@@ -162,3 +163,9 @@ one Utah AI site, plugged into Lasso. Let the grid's newest load be its most fle
   GPU-hours (`data/collected/jobs/SOURCES.md`). It's long enough to sit right on Utah's afternoon peak if started at
   the wrong time (1.14 rush hours if started now), and short enough that the wait options (now, +3, +6, +12 h) plus
   4 hours fit a 16-hour overnight deadline. Longer training runs save checkpoints, so they can move in chunks like this.
+- **"Where do the frontier numbers come from?"** Published energy per short query (100 tokens in, 300 out): GPT-4.1
+  nano 0.207 Wh and Claude 3.5 Haiku 0.975 Wh (Jegham et al., "How Hungry is AI?", arXiv 2505.09598v6, Table 4);
+  Gemini 0.24 Wh for the median Gemini Apps text prompt (Google, Aug 2025, not peer reviewed). Divided by Terra's
+  5.6e-5 J per forecast (total chip power, MacBook): 13M×, 15M×, 62M×. They're data-center estimates, not runs on
+  Terra's task, so the chart says "not tested" for accuracy. An answer that long is more than a forecast needs, so
+  read it as order of magnitude.

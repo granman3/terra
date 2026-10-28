@@ -289,9 +289,9 @@
         <div><b><span data-n="peak_hours_hit" data-f="naive">1.14</span> → <span style="color:var(--sage)" data-n="peak_hours_hit" data-f="ours">0.04</span></b>rush hours a 4-hour AI job runs into</div>
       </div>
     </div>
-    <div><h3>Why small: energy per decision</h3><div class="sub">times Terra's, log scale (each line is 10×)</div><svg id="szB" viewBox="0 0 700 300"></svg></div>
+    <div><h3>Why small: energy per decision</h3><div class="sub">times Terra's, log scale (each line is 10×) · copper: small frontier models</div><svg id="szB" viewBox="0 0 700 380"></svg></div>
   </div>
-  <div class="src">decide.ts, train.py · held-out 2026 vs EIA's forecast (Brier) · energy on one laptop: core vs core, chip vs chip · *earlier 4-region test</div>
+  <div class="src">held-out 2026 vs EIA (Brier) · my models: same laptop · frontier: published Wh per query, arXiv 2505.09598 + Google 2025 · *4-region test</div>
 </section>
 <section class="slide problem" data-web data-cut>
   <div class="eyebrow">The problem</div>
@@ -416,7 +416,7 @@ fetch("numbers.json").then(r => r.json()).then(N => {
   document.querySelectorAll("[data-src]").forEach(el => { const n = N[el.dataset.src]; if (n) el.textContent = n.source; });
   document.querySelectorAll("[data-needs]").forEach(el => { if (!N[el.dataset.needs]) el.classList.add("hidden"); });
   if (N.peaks_differ) peaks(N.peaks_differ.value);
-  if (N.model_sizes) sizes(N.model_sizes.value);
+  if (N.model_sizes) { sizes(N.model_sizes.value); built(N.model_sizes.value, N.frontier_small?.value); }
   if (N.data_types) document.getElementById("types").innerHTML = N.data_types.list.map(t => `<span class="chip">${t}</span>`).join("");
   // slides built as their own page (data-page) show up only once that page exists
   Promise.all([...document.querySelectorAll("[data-page]")].map(el => fetch(el.dataset.page, { method: "HEAD" })
@@ -493,7 +493,28 @@ function sizes(M) {
   };
   bars("szE", m => m.energy_x, 1e6, v => `${v.toLocaleString()}×`, true);
   bars("szA", m => m.fewer_errors_pct, 35, v => `${v}%`, false);
-  bars("szB", m => m.energy_x, 1e6, v => `${v.toLocaleString()}×`, true, m => `${m.fewer_errors_pct}%${m.earlier_test ? "*" : ""}`);
+}
+// slide 4: the three designs I trained plus published small frontier models, energy per decision on one log axis
+function built(M, F) {
+  const rows = [...M, ...(F || []).map(f => ({ ...f, frontier: true }))];
+  const W = 700, L = 200, R = 200, rowH = 52, top = 26, max = 1e8, svg = document.getElementById("szB");
+  const sx = v => L + Math.log10(Math.max(v, 1)) / Math.log10(max) * (W - L - R), bottom = top + rowH * rows.length;
+  const fmt = v => v >= 1e6 ? `${Math.round(v / 1e6)}M×` : `${v.toLocaleString()}×`;
+  let g = "";
+  for (let e = 0; e <= 8; e++) { const x = sx(10 ** e); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${bottom}" stroke="#34312b"/>` +
+    `<text x="${x}" y="${bottom + 20}" fill="#9b9591" font-size="15" text-anchor="middle">${{ 0: "1×", 3: "1,000×", 6: "1M×", 8: "100M×" }[e] ?? ""}</text>`; }
+  g += `<text x="${W}" y="${top - 12}" fill="#9b9591" font-size="15" text-anchor="end">fewer mistakes vs utility</text>`;
+  const firstF = rows.findIndex(r => r.frontier);
+  if (firstF > 0) g += `<line x1="0" x2="${W}" y1="${top + firstF * rowH + 1}" y2="${top + firstF * rowH + 1}" stroke="#4a463f" stroke-dasharray="4 5"/>`;
+  rows.forEach((m, k) => {
+    const y = top + k * rowH + 9, v = m.energy_x, x1 = Math.max(sx(v), L + 6), us = m.shipped;
+    const sub = m.frontier ? `${m.by}, published` : m.params >= 1e9 ? `${(m.params / 1e9).toFixed(0)} billion parameters` : m.params >= 1e6 ? `${(m.params / 1e6).toFixed(1)} million parameters` : `${Math.round(m.params / 1000)},000 parameters`;
+    g += `<text x="0" y="${y + 17}" fill="${us ? "#ece6da" : "#bfbcb8"}" font-size="20" font-weight="${us ? 500 : 400}">${m.name}</text><text x="0" y="${y + 35}" fill="#9b9591" font-size="14">${sub}</text>`;
+    g += `<rect x="${L}" y="${y + 2}" width="${x1 - L}" height="30" rx="4" fill="${us ? "#9fb07e" : m.frontier ? "#c99068" : "#6f6a64"}" fill-opacity="${us ? 1 : m.frontier ? .7 : .55}"/>`;
+    g += `<text x="${x1 + 10}" y="${y + 24}" fill="${us ? "#9fb07e" : "#ece6da"}" font-size="22" font-weight="500">${fmt(v)}</text>`;
+    g += `<text x="${W}" y="${y + 24}" fill="${us ? "#9fb07e" : "#bfbcb8"}" font-size="${m.frontier ? 17 : 22}" text-anchor="end">${m.frontier ? "not tested" : `${m.fewer_errors_pct}%${m.earlier_test ? "*" : ""}`}</text>`;
+  });
+  svg.setAttribute("viewBox", `0 0 ${W} ${bottom + 28}`); svg.innerHTML = g;
 }
 // faint hyphae behind each slide (seeded, so a slide always looks the same)
 function web(slide) {

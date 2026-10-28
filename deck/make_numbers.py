@@ -169,6 +169,19 @@ if e2 and e3 and m2 and m3 and eff and big:
     ], "out/v2/metrics.json, out/v3_candidate/, out/mac/",
         note="energy per forecast vs Terra; fewer errors = Brier vs the utility's calibrated day-ahead forecast, held-out 2026")
 
+# 10c. small frontier models for the same chart: published energy per short query (not run on Terra's task), as a
+# multiple of Terra's total-chip joules per forecast. Jegham et al., "How Hungry is AI?", arXiv 2505.09598v6, Table 4,
+# 100 in / 300 out tokens; Google, "Measuring the environmental impact of AI inference", Aug 2025, median Gemini Apps prompt.
+if eff:
+    terra_j = eff["joules_per_forecast_total_chip"]
+    sig2 = lambda v: float(f"{v:.2g}")
+    put("frontier_small", [
+        {"name": "GPT-4.1 nano", "by": "OpenAI", "wh": 0.207, "energy_x": sig2(0.207 * 3600 / terra_j)},
+        {"name": "Gemini", "by": "Google, median prompt", "wh": 0.24, "energy_x": sig2(0.24 * 3600 / terra_j)},
+        {"name": "Claude 3.5 Haiku", "by": "Anthropic", "wh": 0.975, "energy_x": sig2(0.975 * 3600 / terra_j)},
+    ], "arXiv 2505.09598v6 Table 4 (short prompt); Google Cloud blog, Aug 2025",
+        note="published Wh per query, data-center scale; not run on Terra's task, so no accuracy")
+
 # 11. what Utah saved in the replay week (deck/utah_savings.ts, same jobs and routing as the live map)
 src, sv = first("deck/utah_savings.json")
 if sv:

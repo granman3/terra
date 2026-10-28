@@ -354,6 +354,30 @@
   "source": "out/v2/metrics.json, out/v3_candidate/, out/mac/",
   "note": "energy per forecast vs Terra; fewer errors = Brier vs the utility's calibrated day-ahead forecast, held-out 2026"
  },
+ "frontier_small": {
+  "value": [
+   {
+    "name": "GPT-4.1 nano",
+    "by": "OpenAI",
+    "wh": 0.207,
+    "energy_x": 13000000.0
+   },
+   {
+    "name": "Gemini",
+    "by": "Google, median prompt",
+    "wh": 0.24,
+    "energy_x": 15000000.0
+   },
+   {
+    "name": "Claude 3.5 Haiku",
+    "by": "Anthropic",
+    "wh": 0.975,
+    "energy_x": 62000000.0
+   }
+  ],
+  "source": "arXiv 2505.09598v6 Table 4 (short prompt); Google Cloud blog, Aug 2025",
+  "note": "published Wh per query, data-center scale; not run on Terra's task, so no accuracy"
+ },
  "utah_savings": {
   "value": {
    "week": "2026-10-19..2026-10-26",

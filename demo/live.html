@@ -18,15 +18,15 @@
   .panel { position: absolute; right: 36px; top: 80px; bottom: 52px; width: 500px; display: flex; flex-direction: column; gap: 16px; }
   .card { background: rgba(27,26,23,.9); border: 1px solid var(--line); border-radius: 12px; padding: 20px 26px; }
   .card h3 { font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-bottom: 12px; }
-  .go { flex: 1; display: flex; flex-direction: column; }
-  .dests { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; margin: 6px 0; }
-  .dest { display: grid; grid-template-columns: 1fr auto; align-items: baseline; row-gap: 10px; }
+  .go { flex: none; display: flex; flex-direction: column; }
+  .dests { display: flex; flex-direction: column; gap: 12px; margin: 16px 0 12px; }
+  .dest { display: grid; grid-template-columns: 1fr auto; align-items: baseline; row-gap: 6px; }
   .dest .nm { font-size: 24px; color: var(--sand); } .dest .nm i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 12px; background: var(--sage); transition: background .4s; }
   .dest .n { font: 500 30px "JetBrains Mono", monospace; color: var(--sand); font-variant-numeric: tabular-nums; } .dest .n small { font: 18px Figtree, sans-serif; color: var(--stone); margin-left: 8px; }
   .dest .bar { grid-column: 1 / -1; height: 12px; border-radius: 6px; background: var(--soil-3); overflow: hidden; }
   .dest .bar span { display: block; height: 100%; width: 0; border-radius: 6px; background: var(--sand); transition: width .6s cubic-bezier(.2,.7,.3,1); }
   .go-note { font-size: 17px; color: var(--stone); }
-  .saved { display: flex; flex-direction: column; }
+  .saved { flex: 1; display: flex; flex-direction: column; }
   .usd small { font-size: 36px; color: var(--stone-2); letter-spacing: 0; margin-left: 8px; }
   .usd-l b { color: var(--sand); font-weight: 500; }
   .saved .eq { margin-top: 12px; font: 14px/1.5 "JetBrains Mono", monospace; color: var(--stone); }
@@ -38,8 +38,20 @@
   td:last-child { text-align: right; font: 500 24px "JetBrains Mono", monospace; color: var(--sand); white-space: nowrap; padding-left: 12px; }
   td small { display: block; font-size: 17px; color: var(--stone); }
   tr.total td { border-top: 2px solid var(--stone); color: var(--sand); font-weight: 500; font-size: 24px; padding-top: 12px; } tr.total td:last-child { color: var(--sage); font-size: 34px; }
-  .legend { position: absolute; left: 48px; bottom: 74px; display: flex; gap: 32px; font-size: 20px; color: var(--stone-2); }
-  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; }
+  .banner { position: absolute; left: 48px; top: 118px; width: 1000px; font-size: 22px; color: var(--stone-2); transition: color .4s; }
+  .banner .b1 { font-size: 40px; font-weight: 500; letter-spacing: .02em; color: var(--sage); } .banner .b2 { margin-top: 2px; }
+  .banner.hot .b1 { color: var(--copper); animation: hot 1.4s ease-in-out infinite; } .banner.hot .b2 { color: var(--sand); }
+  .banner.call .b1 { color: #e0a37a; }
+  @keyframes hot { 50% { opacity: .55; } }
+  .tot { display: flex; align-items: baseline; gap: 14px; } .tot b { font: 300 84px Figtree, sans-serif; letter-spacing: -.03em; color: var(--sand); line-height: 1; font-variant-numeric: tabular-nums; }
+  .tot span { font-size: 22px; color: var(--stone-2); line-height: 1.25; }
+  /* fit both cards in the 768px panel */
+  .tot b { font-size: 66px; } .dests { gap: 6px; margin: 10px 0 8px; } .dest .nm { font-size: 22px; } .dest .n { font-size: 26px; } .dest .bar { height: 10px; }
+  .card { padding: 16px 24px; } .card h3 { margin-bottom: 8px; } .go-note { font-size: 15px; }
+  .usd { font-size: 100px; } .usd small { font-size: 30px; } .usd-l { font-size: 21px; margin-top: 6px; } .live-h { padding-top: 14px; }
+  table { margin-top: 4px; } td { padding: 7px 0; }
+  .strip-h { font-size: 15px; letter-spacing: .14em; text-transform: uppercase; fill: var(--stone); font-family: Figtree, sans-serif; font-weight: 500; }
+  .strip-t { font: 14px "JetBrains Mono", monospace; fill: var(--stone); }
   .foot { position: absolute; left: 48px; bottom: 26px; max-width: 1000px; font-size: 16px; color: var(--stone); }
   .node-label { font-size: 25px; font-weight: 500; fill: var(--sand); } .node-sub { font: 18px "JetBrains Mono", monospace; fill: var(--stone-2); }
   .node-cnt { font-size: 20px; font-weight: 500; fill: var(--sand); } .plus { font: 600 26px Figtree, sans-serif; fill: var(--sand); }
@@ -51,9 +63,10 @@
   <div class="hud-top"><div class="brand">Terra<small>Live</small></div><div class="clock" id="clock">connecting…</div></div>
   <div class="count" id="count"></div>
   <div class="panel">
-    <div class="card go"><h3>Where Utah's AI work goes</h3>
+    <div class="card go"><h3>Moved off Utah's rush hour</h3>
+      <div class="tot"><b id="totN">0</b><span>AI jobs sent to grids<br>with room to spare</span></div>
       <div class="dests" id="dests"></div>
-      <div class="go-note">since this map opened · each dot is one job</div>
+      <div class="go-note">counted only during Utah's rush hours · this week so far</div>
     </div>
     <div class="card saved"><h3>What Utah saves</h3>
       <div class="usd">$10M<small> a year</small></div>
@@ -65,7 +78,7 @@
       </table>
     </div>
   </div>
-  <div class="legend"><span><i style="background:var(--sage)"></i>room to run</span><span><i style="background:var(--copper)"></i>rush hour likely</span><span><i style="background:var(--sand)"></i>AI work moving</span></div>
+  <div class="banner" id="banner"><div class="b1">Utah has room</div><div class="b2">AI work can run anywhere</div></div>
   <div class="foot">Real EIA grid data, Oct 19–25, 2026, unseen in training · real Utah prices (CAISO) · the data center and its jobs are simulated</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
@@ -77,7 +90,7 @@ const JOB_NAMES = { "nightly-evals": "Nightly AI testing", "embed-catalog": "Pro
 const C = { sage: "#9fb07e", copper: "#c99068", sand: "#ece6da", stone: "#9b9591" };
 const fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); document.getElementById("stage").style.transform = `translate(${(innerWidth - 1600 * k) / 2}px, ${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
 addEventListener("resize", fit); fit();
-const svg = d3.select("#map"); let pos = {}, nodes = {}, proj = null, route = [];
+const svg = d3.select("#map"); let pos = {}, nodes = {}, proj = null, route = [], utahShape = null, rush = false, halo = null;
 const $ = id => document.getElementById(id);
 const usd = v => v >= 100 ? `$${Math.round(v).toLocaleString()}` : `$${v.toFixed(2)}`;
 
@@ -88,28 +101,34 @@ function ledger(utc) {
   const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
   $("tUsd").textContent = usd(l.usd + cap);
   $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
+  if (l.to && proj) counts(l.to);
 }
 
-// jobs Utah has handed to each other site since this page opened: map labels, route lines and the panel bars
-const sent = {}, arcD = {}, flow = {};
-function tally(dest) {
-  sent[dest] = (sent[dest] ?? 0) + 1; const total = Object.values(sent).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(sent));
-  const n = sent[dest], f = flow[dest];
-  f?.transition().duration(500).attr("stroke-opacity", Math.min(.4 + n * .05, .85)).attr("stroke-width", Math.min(3 + n * .4, 10));
-  nodes[dest]?.cnt.text(`${n} job${n === 1 ? "" : "s"} from Utah`);
-  nodes.PACE?.cnt.text(`${total} job${total === 1 ? "" : "s"} sent out`);
-  for (const id in sent) { const row = $(`d-${id}`); if (!row) continue;
-    row.querySelector(".n").firstChild.textContent = sent[id]; row.querySelector(".bar span").style.width = `${sent[id] / top * 100}%`; }
+// jobs moved off Utah's rush hours this week so far, per site (deck/utah_savings.ts, same basis as the savings box):
+// map labels, route lines and the panel bars
+const arcD = {}, flow = {};
+function counts(to) {
+  const total = Object.values(to).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(to));
+  $("totN").textContent = total;
+  nodes.PACE?.cnt.text(total ? `${total} job${total === 1 ? "" : "s"} moved off the rush` : "");
+  for (const id in to) { const n = to[id];
+    flow[id]?.attr("stroke-opacity", n ? Math.min(.4 + n * .02, .85) : 0).attr("stroke-width", Math.min(3 + n * .3, 12));
+    nodes[id]?.cnt.text(n ? `+${n} from Utah's rush` : "");
+    const row = $(`d-${id}`); if (!row) continue;
+    row.querySelector(".n").firstChild.textContent = n; row.querySelector(".bar span").style.width = `${n / top * 100}%`; }
 }
 
 const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
 function draw(meta) {
   atlas.then(us => {
     const states = { type: "FeatureCollection", features: topojson.feature(us, us.objects.states).features.filter(f => !["02", "15", "72", "78", "60", "66", "69"].includes(f.id)) };
-    proj = d3.geoAlbers().fitExtent([[40, 120], [1060, 840]], states); const path = d3.geoPath(proj);
+    proj = d3.geoAlbers().fitExtent([[60, 190], [1040, 690]], states); const path = d3.geoPath(proj);
     const glow = svg.append("defs").append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
     glow.append("feGaussianBlur").attr("stdDeviation", 4).attr("result", "b"); const m = glow.append("feMerge"); m.append("feMergeNode").attr("in", "b"); m.append("feMergeNode").attr("in", "SourceGraphic");
     svg.append("g").selectAll("path").data(states.features).join("path").attr("d", path).attr("fill", "#1f1d1a").attr("fill-opacity", .8).attr("stroke", "#3a362f").attr("stroke-opacity", .5);
+    // Utah itself lights up copper during its rush hours
+    utahShape = svg.append("path").datum(states.features.find(f => f.id === "49")).attr("d", path).attr("fill", C.copper).attr("fill-opacity", 0).attr("stroke", C.copper).attr("stroke-opacity", 0).attr("stroke-width", 2).attr("filter", "url(#glow)");
+    strip();
     for (const id in meta) pos[id] = proj(meta[id].ll);
     // the routes Utah can hand work to: faint dotted until used, then a sand line that thickens with each job
     const rg = svg.append("g");
@@ -132,27 +151,75 @@ function draw(meta) {
       const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 22).attr("text-anchor", an);
       const cnt = ng.append("text").attr("class", "node-cnt").attr("x", x + dx).attr("y", y + 46).attr("text-anchor", an);
       nodes[id] = { ring, dot, sub, cnt }; }
+    const [ux, uy] = pos.PACE;
+    halo = ng.insert("circle", ":first-child").attr("cx", ux).attr("cy", uy).attr("r", 20).attr("fill", C.copper).attr("fill-opacity", 0);
   });
 }
 
+// Utah's day so far, one bar per hour (height = power use vs that day's high, copper = rush hour); a dot per job moved off it
+const SX0 = 60, SX1 = 1040, SY0 = 742, SY1 = 812, day = { key: null, hours: {} };
+let sg = null;
+function strip() {
+  sg = svg.append("g");
+  sg.append("text").attr("class", "strip-h").attr("x", SX0).attr("y", SY0 - 14).text("Utah today: power use by hour · copper = rush hour · each dot above = one AI job moved off it");
+  for (const [h, t] of [[0, "midnight"], [6, "6 AM"], [12, "noon"], [18, "6 PM"], [23, "11 PM"]]) sg.append("text").attr("class", "strip-t").attr("x", SX0 + (h + .5) * (SX1 - SX0) / 24).attr("y", SY1 + 22).attr("text-anchor", "middle").text(t);
+  sg.append("g").attr("id", "bars"); sg.append("g").attr("id", "pips");
+  sg.append("rect").attr("id", "nowMark").attr("y", SY0 - 4).attr("height", SY1 - SY0 + 8).attr("width", 3).attr("fill", C.sand).attr("opacity", 0);
+}
+function stripHour(t, u) {
+  const local = new Date(t.toLocaleString("en-US", { timeZone: "America/Denver" })), key = local.toDateString(), h = local.getHours();
+  if (key !== day.key) { day.key = key; day.hours = {}; d3.select("#bars").selectAll("*").remove(); d3.select("#pips").selectAll("*").remove(); }
+  day.hours[h] = { share: u.share, peak: u.inPeak, moved: day.hours[h]?.moved ?? 0 };
+  const bw = (SX1 - SX0) / 24, x = SX0 + h * bw, ht = Math.max(4, (Math.min(u.share, 1) - .6) / .4 * (SY1 - SY0));
+  d3.select("#bars").append("rect").attr("x", x + 2).attr("width", bw - 4).attr("y", SY1).attr("height", 0).attr("rx", 3)
+    .attr("fill", u.inPeak ? C.copper : "#3d3a33").transition().duration(500).attr("y", SY1 - ht).attr("height", ht);
+  d3.select("#nowMark").attr("opacity", .9).transition().duration(400).attr("x", x + bw / 2 - 1.5);
+  return { h, x: x + bw / 2, top: SY1 - ht };
+}
+function stripPip(slot) {
+  const n = day.hours[slot.h].moved++;
+  d3.select("#pips").append("circle").attr("cx", slot.x).attr("cy", pos.PACE[1]).attr("r", 7).attr("fill", C.sand).attr("filter", "url(#glow)")
+    .attr("cx", pos.PACE[0]).transition().duration(900).ease(d3.easeCubicInOut).attr("cx", slot.x).attr("cy", slot.top - 12 - n * 15).attr("r", 6);
+}
+function setRush(on, call, u) {
+  const b = $("banner");
+  b.className = `banner${on ? " hot" : ""}${call ? " call" : ""}`;
+  b.querySelector(".b1").textContent = call ? "Rocky Mountain Power calls for cuts" : on ? "Utah rush hour" : "Utah has room";
+  b.querySelector(".b2").innerHTML = on || call ? `Power use at <b>${Math.round(u.share * 100)}%</b> of today's high · every AI job that can wait is leaving Utah`
+    : `Power use at ${Math.round(u.share * 100)}% of today's high · AI work can run anywhere`;
+  if (on === rush) return; rush = on;
+  utahShape?.interrupt().transition().duration(600).attr("fill-opacity", on ? .38 : 0).attr("stroke-opacity", on ? .9 : 0);
+  if (halo) { halo.selectAll("animate").remove();
+    if (on) { halo.attr("fill-opacity", .25); halo.append("animate").attr("attributeName", "r").attr("values", "24;90;24").attr("dur", "1.8s").attr("repeatCount", "indefinite");
+      halo.append("animate").attr("attributeName", "fill-opacity").attr("values", ".35;.05;.35").attr("dur", "1.8s").attr("repeatCount", "indefinite"); }
+    else halo.attr("fill-opacity", 0); }
+}
+
 // an AI job leaving Utah: its route lights up, a dot carries it over, and the site it lands on counts it
-function fly(dest) {
+function fly(dest, big, label, gpus) {
   const b = pos[dest]; if (!arcD[dest] || !b) return;
-  const g = d3.select("#arcs").append("g");
-  const arc = g.append("path").attr("d", arcD[dest]).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 4).attr("stroke-opacity", .9).attr("stroke-linecap", "round");
+  const g = d3.select("#arcs").append("g"), dur = big ? 1100 : 900;
+  const arc = g.append("path").attr("d", arcD[dest]).attr("fill", "none").attr("stroke", big ? C.copper : C.stone).attr("stroke-width", big ? 7 : 2).attr("stroke-opacity", big ? .95 : .4).attr("stroke-linecap", "round");
   const L = arc.node().getTotalLength();
-  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(1000).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
-  const dot = g.append("circle").attr("r", 10).attr("fill", C.sand).attr("filter", "url(#glow)");
-  dot.transition().duration(1000).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
+  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(dur).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0).attr("stroke", big ? C.sage : C.stone);
+  // during the rush the job leaves as a stream, one dot per 10 of its GPUs
+  const n = big ? Math.max(3, Math.min(8, Math.round((gpus ?? 30) / 10))) : 1;
+  for (let i = 1; i < n; i++) g.append("circle").attr("r", 9).attr("fill", C.copper).attr("filter", "url(#glow)")
+    .transition().delay(i * 110).duration(dur).ease(d3.easeCubicInOut).attr("fill", C.sage).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; }).remove();
+  const dot = g.append("circle").attr("r", big ? 14 : 5).attr("fill", big ? C.copper : C.stone).attr("fill-opacity", big ? 1 : .6).attr("filter", big ? "url(#glow)" : null);
+  dot.transition().duration(dur).ease(d3.easeCubicInOut).attr("fill", big ? C.sage : C.stone).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
     .on("end", () => {
-      dot.remove(); tally(dest);
-      g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 10).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 3)
-        .transition().duration(700).attr("r", 42).attr("stroke-opacity", 0);
-      g.append("text").attr("class", "plus").attr("x", b[0]).attr("y", b[1] - 22).attr("text-anchor", "middle").text("+1")
-        .transition().duration(900).attr("y", b[1] - 58).attr("opacity", 0);
+      dot.remove(); if (!big) return;
+      g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 12).attr("fill", "none").attr("stroke", C.sage).attr("stroke-width", 4)
+        .transition().duration(800).attr("r", 56).attr("stroke-opacity", 0);
+      g.append("text").attr("class", "plus").attr("x", b[0]).attr("y", b[1] - 26).attr("text-anchor", "middle").text("+1")
+        .transition().duration(1000).attr("y", b[1] - 66).attr("opacity", 0);
     });
-  arc.transition().delay(1000).duration(500).attr("stroke-opacity", 0);
-  g.transition().delay(1600).remove();
+  if (big && label) { const mid = arc.node().getPointAtLength(L / 2);
+    g.append("text").attr("class", "node-cnt").attr("x", mid.x).attr("y", mid.y - 18).attr("text-anchor", "middle").attr("opacity", 0).text(`${label} → ${NAMES[dest]}`)
+      .transition().duration(250).attr("opacity", 1).transition().delay(900).duration(400).attr("opacity", 0); }
+  arc.transition().delay(dur).duration(big ? 900 : 300).attr("stroke-opacity", 0);
+  g.transition().delay(dur + n * 110 + 1000).remove();
 }
 
 const es = new EventSource("/stream");
@@ -163,12 +230,15 @@ es.onmessage = e => {
   $("clock").innerHTML = `${t.toLocaleString("en-US", { timeZone: "America/Denver", weekday: "short", hour: "numeric" })} in Utah · power use at <b style="color:${inPeak ? C.copper : C.sage}">${Math.round(u.share * 100)}% of today's high${inPeak ? " · RUSH HOUR" : ""}</b>`;
   // d.grids = regions with data this replay hour (HST and WAUW have none in Oct 19–25); 50 = trained regions, as on the other slides
   $("count").innerHTML = `<b>50</b> regions forecast · <b style="color:${d.nPeak ? C.copper : C.sand}">${d.nPeak}</b> expecting rush hour`;
-  const j = d.job;
-  for (const id in d.regions) { const r = d.regions[id], n = nodes[id]; if (!n) continue; const hot = r.pPeakNow > .5, col = hot ? C.copper : C.sage;
+  const j = d.job, slot = proj ? stripHour(t, u) : null;
+  const hotU = inPeak || u.pPeakNow > .5;
+  setRush(hotU, d.utilityCall, u);
+  for (const id in d.regions) { const r = d.regions[id], n = nodes[id]; if (!n) continue; const hot = r.pPeakNow > .5 || (id === "PACE" && inPeak), col = hot ? C.copper : C.sage;
     n.dot.attr("fill", col); n.ring?.attr("stroke", col); n.sub?.text(hot ? "rush hour likely" : "room to run").attr("fill", hot ? C.copper : "#bfbcb8");
     const pip = document.querySelector(`#d-${id} .nm i`); if (pip) pip.style.background = col; }
   // every flexible job the router hands to another site flies there, whether it starts now or later in the day
-  if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE") fly(d.ours.region);
+  // during Utah's real rush hours each move is big and counted; at other hours it's a faint dot
+  if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE") { fly(d.ours.region, hotU, j.label, d.ours.gpus); if (hotU && slot) stripPip(slot); }
   ledger(d.utc);
 };
 

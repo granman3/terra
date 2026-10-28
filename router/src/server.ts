@@ -23,6 +23,8 @@ import { surge } from "./surge.ts";
 const ROOT = new URL("../..", import.meta.url).pathname;
 const PORT = Number(process.env.PORT ?? 8787);
 const TICK_MS = Number(process.env.TICK_MS ?? 1200);
+// Utah's rush hours replay slower so the live map's moves can be followed on stage
+const RUSH_SLOWDOWN = Number(process.env.RUSH_SLOWDOWN ?? 2.5);
 const DR_URL = process.env.DR_URL ?? "http://127.0.0.1:8765";
 const DR_TOKEN = process.env.DR_TOKEN ?? "";
 const AUTO_DR = process.env.AUTO_DR === "1";
@@ -119,6 +121,7 @@ async function step() {
   const nPeak = Object.values(regions).filter((r) => r.pPeakNow > 0.5).length;
   send({ tick, utc, job, ours, utahPeak, utilityCall, drMode, autoDr: AUTO_DR, grids: Object.keys(hours).length, nPeak, regions,
     sites: sites.snapshot(), solar: solar(utc) });
+  return regions.PACE?.inPeak || utahPeak > 0.5;
 }
 
 const TYPES: Record<string, string> = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg" };
@@ -168,5 +171,6 @@ createServer(async (req, res) => {
 }).listen(PORT, async () => {
   await load(replay.regions);
   console.log(`mycelium router on http://localhost:${PORT}  replay ${TIMES.length} h x ${replay.regions.length} grids, tick ${TICK_MS} ms, dr ${DR_URL}${AUTO_DR ? ", auto-DR" : ""}`);
-  setInterval(() => step().catch((e) => console.error("step", e)), TICK_MS);
+  const loop = () => step().catch((e) => { console.error("step", e); return false; }).then((rush) => setTimeout(loop, rush ? TICK_MS * RUSH_SLOWDOWN : TICK_MS));
+  loop();
 });

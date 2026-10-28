@@ -121,7 +121,7 @@
   .mass .grid4 > div { border-top: 2px solid var(--copper); padding-top: 16px; }
   .mass .grid4 .n { font-size: 64px; font-weight: 300; letter-spacing: -.03em; white-space: nowrap; } .mass .grid4 .l { font-size: 21px; color: var(--stone-2); line-height: 1.3; margin-top: 6px; }
   .mass .grid4 .ax { font: 500 15px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--copper); }
-  .point { margin-top: 40px; border-left: 4px solid var(--sage); padding: 6px 0 6px 24px; font-size: 32px; font-weight: 300; color: var(--stone-2); line-height: 1.3; position: relative; max-width: 1380px; }
+  .point { margin-top: 40px; border-top: 1px solid var(--line); padding: 20px 0 0; font-size: 32px; font-weight: 300; color: var(--stone-2); line-height: 1.3; position: relative; max-width: 1380px; }
   .point b { color: var(--sand); font-weight: 500; } .point .sg { color: var(--sage); font-weight: 500; }
   .why .cols { margin-top: 38px; } .why .col .t { font-size: 44px; } .why .col .d { font-size: 23px; } .why .col .c { font-size: 30px; margin-top: 4px; color: var(--copper); }
   .why .col.us .c { color: var(--sage); } .why .gain { margin-top: 38px; } .why .gain .n { font-size: 130px; }
@@ -131,7 +131,7 @@
   .eqs .point { margin-top: 20px; font-size: 27px; }
   .tex-fallback { font-family: "JetBrains Mono", monospace; font-size: .6em; color: var(--stone-2); }
   .sizes .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; margin-top: 34px; position: relative; }
-  .sizes .charts h3 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .sizes .charts .sub { font-size: 18px; color: var(--stone); margin-bottom: 10px; }
+  .sizes .charts h2 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .sizes .charts .sub { font-size: 18px; color: var(--stone); margin-bottom: 10px; }
   .sizes svg text { font-family: Figtree, sans-serif; }
   .sizes .point { margin-top: 30px; font-size: 29px; }
   .built .head { font-size: 66px; } .built .pipe { margin-top: 22px; font-size: 22px; white-space: nowrap; } .built .pipe i { margin: 0 9px; }
@@ -140,7 +140,7 @@
   .built .hero-eq .k { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); } .built .hero-eq .katex-display { margin: 14px 0 10px; }
   .built .hero-eq .lab { font-size: 20px; color: var(--stone); line-height: 1.35; } .built .hero-eq .lab b { color: var(--sand); font-weight: 500; }
   .bstats { display: flex; gap: 40px; margin-top: 24px; font-size: 20px; color: var(--stone); } .bstats b { display: block; font-size: 52px; font-weight: 300; color: var(--sand); letter-spacing: -.02em; white-space: nowrap; } .bstats b.sg { color: var(--sage); }
-  .built h3 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .built .sub { font-size: 17px; color: var(--stone); margin-bottom: 8px; } .built svg text { font-family: Figtree, sans-serif; }
+  .built h2 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .built .sub { font-size: 17px; color: var(--stone); margin-bottom: 8px; } .built svg text { font-family: Figtree, sans-serif; }
   .impact .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 32px; position: relative; }
   .impact .row3 .ax { font: 500 15px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--sage); }
   .impact .row3 .n { font-size: 66px; font-weight: 300; letter-spacing: -.03em; white-space: nowrap; color: var(--sand); } .impact .row3 .l { font-size: 21px; color: var(--stone-2); line-height: 1.3; }
@@ -270,8 +270,8 @@
   <div class="eyebrow">Why a small custom model</div>
   <div class="head">Bigger AI wasn't better. <span class="sg">I tested it.</span></div>
   <div class="charts">
-    <div><h3>Energy per decision</h3><div class="sub">times Terra's, log scale (each step is 10×)</div><svg id="szE" viewBox="0 0 650 300"></svg></div>
-    <div><h3>Fewer mistakes than the utility's forecast</h3><div class="sub">higher is better</div><svg id="szA" viewBox="0 0 650 300"></svg></div>
+    <div><h2>Energy per decision</h2><div class="sub">times Terra's, log scale (each step is 10×)</div><svg id="szE" viewBox="0 0 650 300"></svg></div>
+    <div><h2>Fewer mistakes than the utility's forecast</h2><div class="sub">higher is better</div><svg id="szA" viewBox="0 0 650 300"></svg></div>
   </div>
   <div class="point">The 4-billion-parameter AI model used <b><span data-n="tiny_efficiency" data-f="effX">690,000×</span> the energy</b> and was barely better than the utility. Terra is <span class="sg">small on purpose: we don't spend energy to save energy.</span></div>
   <div class="src">all three trained by me on the same RTX 4080 · energy: Transformer vs Terra on one laptop CPU core, LLM vs Terra total chip power on the same MacBook · *LLM accuracy from the earlier 4-region test</div>
@@ -289,7 +289,7 @@
         <div><b><span data-n="peak_hours_hit" data-f="naive">1.14</span> → <span style="color:var(--sage)" data-n="peak_hours_hit" data-f="ours">0.04</span></b>rush hours a 4-hour AI job runs into</div>
       </div>
     </div>
-    <div><h3>Why small: energy per decision</h3><div class="sub">times Terra's, log scale (each line is 10×) · copper: small frontier models, published figures</div><svg id="szB" viewBox="0 0 700 380"></svg></div>
+    <div><h2>Why small: energy per decision</h2><div class="sub">times Terra's, log scale (each line is 10×) · copper: small frontier models, published figures</div><svg id="szB" viewBox="0 0 700 380"></svg></div>
   </div>
   <div class="src">held-out 2026 vs EIA (Brier) · my models: same laptop · frontier: published Wh per query, arXiv 2505.09598 + Google 2025 · *4-region test</div>
 </section>

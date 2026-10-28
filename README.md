@@ -11,6 +11,7 @@ Terra forecasts every US power grid's rush hour a day ahead and moves AI work ar
 [![Slides](https://img.shields.io/badge/slides-PDF-6e8fa0?style=flat-square)](deck/Terra-slides.pdf)
 [![Model](https://img.shields.io/badge/model-561K%20params-ece6da?style=flat-square)](#results)
 [![Hackathon](https://img.shields.io/badge/Hard%20Tech%20Hackathon-Torus%20bounty%2C%20Oct%202026-34312b?style=flat-square)](#built-for-torus)
+[![License: MIT](https://img.shields.io/badge/license-MIT-6f6a64?style=flat-square)](LICENSE)
 
 <table>
 <tr>
@@ -162,5 +163,5 @@ that week's highest demand). "Rush hour" means demand at or above 95% of that da
 ---
 
 <div align="center">
-<sub>Built by <b>Granite Tait</b> for the Hard Tech Hackathon, Salt Lake City, October 2026.</sub>
+<sub>Built by <b>Granite Tait</b> for the Hard Tech Hackathon, Salt Lake City, October 2026. MIT licensed.</sub>
 </div>

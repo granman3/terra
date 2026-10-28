@@ -26,20 +26,37 @@
   .mode button { border: 0; background: none; border-radius: 999px; padding: 8px 12px; font-size: 13.5px; color: var(--stone); white-space: nowrap; }
   .mode button.on { background: var(--sage); color: #151a0f; } .mode button.on.no { background: var(--warn); color: #1e100b; }
   .mapbox { position: relative; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, #1a1916 0%, #121110 100%); overflow: hidden; touch-action: manipulation; transition: border-color .4s; }
-  .mapbox.rush { border-color: var(--copper); } .mapbox.soon { border-color: #b8a06a; } .mapbox.off { border-color: var(--warn); }
-  .m-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 14px 16px 0; }
-  .m-clock b { display: block; font-size: 34px; font-weight: 400; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
-  .m-clock span { font: 12px "JetBrains Mono", monospace; color: var(--stone); }
-  .m-state { font-size: 20px; font-weight: 500; color: var(--sage); line-height: 1.15; text-align: right; transition: color .4s; }
-  .mapbox.rush .m-state { color: var(--copper); } .mapbox.soon .m-state { color: #d7b86e; } .mapbox.off .m-state { color: var(--warn); }
-  .m-tally { font: 12px "JetBrains Mono", monospace; color: var(--stone); text-align: right; margin-top: 4px; } .m-tally b { color: var(--sage); font-weight: 500; } .off .m-tally b { color: var(--warn); }
-  .m-doing { padding: 8px 16px 0; font-size: 14.5px; line-height: 1.35; color: var(--stone-2); min-height: 2.7em; } .m-doing b { color: var(--sand); font-weight: 500; } .m-doing .bad { color: var(--warn); }
-  svg.map { display: block; width: 100%; height: auto; margin-top: -6px; }
-  .glow { animation: glow 1.1s ease-in-out infinite alternate; } @keyframes glow { from { opacity: .25; } to { opacity: .8; } }
-  @media (prefers-reduced-motion: reduce) { .glow { animation: none; opacity: .6; } .bar i, .peakbar i { transition: none; } }
-  .lanes { padding: 0 12px 4px; } .lanes svg { display: block; width: 100%; height: auto; }
-  .key { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 8px 16px 11px; font-size: 12px; color: var(--stone); border-top: 1px solid var(--line); }
-  .key i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .mapbox.rush { border-color: var(--copper); } .mapbox.off { border-color: var(--warn); }
+  /* the live map, as on the deck's live slide (demo/live.html): clock, banner, flat map, Utah's day */
+  .m-top { padding: 12px 16px 0; font: 12px/1.45 "JetBrains Mono", monospace; color: var(--stone-2); } .m-top b { font-weight: 500; }
+  .m-count { padding: 2px 16px 0; font-size: 13.5px; color: var(--stone-2); } .m-count b { color: var(--sand); font-weight: 500; font-size: 16px; }
+  .banner { padding: 8px 16px 0; color: var(--stone-2); }
+  .banner .b1 { font-size: 27px; font-weight: 500; letter-spacing: .01em; line-height: 1.15; color: var(--sage); transition: color .4s; }
+  .banner.hot .b1 { color: var(--copper); animation: hot 1.4s ease-in-out infinite; } .banner.hot .b2 { color: var(--sand); } .banner.call .b1 { color: #e0a37a; }
+  .banner .b2 { margin-top: 3px; font-size: 14px; line-height: 1.35; } .banner .b2 b { color: var(--sand); font-weight: 500; }
+  .banner .b3 { margin-top: 5px; min-height: 1.4em; font-size: 14px; line-height: 1.35; color: var(--sage); opacity: 0; transition: opacity .3s; } .banner .b3 b { color: var(--sand); font-weight: 500; } .banner .b3 .bad, .banner .b3 .bad b { color: var(--warn); }
+  @keyframes hot { 50% { opacity: .55; } }
+  @media (prefers-reduced-motion: reduce) { .banner.hot .b1 { animation: none; } .bar i, .peakbar i, .dest .bar span { transition: none; } }
+  svg.map { display: block; width: 100%; height: auto; }
+  .strip { padding: 0 16px 10px; } .strip svg { display: block; width: 100%; height: auto; }
+  .strip-h { font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); line-height: 1.4; }
+  .m-foot { padding: 8px 16px 11px; font-size: 12px; line-height: 1.4; color: var(--stone); border-top: 1px solid var(--line); }
+  /* the live slide's two cards: jobs moved off Utah's rush hour, and what Utah saves */
+  .tot { display: flex; align-items: baseline; gap: 12px; margin-top: 8px; } .tot b { font-size: 52px; font-weight: 300; letter-spacing: -.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tot span { font-size: 15px; line-height: 1.25; color: var(--stone-2); }
+  .dests { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 8px; }
+  .dest { display: grid; grid-template-columns: 1fr auto; align-items: baseline; row-gap: 5px; }
+  .dest .nm { font-size: 17px; } .dest .nm i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 9px; background: var(--sage); transition: background .4s; }
+  .dest .n { font: 500 20px "JetBrains Mono", monospace; font-variant-numeric: tabular-nums; } .dest .n small { font: 13px Figtree, sans-serif; color: var(--stone); margin-left: 6px; }
+  .dest .bar { grid-column: 1 / -1; height: 8px; margin: 0; } .dest .bar span { display: block; height: 100%; width: 0; border-radius: 4px; background: var(--sand); transition: width .6s cubic-bezier(.2,.7,.3,1); }
+  .note { font-size: 12.5px; color: var(--stone); }
+  .usd { font-size: 72px; font-weight: 300; letter-spacing: -.035em; line-height: 1; white-space: nowrap; color: var(--sage); font-variant-numeric: tabular-nums; margin-top: 8px; } .usd small { font-size: 22px; color: var(--stone-2); letter-spacing: 0; margin-left: 6px; }
+  .usd-l { font-size: 16px; line-height: 1.3; color: var(--stone-2); margin-top: 6px; } .usd-l b { color: var(--sand); font-weight: 500; }
+  .live-h { padding-top: 14px; font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--sage); }
+  .ledger { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: 15px; }
+  .ledger td { padding: 8px 0; border-top: 1px solid var(--line); color: var(--stone-2); } .ledger td:last-child { text-align: right; font: 500 17px "JetBrains Mono", monospace; color: var(--sand); white-space: nowrap; padding-left: 10px; }
+  .ledger tr.total td { border-top: 2px solid var(--stone); color: var(--sand); font-weight: 500; } .ledger tr.total td:last-child { color: var(--sage); font-size: 24px; }
+  .card.dim { opacity: .4; transition: opacity .4s; }
   .call { width: 100%; margin-top: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; text-align: left; background: rgba(201,144,104,.14); border-color: var(--copper); }
   .call .ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--copper); color: #1a120c; flex: none; }
   .call small { display: block; font-size: 12.5px; color: var(--stone); font-weight: 400; margin-top: 1px; }
@@ -98,17 +115,32 @@
   </header>
 
   <section class="mapbox" id="stBox">
-    <div class="m-head">
-      <div class="m-clock"><b id="mHour">—</b><span id="mDay"></span></div>
-      <div><div class="m-state" id="stState">loading…</div><div class="m-tally" id="tally"></div></div>
-    </div>
-    <div class="m-doing" id="stDoing"></div>
-    <svg class="map" id="map" viewBox="0 -100 960 640" role="img" aria-label="Map of the four power regions Terra moves AI work between"></svg>
-    <div class="lanes"><svg id="lanes" viewBox="0 0 600 252" role="img" aria-label="Today's rush hours in four regions, and where Terra put each AI job"></svg></div>
-    <div class="key"><span><i style="background:var(--copper)"></i>rush hour</span><span><i style="background:var(--sand)"></i>AI job, where it ran</span><span><i style="background:var(--warn)"></i>AI job stuck in rush hour</span><span><i style="border:1px dashed var(--copper)"></i>rush hour Terra predicts</span></div>
+    <div class="m-top" id="clock">loading…</div>
+    <div class="m-count" id="count"></div>
+    <div class="banner" id="banner"><div class="b1">Utah has room</div><div class="b2"></div><div class="b3" id="leaving"></div></div>
+    <svg class="map" id="map" viewBox="0 0 960 720" role="img" aria-label="Map of the four power regions Terra moves AI work between"></svg>
+    <div class="strip"><div class="strip-h">Utah today · copper = rush hour · each dot = one AI job moved off it</div>
+      <svg id="strip" viewBox="0 0 600 120" role="img" aria-label="Utah's power use by hour today, and the AI jobs moved off its rush hours"></svg></div>
+    <div class="m-foot">Real EIA grid data, Oct 19–25, 2026, unseen in training · real Utah prices (CAISO) · the data center and its jobs are simulated</div>
   </section>
 
   <button class="call" id="btnPeak"><span class="ic">⚡</span><span>Skip to the utility's call<small>Tuesday noon (simulated). Then hands off.</small></span></button>
+
+  <section class="card live-card"><div class="lbl">Moved off Utah's rush hour</div>
+    <div class="tot"><b id="totN">0</b><span>AI jobs sent to grids<br>with room to spare</span></div>
+    <div class="dests" id="dests"></div>
+    <div class="note">counted only during Utah's rush hours · this week so far</div>
+  </section>
+
+  <section class="card live-card"><div class="lbl">What Utah saves</div>
+    <div class="usd">$10M<small>a year</small></div>
+    <div class="usd-l">per <b>100 MW</b> of AI work moved off Utah's rush hours</div>
+    <div class="live-h">This week · one simulated site</div>
+    <table class="ledger">
+      <tr><td>Power moved off the rush</td><td id="kwh">0 kWh</td></tr>
+      <tr class="total"><td>Saved so far</td><td id="tUsd">$0</td></tr>
+    </table>
+  </section>
 
   <section class="card">
     <div class="vs-hero"><b id="vX">—</b>less rush hour for every AI job that can wait</div>
@@ -165,7 +197,7 @@
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
 <script>
 const $ = id => document.getElementById(id);
-const C = { sage: "#9fb07e", copper: "#c99068", sand: "#ece6da", stone: "#9b9591", warn: "#d9785f" };
+const C = { sage: "#9fb07e", copper: "#c99068", sand: "#ece6da", stone: "#9b9591", stone2: "#bfbcb8", warn: "#d9785f" };
 const NAMES = { PACE: "Utah", CISO: "California", BPAT: "Pacific Northwest", ERCO: "Texas" };
 const SHORT = { PACE: "Utah", CISO: "California", BPAT: "Pac NW", ERCO: "Texas" };
 const JOB_NAMES = { "nightly-evals": "Nightly AI testing", "embed-catalog": "Product search update", "chat-support": "Customer chat", "finetune-ckpt": "AI model training", "batch-translate": "Document translation" };
@@ -180,16 +212,17 @@ const TICK_MS = 1500, GPUS = 1000, W_ON = 276, W_LOCK = 196, W_IDLE = 30;
 // forecast and drives "rush hour soon"; routing still uses the full forecast.
 const RUSH_LIKELY = 0.5, DR_USD_KW_YEAR = 100;  // Wattsmart Business: $100 per kW a year, up to 65 h of calls
 const calls = utc => W.events.has(utc);
-let W, i = 0, auto = true, shedding = false, dodged = 0, hitNo = 0, proj, pos = {};
+let W, S, i = 0, auto = true, shedding = false, proj, pos = {};
 // energy per forecast vs Terra, same MacBook (deck/numbers.json model_sizes, tiny_efficiency)
 const MODEL_SIZES = [["Terra", 1, "561K parameters"], ["Transformer", 590, "4.8M"], ["Fine-tuned LLM", 690000, "4B"]], YEAR_JOULES = 19.8;
 // what it's worth (the deck's Torus-fit and problem slides): $100/kW-yr, $728–1,969 per kW of new gas peaker, 972 MW used 153 h in 2025
 const PEAKER_USD_KW = [728, 1969], UTAH_TOP10_MW = 972;
 
-const DATA_V = "2026-10-27c";  // bump when web/data changes, so phones that visited earlier don't keep old data
+const DATA_V = "2026-10-28a";  // bump when web/data changes, so phones that visited earlier don't keep old data
 const ld = d3.json("data/week.json?v=" + DATA_V);
 const pr = d3.json("data/prices.json?v=" + DATA_V);  // real PACE wholesale $/kWh per replay hour (train/rush_prices.py)
 const dr = d3.json("data/dr_event.json?v=" + DATA_V);  // simulated utility call hours (train/math_layer.py)
+const sv = d3.json("data/utah_savings.json?v=" + DATA_V);  // the stage's week ledger (deck/utah_savings.ts), copied from deck/
 const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
 const mt = utc => new Date(utc * 1000).toLocaleString("en-US", { timeZone: "America/Denver", weekday: "short", hour: "numeric" });
 const name = id => NAMES[id] ?? `${W.grids[id].city} area`;
@@ -228,158 +261,170 @@ function place(job, at) {
   return o ?? { region: "PACE", wait: "now", start: 0, peak: 0, g: 0, forced: "no room anywhere" };
 }
 
-// --- map: the West tilted back like a table top, one glass tube per routing region ---
-// Tube full = that region's highest power use today; the liquid = power use right now (real EIA data). The tube shows
-// the top 30% of the day (every grid always runs at 70%+ of its high), so the difference between regions is visible.
-// The label keeps the true percentage. Copper = rush hour right now. Moved AI jobs fly as arcs and leave a trail.
-const TILT = 0.56, VX = 480;  // vertical squash, and the line the map narrows toward (a little perspective)
-const tilt = (x, y) => { const k = 0.82 + 0.18 * (y / 800); return [VX + (x - VX) * k, 110 + y * TILT]; };
-const level = s => Math.max(.05, Math.max(0, Math.min(1, (s - .7) / .3)) ** 1.3);
-const TUBE_H = 190, NUDGE = { CISO: [-24, 0], BPAT: [12, 0] };  // keep California's and the Pacific NW's tubes apart
-let cols = {}, flat = {};
+// --- map: the live slide's map (demo/live.html), sized for a phone ---
+// Flat map, one glowing dot per region (copper = rush hour likely). Utah itself lights up copper in its rush hours.
+// Faint dotted routes run from Utah to the grids it can hand work to; each job moved off Utah's rush thickens one.
+const LBL = { PACE: [26, -44, "start"], CISO: [22, 40, "start"], BPAT: [26, -6, "start"], ERCO: [-26, -6, "end"] };  // label offset, anchor
+let nodes = {}, arcD = {}, flow = {}, utahShape = null, halo = null, rushOn = false;
 function drawMap(us) {
   const svg = d3.select("#map");
   const drop = ["02", "15", "72", "78", "60", "66", "69"];
-  const nation = topojson.merge(us, us.objects.states.geometries.filter(g => !drop.includes(g.id)));
   const states = { type: "FeatureCollection", features: topojson.feature(us, us.objects.states).features.filter(f => !drop.includes(f.id)) };
   // frame the West and Texas, where the four regions Terra routes between are; the rest of the country runs off the edge
   const west = { type: "FeatureCollection", features: states.features.filter(f => d3.geoCentroid(f)[0] < -97) };
-  proj = d3.geoAlbers().fitExtent([[10, 40], [950, 830]], west);
-  const tiltT = d3.geoTransform({ point(x, y) { this.stream.point(...tilt(x, y)); } });
-  const path = d3.geoPath({ stream: s => proj.stream(tiltT.stream(s)) });
-  const defs = svg.append("defs");
-  for (const [id, c] of [["gS", C.sage], ["gC", C.copper], ["gW", C.warn]]) {  // lit from the right: dark edge, bright face, soft edge
-    const g = defs.append("linearGradient").attr("id", id);
-    [[0, d3.color(c).darker(1.4)], [0.55, d3.color(c).brighter(0.15)], [1, d3.color(c).darker(0.5)]].forEach(([o, col]) => g.append("stop").attr("offset", o).attr("stop-color", col));
-  }
-  const glass = defs.append("linearGradient").attr("id", "glass");
-  [[0, "rgba(255,255,255,.10)"], [.3, "rgba(255,255,255,.02)"], [.8, "rgba(255,255,255,.05)"], [1, "rgba(255,255,255,.12)"]].forEach(([o, c]) => glass.append("stop").attr("offset", o).attr("stop-color", c));
-  defs.append("filter").attr("id", "blur").attr("x", "-100%").attr("y", "-100%").attr("width", "300%").attr("height", "300%").append("feGaussianBlur").attr("stdDeviation", 16);
-  const slab = defs.append("linearGradient").attr("id", "slab").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", 1);
-  slab.append("stop").attr("offset", 0).attr("stop-color", "#2a2723"); slab.append("stop").attr("offset", 1).attr("stop-color", "#141311");
-  // the slab: the whole country, drawn again lower down, gives the map its thickness
-  for (let d = 14; d > 0; d -= 2) svg.append("path").datum(nation).attr("d", path).attr("transform", `translate(0,${d})`).attr("fill", "url(#slab)").attr("opacity", d === 14 ? .9 : .5);
-  svg.append("path").datum(nation).attr("d", path).attr("fill", "#24221e");
-  svg.append("path").datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b)).attr("d", path).attr("fill", "none").attr("stroke", "#3b3731").attr("stroke-width", .8);
-  svg.append("path").datum(nation).attr("d", path).attr("fill", "none").attr("stroke", "#5a554c").attr("stroke-width", 1.2);
-  for (const id in W.grids) { const [x, y] = tilt(...proj(W.grids[id].ll)), [dx, dy] = NUDGE[id] ?? [0, 0]; pos[id] = [x + dx, y + dy]; }
-  // every other region: a small flat disc on the map
-  const fg = svg.append("g");
-  for (const id in W.grids) { if (W.route.includes(id)) continue; const [x, y] = pos[id];
-    flat[id] = fg.append("ellipse").attr("cx", x).attr("cy", y).attr("rx", 5).attr("ry", 2.8).attr("fill", C.stone).attr("fill-opacity", .55).style("cursor", "pointer").on("click", () => openGrid(id)); }
-  svg.append("g").attr("id", "trails"); svg.append("g").attr("id", "scout"); svg.append("g").attr("id", "arcs");
-  // the four regions Terra routes between: glass tubes, drawn back to front
-  const cg = svg.append("g");
-  for (const id of [...W.route].sort((a, b) => pos[a][1] - pos[b][1])) {
-    const [x, y] = pos[id], g = cg.append("g").style("cursor", "pointer").on("click", () => openGrid(id)), rx = 24, ry = 9, top = y - TUBE_H;
-    g.append("ellipse").attr("cx", x + 14).attr("cy", y + 5).attr("rx", 38).attr("ry", 12).attr("fill", "#000").attr("opacity", .5);
-    const glow = g.append("ellipse").attr("cx", x).attr("cy", y - TUBE_H / 2).attr("rx", rx + 12).attr("ry", TUBE_H / 2 + 10).attr("fill", C.copper).attr("filter", "url(#blur)").attr("opacity", 0);
-    g.append("rect").attr("x", x - rx).attr("width", 2 * rx).attr("y", top).attr("height", TUBE_H).attr("fill", "rgba(10,10,9,.55)");
-    g.append("ellipse").attr("cx", x).attr("cy", top).attr("rx", rx).attr("ry", ry).attr("fill", "#191816").attr("stroke", "#6b655b").attr("stroke-width", 1.5);
-    const body = g.append("rect").attr("x", x - rx).attr("width", 2 * rx).attr("y", y - 20).attr("height", 20).attr("fill", "url(#gS)");
-    const base = g.append("ellipse").attr("cx", x).attr("cy", y).attr("rx", rx).attr("ry", ry).attr("fill", "url(#gS)");
-    const surf = g.append("ellipse").attr("cx", x).attr("cy", y - 20).attr("rx", rx).attr("ry", ry).attr("fill", d3.color(C.sage).brighter(.5));
-    g.append("rect").attr("x", x - rx).attr("width", 2 * rx).attr("y", top).attr("height", TUBE_H).attr("fill", "url(#glass)");
-    g.append("path").attr("d", `M${x - rx},${top} L${x - rx},${y} A${rx},${ry} 0 0 0 ${x + rx},${y} L${x + rx},${top} A${rx},${ry} 0 0 1 ${x - rx},${top}`).attr("fill", "none").attr("stroke", "#6b655b").attr("stroke-width", 1.5);
-    const below = id === "CISO", ly = below ? y + 46 : top - 44;
-    const label = g.append("text").attr("x", x).attr("y", ly).attr("text-anchor", "middle").attr("fill", C.sand).attr("font-size", 36).attr("font-weight", 500).text(SHORT[id]);
-    const sub = g.append("text").attr("x", x).attr("y", ly + 32).attr("text-anchor", "middle").attr("fill", "#bfbcb8").attr("font-size", 28).attr("font-family", "JetBrains Mono, monospace");
-    cols[id] = { x, y, rx, glow, body, base, surf, label, sub };
-  }
+  proj = d3.geoAlbers().fitExtent([[24, 40], [936, 2000]], west); const path = d3.geoPath(proj);
+  const [[, y0], [, y1]] = path.bounds(west); svg.attr("viewBox", `0 ${Math.round(y0 - 60)} 960 ${Math.round(y1 - y0 + 80)}`);  // trim to the map (room above for Pac NW's label)
+  const glow = svg.append("defs").append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
+  glow.append("feGaussianBlur").attr("stdDeviation", 6).attr("result", "b"); const m = glow.append("feMerge"); m.append("feMergeNode").attr("in", "b"); m.append("feMergeNode").attr("in", "SourceGraphic");
+  svg.append("g").selectAll("path").data(states.features).join("path").attr("d", path).attr("fill", "#1f1d1a").attr("fill-opacity", .8).attr("stroke", "#3a362f").attr("stroke-opacity", .6).attr("stroke-width", 1.5);
+  utahShape = svg.append("path").datum(states.features.find(f => f.id === "49")).attr("d", path).attr("fill", C.copper).attr("fill-opacity", 0).attr("stroke", C.copper).attr("stroke-opacity", 0).attr("stroke-width", 3).attr("filter", "url(#glow)");
+  for (const id in W.grids) pos[id] = proj(W.grids[id].ll);
+  const rg = svg.append("g");
+  for (const id of W.route) { if (id === "PACE") continue;
+    const [x1, y1] = pos.PACE, [x2, y2] = pos[id], lift = 60 + Math.hypot(x2 - x1, y2 - y1) * .22;
+    arcD[id] = `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`;
+    rg.append("path").attr("d", arcD[id]).attr("fill", "none").attr("stroke", C.stone).attr("stroke-opacity", .45).attr("stroke-width", 3).attr("stroke-dasharray", "3 13").attr("stroke-linecap", "round");
+    flow[id] = rg.append("path").attr("d", arcD[id]).attr("fill", "none").attr("stroke", C.sand).attr("stroke-opacity", 0).attr("stroke-width", 3).attr("stroke-linecap", "round");
+    $("dests").insertAdjacentHTML("beforeend", `<div class="dest" id="d-${id}"><span class="nm"><i></i>${NAMES[id]}</span><span class="n">0<small>jobs</small></span><div class="bar"><span></span></div></div>`); }
+  svg.append("g").attr("id", "arcs");
+  const ng = svg.append("g");
+  for (const id in W.grids) { if (W.route.includes(id) || !pos[id]) continue; const [x, y] = pos[id];
+    nodes[id] = { dot: ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 6).attr("fill", C.sage).attr("fill-opacity", .5) };
+    ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 22).attr("fill", "transparent").style("cursor", "pointer").on("click", () => openGrid(id)); }
+  for (const id of W.route) { const [x, y] = pos[id], [dx, dy, an] = LBL[id];
+    const ring = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 14).attr("fill", "none").attr("stroke", C.sage).attr("stroke-width", 2);
+    ring.append("animate").attr("attributeName", "r").attr("values", "14;48").attr("dur", "2.6s").attr("repeatCount", "indefinite");
+    ring.append("animate").attr("attributeName", "stroke-opacity").attr("values", ".7;0").attr("dur", "2.6s").attr("repeatCount", "indefinite");
+    const dot = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 13).attr("fill", C.sage).attr("filter", "url(#glow)");
+    ng.append("text").attr("x", x + dx).attr("y", y + dy).attr("text-anchor", an).attr("fill", C.sand).attr("font-size", 40).attr("font-weight", 500).text(SHORT[id]);
+    const sub = ng.append("text").attr("x", x + dx).attr("y", y + dy + 34).attr("text-anchor", an).attr("fill", C.stone2).attr("font-size", 27).attr("font-family", "JetBrains Mono, monospace");
+    const cnt = ng.append("text").attr("x", x + dx).attr("y", y + dy + 68).attr("text-anchor", an).attr("fill", C.sand).attr("font-size", 28).attr("font-weight", 500);
+    ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 40).attr("fill", "transparent").style("cursor", "pointer").on("click", () => openGrid(id));
+    nodes[id] = { ring, dot, sub, cnt }; }
+  halo = ng.insert("circle", ":first-child").attr("cx", pos.PACE[0]).attr("cy", pos.PACE[1]).attr("r", 30).attr("fill", C.copper).attr("fill-opacity", 0);
 }
+const hotIn = (f, id) => f.p[0] > RUSH_LIKELY * 100 || (id === "PACE" && f.k === 1);  // the live slide's copper state
 function updateMap(h) {
-  for (const id in cols) {
-    const f = h.g[id], c = cols[id]; if (!f) continue;
-    const lh = TUBE_H * level(f.s), rush = f.k === 1, grad = rush ? "url(#gC)" : "url(#gS)";
-    const t = d3.transition().duration(TICK_MS * .7).ease(d3.easeCubicInOut);
-    c.body.attr("fill", grad).transition(t).attr("y", c.y - lh).attr("height", lh);
-    c.base.attr("fill", grad); c.surf.attr("fill", d3.color(rush ? C.copper : C.sage).brighter(.5)).transition(t).attr("cy", c.y - lh);
-    c.glow.classed("glow", rush).attr("opacity", rush ? null : 0);
-    const saving = id === "PACE" && shedding;  // Utah's site is the one Terra runs: its label says when it's saving power
-    c.sub.text(saving ? "SAVING −29%" : rush ? "RUSH HOUR" : `${Math.round(f.s * 100)}%`).attr("fill", saving ? C.sand : rush ? C.copper : "#bfbcb8").attr("font-weight", saving || rush ? 700 : 400);
-    c.label.attr("fill", rush ? C.copper : C.sand);
-  }
-  for (const id in flat) { const f = h.g[id]; if (f) flat[id].attr("fill", f.k ? C.copper : C.stone).attr("fill-opacity", f.k ? .9 : .5); }
+  for (const id in h.g) { const n = nodes[id]; if (!n) continue; const hot = hotIn(h.g[id], id), col = hot ? C.copper : C.sage;
+    n.dot.attr("fill", col); n.ring?.attr("stroke", col); n.sub?.text(hot ? "rush hour likely" : "room to run").attr("fill", hot ? C.copper : C.stone2);
+    const pip = document.querySelector(`#d-${id} .nm i`); if (pip) pip.style.background = col; }
 }
-const arcPath = (a, b) => { const [x1, y1, x2, y2] = [a.x, a.y - 20, b.x, b.y - 20], lift = 70 + Math.hypot(x2 - x1, y2 - y1) * .25;
+function setRush(on) {
+  if (on === rushOn) return; rushOn = on;
+  utahShape?.interrupt().transition().duration(600).attr("fill-opacity", on ? .38 : 0).attr("stroke-opacity", on ? .9 : 0);
+  if (!halo) return; halo.selectAll("animate").remove();
+  if (on) { halo.attr("fill-opacity", .25); halo.append("animate").attr("attributeName", "r").attr("values", "34;130;34").attr("dur", "1.8s").attr("repeatCount", "indefinite");
+    halo.append("animate").attr("attributeName", "fill-opacity").attr("values", ".35;.05;.35").attr("dur", "1.8s").attr("repeatCount", "indefinite"); }
+  else halo.attr("fill-opacity", 0);
+}
+// jobs moved off Utah's rush hours this week so far, per site: the stage's own ledger (deck/utah_savings.ts), so the
+// phone and the live slide always show the same numbers, even after a skip
+function counts(to) {
+  const total = Object.values(to).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(to));
+  $("totN").textContent = total;
+  nodes.PACE?.cnt.text(total ? `${total} job${total === 1 ? "" : "s"} moved off the rush` : "");
+  for (const id in to) { const n = to[id];
+    flow[id]?.attr("stroke-opacity", n ? Math.min(.4 + n * .02, .85) : 0).attr("stroke-width", Math.min(4 + n * .4, 16));
+    nodes[id]?.cnt.text(n ? `+${n} from Utah's rush` : "");
+    const row = $(`d-${id}`); if (!row) continue;
+    row.querySelector(".n").firstChild.textContent = n; row.querySelector(".bar span").style.width = `${n / top * 100}%`; }
+}
+const usd = v => v >= 100 ? `$${Math.round(v).toLocaleString()}` : `$${v.toFixed(2)}`;
+function ledger(utc) {
+  const l = S.ledger[utc]; if (!l) return;
+  const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
+  $("tUsd").textContent = usd(l.usd + cap); $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
+  counts(l.to);
+}
+// which site the ledger moved a job to this hour, during Utah's rush (null if none)
+const movedTo = k => { const a = S.ledger[W.hours[k].utc]?.to, b = k ? S.ledger[W.hours[k - 1].utc]?.to : null;
+  return a ? Object.keys(a).find(r => a[r] > (b?.[r] ?? 0)) ?? null : null; };
+
+// an AI job leaving Utah: its route lights up, a stream of dots carries it over, and the site it lands on counts it
+const arcBetween = (a, b) => { const [x1, y1] = pos[a], [x2, y2] = pos[b], lift = 60 + Math.hypot(x2 - x1, y2 - y1) * .22;
   return `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`; };
-// before each move: Terra looks at every other region; the ones in (or heading into) rush hour get crossed out
-function scout(h, chosen) {
-  const g = d3.select("#scout").append("g"), a = cols.PACE;
-  for (const r of W.route) { if (r === "PACE" || r === chosen) continue;
-    const f = h.g[r], busy = f.k === 1 || Math.max(...f.p.slice(0, JOB_HOURS)) >= RUSH_LIKELY * 100, b = cols[r];
-    g.append("line").attr("x1", a.x).attr("y1", a.y - 20).attr("x2", b.x).attr("y2", b.y - 20).attr("stroke", busy ? C.copper : C.stone).attr("stroke-width", 2).attr("stroke-dasharray", "4 8").attr("opacity", .7);
-    if (busy) g.append("text").attr("x", b.x).attr("y", b.y + 14).attr("text-anchor", "middle").attr("fill", C.copper).attr("font-size", 44).attr("font-weight", 700).text("✕"); }
-  g.transition().delay(900).duration(500).attr("opacity", 0).remove();
-}
-// an AI job leaving Utah: an arc that lifts off the map, then a faint trail stays, so the week's moves pile up
-function fly(dest, gpus) {
-  const a = cols.PACE, b = cols[dest]; if (!a || !b) return;
-  const d = arcPath(a, b), g = d3.select("#arcs").append("g");
-  const arc = g.append("path").attr("d", d).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 3).attr("stroke-opacity", .9);
+function fly(dest, big, label, gpus, from = "PACE") {
+  const b = pos[dest]; if (!b || !pos[from]) return;
+  const d0 = from === "PACE" ? arcD[dest] : arcBetween(from, dest); if (!d0) return;
+  const g = d3.select("#arcs").append("g"), dur = big ? 1100 : 900;
+  const arc = g.append("path").attr("d", d0).attr("fill", "none").attr("stroke", big ? C.copper : C.stone).attr("stroke-width", big ? 9 : 3).attr("stroke-opacity", big ? .95 : .4).attr("stroke-linecap", "round");
   const L = arc.node().getTotalLength();
-  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(1100).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
-  const dot = g.append("circle").attr("r", 9).attr("fill", C.sand);
-  dot.transition().duration(1100).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
-    .on("end", () => dot.transition().duration(400).attr("r", 22).attr("opacity", 0));
-  g.transition().delay(1900).duration(500).attr("opacity", 0).remove();
-  const tr = d3.select("#trails"); tr.append("path").attr("d", d).attr("fill", "none").attr("stroke", C.sand).attr("stroke-opacity", .12).attr("stroke-width", 1.5 + Math.min(6, (gpus ?? 50) / 30));
-  while (tr.node().childNodes.length > 40) tr.node().firstChild.remove();
+  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(dur).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0).attr("stroke", big ? C.sage : C.stone);
+  // during the rush the job leaves as a stream, one dot per 10 of its GPUs
+  const n = big ? Math.max(3, Math.min(8, Math.round((gpus ?? 30) / 10))) : 1;
+  const along = () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; };
+  for (let k = 1; k < n; k++) g.append("circle").attr("r", 12).attr("fill", C.copper).attr("filter", "url(#glow)")
+    .transition().delay(k * 110).duration(dur).ease(d3.easeCubicInOut).attr("fill", C.sage).attrTween("transform", along).remove();
+  const dot = g.append("circle").attr("r", big ? 19 : 7).attr("fill", big ? C.copper : C.stone).attr("fill-opacity", big ? 1 : .6).attr("filter", big ? "url(#glow)" : null);
+  dot.transition().duration(dur).ease(d3.easeCubicInOut).attr("fill", big ? C.sage : C.stone).attrTween("transform", along)
+    .on("end", () => {
+      dot.remove(); if (!big) return;
+      g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 16).attr("fill", "none").attr("stroke", C.sage).attr("stroke-width", 5)
+        .transition().duration(800).attr("r", 76).attr("stroke-opacity", 0);
+      g.append("text").attr("x", b[0]).attr("y", b[1] - 34).attr("text-anchor", "middle").attr("fill", C.sand).attr("font-size", 36).attr("font-weight", 600).text("+1")
+        .transition().duration(1000).attr("y", b[1] - 88).attr("opacity", 0);
+    });
+  if (big && label) say(from === "PACE" ? `Leaving Utah now: <b>${label}</b> → <b>${NAMES[dest]}</b>`
+    : `${NAMES[from]} rush hour: <b>${label}</b> → <b${dest === "PACE" ? ' style="color:var(--sage)"' : ""}>${NAMES[dest]}${dest === "PACE" ? " (Utah takes it)" : ""}</b>`);
+  arc.transition().delay(dur).duration(big ? 900 : 300).attr("stroke-opacity", 0);
+  g.transition().delay(dur + n * 110 + 1000).remove();
 }
-// without Terra: the job lands on Utah anyway, in rush hour
-function thud() { const a = cols.PACE; d3.select("#arcs").append("circle").attr("cx", a.x).attr("cy", a.y).attr("r", 30).attr("fill", "none").attr("stroke", C.warn).attr("stroke-width", 4)
-  .transition().duration(900).attr("r", 90).attr("opacity", 0).remove(); }
+function say(html) { const b3 = $("leaving"); b3.innerHTML = html; b3.style.opacity = 1; clearTimeout(say.t); say.t = setTimeout(() => { b3.style.opacity = 0; }, 2400); }
+// without Terra: the job lands on Utah anyway, in its rush hour
+function thud() { const [x, y] = pos.PACE; d3.select("#arcs").append("circle").attr("cx", x).attr("cy", y).attr("r", 36).attr("fill", "none").attr("stroke", C.warn).attr("stroke-width", 6)
+  .transition().duration(900).attr("r", 120).attr("opacity", 0).remove(); }
 
-// --- today in four regions: real demand so far (copper = rush hour), Terra's forecast ahead, and where each job went ---
+// --- Utah's day so far, one bar per hour (height = power use vs that day's high, copper = rush hour); a dot per job moved off it ---
+const SX0 = 0, SX1 = 600, SY0 = 34, SY1 = 92, BW = (SX1 - SX0) / 24, day = { key: null, hours: {} };
 const local = utc => { const d = new Date(utc * 1000); return { hr: +d.toLocaleString("en-US", { timeZone: "America/Denver", hour: "numeric", hourCycle: "h23" }),
-  day: d.toLocaleDateString("en-US", { timeZone: "America/Denver", weekday: "long" }) }; };
-const slowedAt = {};  // replay index -> was the Utah site slowed that hour (recorded as the autopilot runs)
-let placed = [];      // { at: replay index the job starts, region, bad: ran into rush hour }
-const LANES = ["PACE", "CISO", "BPAT", "ERCO"], LX = 92, LW = (594 - LX) / 24, LH = 50, LT = 22, BAR = 36;
-function lanes(idx) {
-  const svg = d3.select("#lanes"); svg.selectAll("*").remove();
-  const h = W.hours[idx], now = local(h.utc).hr, x = k => LX + k * LW, day0 = idx - now;
-  svg.append("rect").attr("x", x(0)).attr("y", LT - 4).attr("width", x(6.5) - x(0)).attr("height", LH * 4).attr("fill", "#000").attr("opacity", .2);
-  svg.append("rect").attr("x", x(19.5)).attr("y", LT - 4).attr("width", x(24) - x(19.5)).attr("height", LH * 4).attr("fill", "#000").attr("opacity", .2);
-  LANES.forEach((r, n) => {
-    const yb = LT + n * LH + BAR + 4, rushNow = h.g[r].k === 1;
-    svg.append("text").attr("x", 0).attr("y", yb - 12).attr("fill", rushNow ? C.copper : C.sand).attr("font-size", 17).attr("font-weight", 500).text(SHORT[r]);
-    svg.append("line").attr("x1", LX).attr("x2", x(24)).attr("y1", yb + .5).attr("y2", yb + .5).attr("stroke", "#34312b");
-    for (let k = 0; k < 24; k++) {
-      const j = day0 + k, hk = W.hours[j]; if (!hk || j < 0) continue;
-      if (k <= now) {
-        const u = hk.g[r], bh = Math.max(3, BAR * level(u.s));
-        svg.append("rect").attr("x", x(k) + 1.5).attr("width", LW - 3).attr("y", yb - bh).attr("height", bh).attr("rx", 2)
-          .attr("fill", u.k ? C.copper : C.sage).attr("opacity", k === now ? 1 : .6);
-        if (r === "PACE" && slowedAt[j]) svg.append("rect").attr("x", x(k) + 1.5).attr("width", LW - 3).attr("y", yb - bh - 5).attr("height", 3).attr("rx", 1.5).attr("fill", C.sand);
-      } else if (h.g[r].p[k - now] >= RUSH_LIKELY * 100) {  // ahead: Terra's prediction, made now, of rush hour
-        svg.append("rect").attr("x", x(k) + 1.5).attr("width", LW - 3).attr("y", yb - BAR * .75).attr("height", BAR * .75).attr("rx", 2)
-          .attr("fill", "none").attr("stroke", C.copper).attr("stroke-width", 1.2).attr("stroke-dasharray", "3 2");
-      }
-    }
-    // the AI jobs that landed in this lane today: a bar on the floor of the lane, 4 hours long
-    for (const p of placed) { if (p.region !== r) continue; const k0 = p.at - day0; if (k0 + JOB_HOURS <= 0 || k0 >= 24) continue;
-      const a = Math.max(0, k0), b = Math.min(24, k0 + JOB_HOURS);
-      svg.append("rect").attr("x", x(a) + 1).attr("width", x(b) - x(a) - 2).attr("y", yb + 3).attr("height", 6).attr("rx", 3).attr("fill", p.bad ? C.warn : C.sand).attr("opacity", .9); }
-  });
-  svg.append("line").attr("x1", x(now + .5)).attr("x2", x(now + .5)).attr("y1", LT - 6).attr("y2", LT + LH * 4 - 2).attr("stroke", C.sand).attr("stroke-width", 1.5);
-  svg.append("text").attr("x", x(now + .5)).attr("y", LT - 9).attr("text-anchor", "middle").attr("fill", C.sand).attr("font-size", 13).attr("font-weight", 600).text("now");
-  [[0, "12 AM"], [6, "6 AM"], [12, "noon"], [18, "6 PM"], [24, "12 AM"]].forEach(([k, t]) => svg.append("text").attr("x", x(k)).attr("y", LT + LH * 4 + 14).attr("text-anchor", k === 0 ? "start" : k === 24 ? "end" : "middle").attr("fill", C.stone).attr("font-size", 12).attr("font-family", "JetBrains Mono, monospace").text(t));
-  svg.append("text").attr("x", 0).attr("y", LT + LH * 4 + 14).attr("fill", C.stone).attr("font-size", 12).attr("font-family", "JetBrains Mono, monospace").text("Utah time");
+  key: d.toLocaleDateString("en-US", { timeZone: "America/Denver" }) }; };
+function drawStrip() {
+  const sg = d3.select("#strip");
+  for (const [h, t] of [[0, "midnight"], [6, "6 AM"], [12, "noon"], [18, "6 PM"], [23, "11 PM"]]) sg.append("text").attr("x", SX0 + (h + .5) * BW).attr("y", SY1 + 22).attr("text-anchor", h === 0 ? "start" : h === 23 ? "end" : "middle")
+    .attr("fill", C.stone).attr("font-size", 15).attr("font-family", "JetBrains Mono, monospace").text(t);
+  sg.append("g").attr("id", "bars"); sg.append("g").attr("id", "pips");
+  sg.append("rect").attr("id", "nowMark").attr("y", SY0 - 4).attr("height", SY1 - SY0 + 8).attr("width", 3).attr("fill", C.sand).attr("opacity", 0);
+}
+const barTop = s => SY1 - Math.max(4, (Math.min(s, 1) - .6) / .4 * (SY1 - SY0));
+function bar(h, share, peak, animate) {
+  const x = SX0 + h * BW, top = barTop(share);
+  const r = d3.select("#bars").append("rect").attr("x", x + 2).attr("width", BW - 4).attr("rx", 3).attr("fill", peak ? C.copper : "#3d3a33");
+  if (animate) r.attr("y", SY1).attr("height", 0).transition().duration(500).attr("y", top).attr("height", SY1 - top); else r.attr("y", top).attr("height", SY1 - top);
+}
+function pip(h, bad, animate) {
+  const n = day.hours[h].moved++, cy = barTop(day.hours[h].share) - 9 - n * 13;
+  const c = d3.select("#pips").append("circle").attr("cx", SX0 + (h + .5) * BW).attr("r", 5.5).attr("fill", bad ? C.warn : C.sand).attr("filter", "url(#glow)");
+  if (animate) c.attr("cy", -10).attr("opacity", 0).transition().duration(700).ease(d3.easeCubicOut).attr("cy", cy).attr("opacity", 1); else c.attr("cy", cy);
+}
+function stripHour(k) {
+  const L = local(W.hours[k].utc), u = W.hours[k].g.PACE;
+  if (L.key !== day.key || L.hr < Math.max(-1, ...Object.keys(day.hours).map(Number))) {
+    day.key = L.key; day.hours = {}; d3.select("#bars").selectAll("*").remove(); d3.select("#pips").selectAll("*").remove();
+    // fill in the hours of this day before now (the page opened, or a skip landed, mid-day), with the jobs moved in them
+    for (let j = k - L.hr; j < k; j++) { const hj = W.hours[j]; if (!hj || j < 0) continue;
+      const lh = local(hj.utc).hr; day.hours[lh] = { share: hj.g.PACE.s, moved: 0 }; bar(lh, hj.g.PACE.s, hj.g.PACE.k === 1, false);
+      if (auto && movedTo(j)) pip(lh, false, false); }
+  }
+  day.hours[L.hr] = { share: u.s, moved: 0 };
+  bar(L.hr, u.s, u.k === 1, true);
+  d3.select("#nowMark").attr("opacity", .9).transition().duration(400).attr("x", SX0 + (L.hr + .5) * BW - 1.5);
+  return L.hr;
 }
 
-// --- the header of the map: what is happening now, in a few words ---
-function status(h, fl, ev) {
-  const p = h.g.PACE.p; let s = -1; for (let k = 0; k < 24; k++) if (p[k] >= RUSH_LIKELY * 100) { s = k; break; }
-  const mode = !auto ? "off" : shedding ? "rush" : s === 0 ? "now" : s > 0 && s <= 6 ? "soon" : "calm";
-  $("stBox").className = "mapbox " + (mode === "now" ? "soon" : mode);
-  const L = local(h.utc);
-  $("mHour").textContent = `${L.hr % 12 || 12} ${L.hr < 12 ? "AM" : "PM"}`; $("mDay").textContent = `${L.hr >= 7 && L.hr < 19 ? "☀" : "☾"} ${L.day}, Utah`;
-  $("stState").textContent = { rush: "Utility called", now: "Utah rush hour", soon: `Rush hour in ${s} h`, calm: "Calm", off: "Without Terra" }[mode];
-  $("tally").innerHTML = auto ? `rush hours dodged <b>${dodged}</b>` : `rush hours hit <b>${hitNo}</b>`;
-  const kw = fl ? Math.round(fl.normal - fl.kw) : 0;
-  $("stDoing").innerHTML = mode === "rush" ? `Utah's AI chips drop to power-saving: <b>−${kw} kW</b>, like ${Math.round(kw / HOME_KW)} homes. No one touched it.`
-    : ev || { now: "Work that can wait stays out of Utah.", soon: "Terra sees it coming.", calm: `Watching all ${Object.keys(h.g).length} regions, every hour.`, off: "Every job runs in Utah right away, rush hour or not." }[mode];
+// --- the top of the map: the clock, and what Utah's grid is doing now ---
+function banner(h, hot, fl) {
+  const u = h.g.PACE, pct = Math.round(u.s * 100), call = auto && shedding, b = $("banner");
+  $("clock").innerHTML = `${mt(h.utc)} in Utah · power use at <b style="color:${u.k ? C.copper : C.sage}">${pct}% of today's high${u.k ? " · RUSH HOUR" : ""}</b>`;
+  const nPeak = Object.values(h.g).filter(f => f.p[0] > RUSH_LIKELY * 100).length;
+  $("count").innerHTML = `<b>${W.numbers.grids}</b> regions forecast · <b style="color:${nPeak ? C.copper : C.sand}">${nPeak}</b> expecting rush hour`;
+  b.className = `banner${hot || call ? " hot" : ""}${call ? " call" : ""}`;
+  $("stBox").className = `mapbox${!auto ? " off" : hot || call ? " rush" : ""}`;
+  b.querySelector(".b1").textContent = call ? "Rocky Mountain Power calls for cuts" : hot ? (u.k ? "Utah rush hour" : "Utah rush hour likely") : "Utah has room";
+  const kw = Math.round(fl.normal - fl.kw);
+  b.querySelector(".b2").innerHTML = call ? `Utah's AI chips drop to power-saving: <b>−${kw} kW</b>, like ${Math.round(kw / HOME_KW)} homes. No one touched it.`
+    : !auto ? `Power use at ${hot ? `<b>${pct}%</b>` : `${pct}%`} of today's high · without Terra, every AI job runs in Utah right away`
+    : hot ? `Power use at <b>${pct}%</b> of today's high · every AI job that can wait is leaving Utah`
+    : `Power use at ${pct}% of today's high · Utah takes work from grids in their rush hour`;
 }
 function weekTotals() {
   const keep = { shedding, lastUtc, booked: Object.fromEntries(Object.entries(booked).map(([r, b]) => [r, b.slice()])) };
@@ -434,28 +479,31 @@ function fleet(h) {
   return { kw: (busy * perGpu + (GPUS - busy) * W_IDLE) / 1000, normal: (busy * W_ON + (GPUS - busy) * W_IDLE) / 1000 };
 }
 function step() {
-  if (i === 0) placed = [];
-  const h = W.hours[i], call = calls(h.utc);
-  let ev = "";
-  // demand response at the Utah site: automatic, the moment the utility calls
+  const h = W.hours[i], u = h.g.PACE, call = calls(h.utc);
   if (auto && !shedding && call) shedding = true;
-  if (shedding && (!call || !auto)) { shedding = false; ev = "The utility's call is over. Back to full speed."; }
+  if (shedding && (!call || !auto)) { shedding = false; say("The utility's call is over. Back to full speed."); }
   advance(h.utc);
-  slowedAt[i] = shedding;
-  const fl = fleet(h);
+  const fl = fleet(h), hot = hotIn(u, "PACE");
   // one incoming job per hour, placed with no human involved
   const job = AUTO_JOBS[i % AUTO_JOBS.length], o = place(job, i), jn = JOB_NAMES[job.name] ?? job.name;
-  const inUtah = hit(i, "PACE", 0), saved = inUtah - hit(i, o.region, o.start);
-  placed.push({ at: i + o.start, region: o.region, bad: hit(i, o.region, o.start) > 0 });
-  updateMap(h); lanes(i);
-  if (job.dl === 0) { if (!ev) ev = `${jn} can't wait, so it stays in Utah.`; }
-  else if (!auto) { hitNo += inUtah; if (inUtah) { thud(); ev = `<b>${jn}</b> runs in Utah now: <span class="bad">${hrs(inUtah)} of rush hour</span>.`; } else if (!ev) ev = `<b>${jn}</b> runs in Utah right away.`; }
-  else { dodged += Math.max(0, saved);
-    if (o.region !== "PACE") { scout(h, o.region); setTimeout(() => fly(o.region, o.gpus), 350);
-      const skip = W.route.filter(r => r !== "PACE" && r !== o.region && (h.g[r].k === 1 || Math.max(...h.g[r].p.slice(0, JOB_HOURS)) >= RUSH_LIKELY * 100)).map(r => SHORT[r]);
-      if (!ev) ev = `<b>${jn} → ${name(o.region)}</b>${o.start ? `, in ${o.start} h` : ""}${skip.length ? `. Skips ${skip.join(" and ")}: rush hour there.` : saved > 0 ? `. Dodges ${hrs(saved)} of Utah's rush.` : "."}`; }
-    else if (!ev) ev = o.start ? `<b>${jn}</b> waits ${o.start} h in Utah${saved > 0 ? `, dodging ${hrs(saved)} of rush` : ""}.` : `<b>${jn}</b> runs in Utah: no rush hour coming.`; }
-  status(h, fl, ev);
+  const hr = stripHour(i);
+  updateMap(h); setRush(hot || (auto && shedding)); banner(h, hot, fl);
+  if (!auto) {
+    // without Terra the job stays put: in Utah's rush hour, that's a red pip on today's strip
+    if (job.dl && hot) { thud(); pip(hr, true, true); say(`<span class="bad">Stuck in Utah's rush hour: <b>${jn}</b></span>`); }
+  } else {
+    // during Utah's rush every move is big and counted (the stage ledger says where it went); at other hours it's a faint dot
+    const to = movedTo(i);
+    if (to) { fly(to, true, jn, o.gpus); pip(hr, false, true); }
+    else if (job.dl && o.region !== "PACE") fly(o.region, false);
+    else if (!hot) {
+      // another grid in its rush hour hands a job on, often to Utah (same ranking; jobs from AI sites there, simulated)
+      const busy = W.route.filter(r => r !== "PACE" && h.g[r].p[0] > RUSH_LIKELY * 100), from = busy[i % (busy.length || 1)];
+      const flex = AUTO_JOBS.filter(j => j.dl), inJob = flex[i % flex.length], best = from && options(h, inJob.dl)[0];
+      if (best && best.region !== from) fly(best.region, true, JOB_NAMES[inJob.name] ?? inJob.name, 50, from);
+    }
+    ledger(h.utc);
+  }
   i = (i + 1) % W.hours.length;
 }
 
@@ -466,17 +514,19 @@ $("closeGrid").onclick = () => sheet("gridSheet", false);
 $("btnPeak").onclick = () => {
   const peak = k => calls(W.hours[k % W.hours.length].utc);
   for (let d = 3; d < W.hours.length + 3; d++) { const k = i + d; if (peak(k) && !peak(k - 1)) { i = (k - 2) % W.hours.length; break; } }
-  placed = []; step(); clearInterval(timer); timer = setInterval(step, TICK_MS);
+  day.key = null; step(); clearInterval(timer); timer = setInterval(step, TICK_MS);
   $("stBox").scrollIntoView({ behavior: "smooth", block: "start" });
 };
 document.querySelectorAll("#mode button").forEach(b => b.onclick = () => {
   auto = b.dataset.auto === "1";
   document.querySelectorAll("#mode button").forEach(x => x.classList.toggle("on", x === b));
-  if (!auto) { d3.select("#trails").selectAll("*").remove();
+  document.querySelectorAll(".live-card").forEach(c => c.classList.toggle("dim", !auto));
+  if (!auto) counts(Object.fromEntries(W.route.filter(r => r !== "PACE").map(r => [r, 0])));  // nothing moves without Terra
+  if (!auto) {
     // show it where it hurts: jump to 2 hours before Utah's next rush hour, unless one is already close
     const rush = k => W.hours[k % W.hours.length].g.PACE.k === 1, near = [0, 1, 2, 3].some(d => rush(i + d));
     if (!near) for (let d = 3; d < W.hours.length; d++) { const k = i + d; if (rush(k) && !rush(k - 1)) { i = (k - 2) % W.hours.length; break; } } }
-  placed = []; step(); clearInterval(timer); timer = setInterval(step, TICK_MS);
+  day.key = null; step(); clearInterval(timer); timer = setInterval(step, TICK_MS);
 });
 $("mw").oninput = worth;
 function openGrid(id) {
@@ -488,9 +538,9 @@ function openGrid(id) {
 }
 
 let timer;
-Promise.all([ld, atlas, pr, dr]).then(([w, us, p, e]) => {
-  W = w; W.price = p.usd_per_kwh;
-  AUTO_JOBS = W.jobs.map(j => ({ name: j.name, gpuh: j.gpuHours, dl: j.deadlineHours })); W.jobs.forEach(j => JOB_NAMES[j.name] = j.label); W.events = new Set(e.utc); drawMap(us);
+Promise.all([ld, atlas, pr, dr, sv]).then(([w, us, p, e, s]) => {
+  W = w; S = s; W.price = p.usd_per_kwh;
+  AUTO_JOBS = W.jobs.map(j => ({ name: j.name, gpuh: j.gpuHours, dl: j.deadlineHours })); W.jobs.forEach(j => JOB_NAMES[j.name] = j.label); W.events = new Set(e.utc); drawMap(us); drawStrip();
   versus(W.numbers, weekTotals()); worth(); sizes();
   step(); timer = setInterval(step, TICK_MS);
 });

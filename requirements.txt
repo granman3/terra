@@ -1,0 +1,16 @@
+# Python 3.13. Pinned to the environment the shipped model was trained in (RTX 4080, CUDA 12.8).
+# The router and phone demo don't need any of this; see router/package.json.
+torch==2.11.0
+numpy==2.5.4
+pandas==3.1.0
+pyarrow==26.0.0
+onnx==1.23.2
+onnxscript==0.7.2
+# data pipeline and the solar forecaster
+scikit-learn
+holidays
+openpyxl
+xlrd
+# only for train/train_big.py (the 4B comparison model)
+transformers==5.21.0
+peft==0.21.2

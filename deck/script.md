@@ -1,8 +1,9 @@
-# Terra: 4-minute script (11 slides)
+# Terra: 3-minute script (6 slides)
 
-Story: problem → solution → why this solution → what I built → how well it works → impact. The strip at the top
-right of each slide shows where you are in it. About 560 spoken words: ~3:45 at 150 words a minute, ~4:00 with the
-demo pause, inside the 5-minute slot. Arrow key = next slide. Say one number per slide; the slide carries the rest.
+Story: problem → solution and why → what I built → proof → impact (the strip at the top right shows where you are).
+About 430 spoken words: ~2:55 at 150 words a minute, ~3:10 with the demo pause, inside the 5-minute slot. Arrow key
+= next slide. The cut slides (data sources, Utah problem, why, math, model-size chart) stay in the file as `data-cut`
+backups.
 
 Before you start: deck open full screen (`f`), router running (`npm --prefix router start`) or the hosted deck at
 terra-live.granitetait.com/deck/.
@@ -22,67 +23,41 @@ terra-live.granitetait.com/deck/.
 Scan the code. That's Terra, live. I'm Granite. Terra is a custom AI model I built that moves AI work off the grid's
 rush hours.
 
-**2 · Public data (0:10–0:20)**
+**2 · The problem (0:10–0:45)**
 
-It's built only on public government data: 33 million data points, every hour since 2022. Five training runs, three
-designs, one custom model.
+US power companies plan to spend 1.1 trillion dollars on the grid in just five years, the most ever, and data
+centers are the main new driver of demand. Peak demand grows 224 gigawatts in ten years. Making data centers' power
+takes 211 billion gallons of water a year, and the plants that cover the worst hours burn 40 percent more fuel. In
+Utah, the top 10 percent of the grid was needed for just 153 hours last year: up to two billion dollars of plants for
+2 percent of the year. It's hard because every load is treated as fixed.
 
-**3 · The problem (0:20–0:50)**
+**3 · The solution, and why (0:45–1:15)**
 
-Here's the problem. US power companies plan to spend 1.1 trillion dollars on the grid in just five years, the most
-ever, and data centers are the main new driver of demand. Peak demand grows 224 gigawatts in ten years. Data centers go from 4 to
-12 percent of US power. Making their electricity takes 211 billion gallons of water a year. And the plants that cover
-the worst hours burn 40 percent more fuel. Why is it so hard? Every load is treated as fixed, so the grid gets built
-for its worst few hours.
+But power plants can't move. AI work can. Grids peak at different hours: Texas at 4, Utah at 5, California at 7. In
+85 percent of Utah's rush hours, another grid had room. Why this solution? A new peaker costs up to two thousand
+dollars a kilowatt. Batteries like Torus Pulse cover the load that can't move. Moving the load that can costs nothing
+to build. Duke found 98 gigawatts of new data centers fit on today's grid if they flex half a percent of the time.
 
-**4 · The problem in Utah (0:50–1:10)**
+**4 · What I built (1:15–1:45)**
 
-Utah's the same. One data center is asking for 10 gigawatts. In Utah, the top 10 percent of the grid was needed for
-just 153 hours last year: up to two billion dollars of plants for 2 percent of the year. Those hours are Terra's
-target.
+So I built a custom model for that one job: 33 million public data points, five training runs, three designs,
+trained at home on my own graphics card. Underneath is one equation: for every job, pick the region and hour with the
+least chance of rush hour. It makes 29 percent fewer mistakes than the utility's own forecast. And I tested going
+bigger: a 4-billion-parameter model used 690,000 times the energy and barely beat the utility. We don't spend energy
+to save energy.
 
-**5 · The solution (1:10–1:30)**
-
-Power plants can't move. AI work can. Grids peak at different hours: Texas at 4, Utah at 5, California at 7. In 85
-percent of Utah's rush hours, another grid had room. 42 percent of AI chip time is training and batch work that can
-wait. Terra moves it: a 4-hour job goes from an hour of rush hour to almost none.
-
-**6 · Why this solution (1:30–1:50)**
-
-Why this, and not more plants or batteries? Plants cost up to two thousand dollars a kilowatt and burn more fuel.
-Batteries, like Torus Pulse, cover the hours the load can't move. Moving the load that can costs nothing to
-build, so Pulse covers the rest. Duke found 98 gigawatts of new data centers fit on today's grid, no new plants, if they flex half a
-percent of the time. Terra is how they flex.
-
-**7 · What I built (1:50–2:05)**
-
-So I built a custom model for one job. Every input, every hour, from 50 grids, into a model I designed and trained
-at home on my own graphics card. It makes 29 percent fewer mistakes than the utility's own forecast, and its decision
-goes straight to Torus Lasso.
-
-**8 · The math (2:05–2:20)**
-
-Underneath it is one equation: for every job, pick the region and start hour with the least chance of rush hour,
-carbon as the tiebreak. The model supplies those chances, and it's graded on hours it never saw.
-
-**9 · Why a small model (2:20–2:35)**
-
-And I tested going bigger. A transformer eight times the size used 590 times the energy for two points of accuracy.
-A 4-billion-parameter AI model used 690,000 times the energy and barely beat the utility. Terra is small on purpose:
-we don't spend energy to save energy.
-
-**10 · Live demo (2:35–3:20)**
+**5 · Live demo (1:45–2:30)**
 
 This is last week's real grid data, replayed at about a second an hour. Copper means rush hour is coming.
 *(press **P**)* Tuesday, Utah's highest demand of the week. Every job that can wait leaves Utah for a grid with room.
 Underneath is the proof, live: real power out of Utah's rush hour, at Utah's real prices. *(pause on the ledger)*
 
-**11 · Impact (3:20–3:50)**
+**6 · Impact (2:30–3:05)**
 
 For Utah, that's 10 million dollars a year for every 100 megawatts of AI work that can wait. For every grid, it's how
-98 gigawatts of new AI fits without new plants. And staggered starts shrink a site's power spike 50 times, so Spin
-has less to catch. Torus has Spin for milliseconds and Pulse for hours. Terra moves the load itself. Next is a pilot
-with one Utah AI site, plugged into Lasso. Let the grid's newest load be its most flexible one. Thank you!
+98 gigawatts of new AI fits without new plants. Staggered starts shrink a site's power spike 50 times, so Spin has
+less to catch. Torus has Spin for milliseconds and Pulse for hours. Terra moves the load itself. Next is a pilot with
+one Utah AI site, plugged into Lasso. Let the grid's newest load be its most flexible one. Thank you!
 
 ---
 
@@ -105,8 +80,8 @@ with one Utah AI site, plugged into Lasso. Let the grid's newest load be its mos
   California, the Pacific NW or Texas was not.
 - **"Less energy than one answer?"** A year of hourly forecasts for 50 regions is about 20 joules on this laptop; one
   answer from the 4-billion-parameter fine-tune on the same laptop is about 39 joules.
-- **"Where did the math slide go?"** It's a backup (cut, not deleted). The equations now sit on the problem slide
-  (972,000 kW × $/kW) and the live slide (100,000 kW × $100 per kW a year).
+- **"Where did the math slide go?"** The routing equation is on slide 4; the full math slides (loss, Brier, the
+  market and conformal slide) are cut backups, still in the file.
 
 - **"So the problem is a bad forecast?"** No, that's a symptom. A better forecast tells you when the strain comes; it
   doesn't move anything. Today the grid answers every peak by building more plants, lines and batteries, because the

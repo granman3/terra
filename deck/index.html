@@ -88,7 +88,9 @@
   .eq { display: block; margin-top: 12px; font: 21px "JetBrains Mono", monospace; color: var(--stone); } .eq b { color: var(--copper); font-weight: 500; }
   .mv { display: grid; grid-template-columns: 780px 1fr; gap: 50px; margin-top: 34px; position: relative; }
   .chart .cap { font-size: 17px; color: var(--stone); margin-top: 4px; }
-  .mv-r { display: flex; flex-direction: column; gap: 30px; justify-content: center; } .mv-r .stat .n { font-size: 84px; } .mv-r .stat .l { font-size: 23px; line-height: 1.3; }
+  .mv-r { display: flex; flex-direction: column; gap: 26px; justify-content: center; }
+  .opts { display: flex; flex-direction: column; gap: 8px; } .opts div { display: flex; justify-content: space-between; gap: 16px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 16px; font-size: 21px; color: var(--stone-2); background: rgba(27,26,23,.75); }
+  .opts div b { font-weight: 500; color: var(--sand); white-space: nowrap; } .opts div.us { border-color: var(--sage); color: var(--sand); } .opts b.cu { color: var(--copper); } .opts b.sg { color: var(--sage); } .mv-r .stat .n { font-size: 84px; } .mv-r .stat .l { font-size: 23px; line-height: 1.3; }
   .mv-r .l2 { font-size: 22px; color: var(--stone-2); line-height: 1.35; border-top: 1px solid var(--line); padding-top: 18px; }
   #peaks text { font-family: Figtree, sans-serif; }
   .keys { display: flex; gap: 22px; font-size: 18px; white-space: nowrap; margin-top: 6px; } .keys span { display: flex; align-items: center; gap: 8px; } .keys i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
@@ -114,7 +116,8 @@
   .mass .hero { display: flex; align-items: center; gap: 46px; position: relative; }
   .mass .hero .n { font-size: 196px; font-weight: 300; letter-spacing: -.045em; line-height: .9; color: var(--copper); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .mass .hero .l { font-size: 33px; font-weight: 300; line-height: 1.25; color: var(--stone-2); max-width: 760px; } .mass .hero .l b { color: var(--sand); font-weight: 500; }
-  .mass .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 44px; position: relative; }
+  .mass .band { margin-top: 36px; } .mass .band .b-l { font-size: 30px; } .mass .hero .n { font-size: 176px; }
+  .mass .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 36px; position: relative; }
   .mass .grid4 > div { border-top: 2px solid var(--copper); padding-top: 16px; }
   .mass .grid4 .n { font-size: 64px; font-weight: 300; letter-spacing: -.03em; white-space: nowrap; } .mass .grid4 .l { font-size: 21px; color: var(--stone-2); line-height: 1.3; margin-top: 6px; }
   .mass .grid4 .ax { font: 500 15px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--copper); }
@@ -131,6 +134,13 @@
   .sizes .charts h3 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .sizes .charts .sub { font-size: 18px; color: var(--stone); margin-bottom: 10px; }
   .sizes svg text { font-family: Figtree, sans-serif; }
   .sizes .point { margin-top: 30px; font-size: 29px; }
+  .built .head { font-size: 66px; } .built .pipe { margin-top: 22px; font-size: 24px; }
+  .bgrid { display: grid; grid-template-columns: 1fr 700px; gap: 50px; margin-top: 30px; position: relative; }
+  .built .hero-eq { border: 1px solid var(--sage-dim); border-radius: 14px; padding: 18px 26px; background: rgba(27,26,23,.8); font-size: 30px; }
+  .built .hero-eq .k { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); } .built .hero-eq .katex-display { margin: 14px 0 10px; }
+  .built .hero-eq .lab { font-size: 20px; color: var(--stone); line-height: 1.35; } .built .hero-eq .lab b { color: var(--sand); font-weight: 500; }
+  .bstats { display: flex; gap: 40px; margin-top: 24px; font-size: 20px; color: var(--stone); } .bstats b { display: block; font-size: 52px; font-weight: 300; color: var(--sand); letter-spacing: -.02em; white-space: nowrap; } .bstats b.sg { color: var(--sage); }
+  .built h3 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .built .sub { font-size: 17px; color: var(--stone); margin-bottom: 8px; } .built svg text { font-family: Figtree, sans-serif; }
   .impact .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; margin-top: 32px; position: relative; }
   .impact .row3 .ax { font: 500 15px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--sage); }
   .impact .row3 .n { font-size: 66px; font-weight: 300; letter-spacing: -.03em; white-space: nowrap; color: var(--sand); } .impact .row3 .l { font-size: 21px; color: var(--stone-2); line-height: 1.3; }
@@ -148,7 +158,7 @@
   <div class="one">A custom AI model that <b>moves AI work off the grid's rush hours.</b></div>
   </div>
 </section>
-<section class="slide sources" data-web>
+<section class="slide sources" data-web data-cut>
   <div class="eyebrow">Built only on public government data</div>
   <div class="big"><span data-n="raw_values" data-f="millions">33 million</span></div>
   <div class="say">data points, every hour since January 2022, from <b data-n="grids">50</b> US power regions.</div>
@@ -173,10 +183,13 @@
     <div><div class="ax">Water</div><div class="n">211B gal</div><div class="l">of water a year just to make data centers' power, 12× what they use on site</div></div>
     <div><div class="ax">Wasted fuel</div><div class="n">+40%</div><div class="l">more gas per kWh burned by the peaker plants that cover the worst hours</div></div>
   </div>
-  <div class="point">Why it's so hard: <b>every load is treated as fixed</b>, so the whole grid gets built for its worst few hours. <span class="sg">Terra makes the biggest new load move.</span></div>
-  <div class="src">EEI 2025 · NERC 2025 LTRA · DOE/LBNL Dec 2024 (water, 2023) · EIA heat rates: peaker ~10,000 vs 7,146 Btu/kWh</div>
+  <div class="band">
+    <div class="b-l">In Utah, the top 10% of the grid, <b data-n="utah_top10" data-f="top10">972 MW</b>, was needed for only <b class="cu" data-n="utah_top10" data-f="topHours">153 hours</b> in 2025: <b class="cu">$0.7–1.9 billion</b> of plants idle 98% of the year.</div>
+    <div class="eq">Why it's so hard: every load is treated as fixed, so the grid gets built for its worst hours. <b style="color:var(--sage)">Terra makes the biggest new load move.</b></div>
+  </div>
+  <div class="src">EEI 2025 · NERC 2025 LTRA · DOE/LBNL Dec 2024 (water, 2023) · EIA heat rates · EIA-930, PACE 2025 · GridLab 2025 peaker costs</div>
 </section>
-<section class="slide cost" data-web data-step="0">
+<section class="slide cost" data-web data-step="0" data-cut>
   <div class="eyebrow">The problem, in Utah</div>
   <div class="head">Utah builds power plants for its worst hour. <span class="cu">AI is making that hour worse.</span></div>
   <div class="row">
@@ -191,19 +204,23 @@
   <div class="src">Lehi Free Press, Feb 2026 · PJM 2028/29 auction · Deseret News, Aug 2026 · EIA-930, PACE 2025, hours ≥ 90% of peak · GridLab 2025</div>
 </section>
 <section class="slide move" data-web data-step="1">
-  <div class="eyebrow">The solution</div>
+  <div class="eyebrow">The solution, and why I picked it</div>
   <div class="head">Power plants can't move. <span class="sg">AI work can.</span></div>
   <div class="mv">
     <div class="chart"><svg id="peaks" viewBox="0 0 760 400"></svg><div class="keys" id="peakKeys"></div><div class="cap">Average demand through the day, 2026, each grid vs its own high (Utah time)</div></div>
     <div class="mv-r">
       <div class="stat"><div class="n sg"><span data-n="peaks_differ" data-f="room">85%</span></div><div class="l">of Utah's rush hours in 2026, California, the Pacific NW or Texas had room to spare</div></div>
-      <div class="stat"><div class="n"><span data-n="peak_hours_hit" data-f="naive">1.14</span> → <span class="sg" data-n="peak_hours_hit" data-f="ours">0.04</span></div><div class="l">rush hours a 4-hour AI job runs into: start now in Utah vs Terra</div></div>
-      <div class="l2"><b style="color:var(--sand);font-weight:500">Why AI work:</b> 42% of AI chip time is training and batch work that can wait hours. Nobody notices if it runs in Oregon at 9 PM.</div>
+      <div class="opts">
+        <div><span>Build peaker plants</span><b class="cu">$728–1,969 / kW</b></div>
+        <div><span>Batteries (Torus Pulse)</span><b>for load that can't move</b></div>
+        <div class="us"><span>Move the load (Terra)</span><b class="sg">$0 to build</b></div>
+      </div>
+      <div class="l2"><b style="color:var(--sand);font-weight:500">98 GW</b> of new data centers fit on today's US grid if they flex 0.5% of the time. 42% of AI chip time can wait.</div>
     </div>
   </div>
-  <div class="src">EIA-930, 2026, rush hour = demand ≥ 95% of that day's high · <span data-src="peak_hours_hit"></span>, held-out 2026 · Alibaba 2026 trace, 155,410 GPUs</div>
+  <div class="src">EIA-930, 2026, rush hour = demand ≥ 95% of that day's high · GridLab 2025 · Duke Nicholas Institute, Feb 2025 · Alibaba 2026 trace</div>
 </section>
-<section class="slide why" data-web data-step="2">
+<section class="slide why" data-web data-step="2" data-cut>
   <div class="eyebrow">Why I picked this solution</div>
   <div class="head">Three ways to get through the worst hour. <span class="sg">Moving the load costs nothing to build.</span></div>
   <div class="cols">
@@ -215,7 +232,7 @@
     <div class="l">of new data centers fit on <b>today's US grid, with no new plants</b>, if they flex just 0.5% of the time, about 2 hours at a stretch. Terra is how they flex.</div></div>
   <div class="src">GridLab, Sept 2025, new peaker costs · EIA heat rates · Duke Nicholas Institute, "Rethinking Load Growth," Feb 2025 (76–126 GW at 0.25–1%)</div>
 </section>
-<section class="slide lean" data-web data-step="3">
+<section class="slide lean" data-web data-step="3" data-cut>
   <div class="eyebrow">What I built</div>
   <div class="head">A custom AI model, made for one job. <span class="sg">Trained on my own hardware.</span></div>
   <div class="flow">
@@ -236,7 +253,7 @@
   <div class="point">Why custom: no off-the-shelf model forecasts every US grid's rush hour a day ahead, cheaply enough to <span class="sg">save more energy than it spends.</span></div>
   <div class="src">held-out 2026 data, Brier score vs EIA's calibrated day-ahead forecast · <span data-src="brier_vs_eia_pct"></span> · <span data-src="tiny_efficiency"></span></div>
 </section>
-<section class="slide eqs" data-web data-step="3">
+<section class="slide eqs" data-web data-step="3" data-cut>
   <div class="eyebrow">The math inside Terra</div>
   <div class="head">One equation picks <span class="sg">where and when</span> AI work runs.</div>
   <div class="hero-eq"><div id="eq1"><span class="tex-fallback">(r*, s*) = argmin over regions r, start s ≤ D−4 of Σ_h [ p̂(r,h) + g(r,h)/4000 ]</span></div>
@@ -249,7 +266,7 @@
   <div class="point">Result: a 4-hour AI job's rush-hour exposure drops from <b><span data-n="peak_hours_hit" data-f="naive">1.14</span> hours</b> to <span class="sg"><span data-n="peak_hours_hit" data-f="ours">0.04</span></span>.</div>
   <div class="src">router/src/decide.ts (the decision), train/train.py (the model and its loss) · <span data-src="peak_hours_hit"></span>, 1,162 held-out 2026 decisions</div>
 </section>
-<section class="slide sizes" data-web data-step="4" data-needs="model_sizes">
+<section class="slide sizes" data-web data-step="4" data-needs="model_sizes" data-cut>
   <div class="eyebrow">Why a small custom model</div>
   <div class="head">Bigger AI wasn't better. <span class="sg">I tested it.</span></div>
   <div class="charts">
@@ -258,6 +275,23 @@
   </div>
   <div class="point">The 4-billion-parameter AI model used <b><span data-n="tiny_efficiency" data-f="effX">690,000×</span> the energy</b> and was barely better than the utility. Terra is <span class="sg">small on purpose: we don't spend energy to save energy.</span></div>
   <div class="src">all three trained by me on the same RTX 4080 · energy: Transformer vs Terra on one laptop CPU core, LLM vs Terra total chip power on the same MacBook · *LLM accuracy from the earlier 4-region test</div>
+</section>
+<section class="slide built" data-web data-step="2">
+  <div class="eyebrow">What I built</div>
+  <div class="head">A custom AI model, <span class="sg">trained on my own RTX 4080.</span></div>
+  <div class="pipe"><b data-n="raw_values" data-f="millions">33 million</b> public data points<i>→</i><b data-n="samples" data-f="mEx">1.04 million</b> examples<i>→</i><b>5</b> training runs, <b>3</b> designs<i>→</i><b data-n="tiny_params" data-f="k">561K</b>-setting model<i>→</i><b>Torus Lasso</b></div>
+  <div class="bgrid">
+    <div>
+      <div class="hero-eq"><div class="k">The math: every job, every hour</div><div id="eqB"><span class="tex-fallback">(r*, s*) = argmin Σ [ p̂(r,h) + g(r,h)/4000 ]</span></div>
+        <div class="lab">Pick the region <b>r</b> and start hour <b>s</b> where the job's 4 hours have the <b>least chance of rush hour</b> (p̂, Terra's forecast). Carbon breaks ties.</div></div>
+      <div class="bstats">
+        <div><b class="sg" data-n="brier_vs_eia_pct" data-f="pct">29%</b>fewer mistakes than the utility's own forecast</div>
+        <div><b><span data-n="peak_hours_hit" data-f="naive">1.14</span> → <span style="color:var(--sage)" data-n="peak_hours_hit" data-f="ours">0.04</span></b>rush hours a 4-hour AI job runs into</div>
+      </div>
+    </div>
+    <div><h3>Why small: energy per decision</h3><div class="sub">times Terra's, log scale (each line is 10×)</div><svg id="szB" viewBox="0 0 700 300"></svg></div>
+  </div>
+  <div class="src">decide.ts, train.py · held-out 2026 vs EIA's forecast (Brier) · energy on one laptop: core vs core, chip vs chip · *earlier 4-region test</div>
 </section>
 <section class="slide problem" data-web data-cut>
   <div class="eyebrow">The problem</div>
@@ -313,7 +347,7 @@
 <section class="slide" id="math" data-page="math.html" data-cut>
   <iframe data-src-live="/deck/math.html" title="The math under the AI"></iframe>
 </section>
-<section class="slide" id="live" data-step="4">
+<section class="slide" id="live" data-step="3">
   <iframe data-src-live="/" title="Terra live map"></iframe>
 </section>
 
@@ -333,7 +367,7 @@
   <iframe data-src-live="/deck/utah.html" title="Where Utah's next power is being built"></iframe>
 </section>
 
-<section class="slide impact" data-web data-step="5">
+<section class="slide impact" data-web data-step="4">
   <div class="eyebrow">Why it matters: Utah, every grid, and Torus</div>
   <div class="cols">
     <div class="col"><div class="k">Torus Spin</div><div class="t">Milliseconds</div><div class="d">Flywheel catches the fast swings.</div></div>
@@ -374,7 +408,7 @@ const F = {
   top10: v => `${v.top10_mw} MW`, topHours: v => `${v.hours} hours`, topShare: v => `${v.share_of_year_pct}%`, room: v => `${v.another_has_room_pct}%`,
   bigJ: v => `${Math.round(v.big_joules_per_forecast)} joules`, gw: v => `${(v.planned_mw / 1000).toFixed(1)} GW`, ldwp: v => `${v.ldwp_share_pct}%`, gwSwing: v => `${(v / 1000).toFixed(1)} GW`,
 };
-const STEPS = ["Problem", "Solution", "Why this", "What I built", "How well", "Impact"];
+const STEPS = ["Problem", "Solution + why", "What I built", "Proof", "Impact"];
 const slides = [...document.querySelectorAll(".slide")];
 let i = 0;
 fetch("numbers.json").then(r => r.json()).then(N => {
@@ -433,13 +467,15 @@ function tex() {
     eq3: String.raw`\min_\theta\; \mathrm{BCE}(\hat p, y) + 4\,\mathrm{MSE}_{\text{share}} + 4\,\mathrm{MSE}_{\text{CO}_2}`,
     eq4: String.raw`\text{Brier} = \tfrac{1}{N} \textstyle\sum_i (\hat p_i - y_i)^2`,
   };
-  for (const [id, t] of Object.entries(E)) { try { katex.render(t, document.getElementById(id), { displayMode: id === "eq1" }); } catch {} }
+  E.eqB = String.raw`(r^*,\,s^*) = \arg\min_{r,\; s+4 \le D}\; \sum_{h=s}^{s+3} \Big( \hat p_{r,h} + \tfrac{g_{r,h}}{4000} \Big)`;
+  for (const [id, t] of Object.entries(E)) { try { katex.render(t, document.getElementById(id), { displayMode: id === "eq1" || id === "eqB" }); } catch {} }
 }
 addEventListener("load", () => { if (window.katex) tex(); });
 // three designs for the same job: energy per decision (log) and accuracy vs the utility, Terra in sage
 function sizes(M) {
-  const bars = (id, val, max, fmt, log) => {
-    const W = 650, L = 190, R = 130, rowH = 84, top = 26, svg = document.getElementById(id);
+  const bars = (id, val, max, fmt, log, acc) => {
+    const svg0 = document.getElementById(id); if (!svg0) return;
+    const W = acc ? 700 : 650, L = 190, R = acc ? 210 : 130, rowH = 84, top = 26, svg = document.getElementById(id);
     const sx = v => L + (log ? Math.log10(Math.max(v, 1)) / Math.log10(max) : v / max) * (W - L - R);
     let g = "";
     if (log) for (let e = 0; e <= Math.log10(max); e++) { const x = sx(10 ** e); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#6f6a64" font-size="15" text-anchor="middle">${e === 0 ? "1×" : e === 3 ? "1,000×" : e === 6 ? "1M×" : ""}</text>`; }
@@ -450,11 +486,14 @@ function sizes(M) {
       g += `<text x="0" y="${y + 22}" fill="${us ? "#ece6da" : "#bfbcb8"}" font-size="22" font-weight="${us ? 500 : 400}">${m.name}</text><text x="0" y="${y + 44}" fill="#6f6a64" font-size="15">${size}</text>`;
       g += `<rect x="${L}" y="${y}" width="${x1 - L}" height="44" rx="4" fill="${us ? "#9fb07e" : "#6f6a64"}" fill-opacity="${us ? 1 : .55}"/>`;
       g += `<text x="${x1 + 12}" y="${y + 30}" fill="${us ? "#9fb07e" : "#ece6da"}" font-size="26" font-weight="500">${fmt(v)}${!log && m.earlier_test ? "*" : ""}</text>`;
+      if (acc && k === 0) g += `<text x="${W}" y="${top - 12}" fill="#9b9591" font-size="15" text-anchor="end">fewer mistakes vs utility</text>`;
+      if (acc) g += `<text x="${W}" y="${y + 30}" fill="${us ? "#9fb07e" : "#bfbcb8"}" font-size="24" text-anchor="end">${acc(m)}</text>`;
     });
     svg.innerHTML = g;
   };
   bars("szE", m => m.energy_x, 1e6, v => `${v.toLocaleString()}×`, true);
   bars("szA", m => m.fewer_errors_pct, 35, v => `${v}%`, false);
+  bars("szB", m => m.energy_x, 1e6, v => `${v.toLocaleString()}×`, true, m => `${m.fewer_errors_pct}%${m.earlier_test ? "*" : ""}`);
 }
 // faint hyphae behind each slide (seeded, so a slide always looks the same)
 function web(slide) {

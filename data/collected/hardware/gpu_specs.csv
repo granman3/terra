@@ -1,0 +1,11 @@
+gpu,tdp_w,typical_inference_w_if_published,memory,source_url
+RTX 4080 SUPER,320,246 (NVIDIA avg gaming); 349 measured steady prefill at 350 W limit; 276 decode -> 196 with clock lock (Terra),16 GB GDDR6X,https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4080-family/
+RTX 4080,320,251 (NVIDIA avg gaming),16 GB GDDR6X,https://www.nvidia.com/en-us/geforce/graphics-cards/40-series/rtx-4080-family/
+H100 SXM,700,,"80 GB HBM3, 3.35 TB/s",https://www.nvidia.com/en-us/data-center/h100/
+H100 NVL (PCIe card),350-400,,"94 GB, 3.9 TB/s",https://www.nvidia.com/en-us/data-center/h100/
+H200 SXM,700,137-300 W in LLM decode (arXiv 2605.11999),"141 GB HBM3e, 4.8 TB/s",https://www.nvidia.com/en-us/data-center/h200/ ; https://arxiv.org/abs/2605.11999
+H200 NVL,600,,"141 GB HBM3e, 4.8 TB/s",https://www.nvidia.com/en-us/data-center/h200/
+DGX B200 (8x B200 system),"~14,300 system max (not per GPU)",,"1,440 GB total (8 GPUs)",https://www.nvidia.com/en-us/data-center/dgx-b200/
+GB200 Blackwell GPU (in GB200 superchip),"1,200 (press, GTC 2024)",,,https://www.theregister.com/2024/03/21/nvidia_dgx_gb200_nvk72
+GB200 NVL72 rack (72 GPUs + 36 Grace CPUs),"~120,000 per rack (press, GTC 2024)",,13.4 TB HBM3e per rack (NVIDIA page),https://www.theregister.com/2024/03/21/nvidia_dgx_gb200_nvk72 ; https://www.nvidia.com/en-us/data-center/gb200-nvl72/
+AMD Instinct MI300X,750 (peak),,"192 GB HBM3, 5.3 TB/s",https://www.amd.com/en/products/accelerators/instinct/mi300/mi300x.html

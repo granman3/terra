@@ -1,0 +1,18 @@
+{
+ "one_gpu": {
+  "idle_w": 27.19,
+  "steady_w": 349.4,
+  "jump_1s_w": 284,
+  "seconds_to_full": 1.6
+ },
+ "site": {
+  "gpus": 2862,
+  "mw": 1.0,
+  "stagger_s": 60,
+  "jump_1s_at_once_kw": 813,
+  "jump_1s_staggered_kw": 15.6,
+  "smaller_x": 52
+ },
+ "source": "data/sweep/power/power_pl350_pp.csv",
+ "note": "one GPU measured, the site is N identical GPUs (simulated)"
+}

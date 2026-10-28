@@ -1,0 +1,15 @@
+{
+ "model": "out/v2/mycelium.pt",
+ "params": 561016,
+ "threads": 1,
+ "idle_w": 0.21,
+ "load_w": 8.6,
+ "forecasts_per_s": 288936,
+ "joules_per_forecast": 2.9e-05,
+ "samples": {
+  "idle": 37,
+  "load": 66
+ },
+ "unit": "one forecast = one power region's next 24 h",
+ "measured": "2026-10-27 15:48"
+}

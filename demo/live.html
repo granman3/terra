@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terra Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --soil:#12110f; --soil-2:#1b1a17; --soil-3:#262420; --line:#34312b; --stone:#9b9591; --stone-2:#bfbcb8; --sand:#ece6da; --sage:#9fb07e; --sage-dim:#6e755f; --copper:#c99068; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: radial-gradient(120% 90% at 30% 40%, #1d1b17 0%, var(--soil) 60%, #0d0c0b 100%); color: var(--sand); font-family: Figtree, system-ui, sans-serif; overflow: hidden; }
+  .stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; }
+  svg.map { position: absolute; inset: 0; }
+  .hud-top { position: absolute; left: 48px; top: 30px; right: 48px; display: flex; justify-content: space-between; align-items: baseline; }
+  .brand { font-size: 30px; } .brand small { font-size: 15px; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-left: 14px; }
+  .clock { font-family: "JetBrains Mono", monospace; font-size: 19px; color: var(--stone-2); } .clock b { font-weight: 500; }
+  .count { position: absolute; left: 48px; top: 78px; font-size: 18px; color: var(--stone); } .count b { color: var(--sand); font-weight: 500; font-size: 22px; }
+  .panel { position: absolute; right: 36px; top: 76px; bottom: 24px; width: 500px; display: flex; flex-direction: column; gap: 14px; }
+  .card { background: rgba(27,26,23,.9); border: 1px solid var(--line); border-radius: 12px; padding: 18px 24px; }
+  .card h3 { font-size: 13px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; }
+  .now { font-size: 26px; line-height: 1.25; } .now .to { color: var(--sage); } .now .sub { margin-top: 6px; font-size: 17px; color: var(--stone); }
+  .saved { flex: 1; display: flex; flex-direction: column; }
+  .usd small { font-size: 34px; color: var(--stone-2); letter-spacing: 0; margin-left: 6px; }
+  .usd-l b { color: var(--sand); font-weight: 500; }
+  .saved .eq { margin-top: 12px; font: 14px/1.5 "JetBrains Mono", monospace; color: var(--stone); }
+  .live-h { margin-top: auto; padding-top: 14px; font-size: 13px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); }
+  .usd { font-size: 96px; font-weight: 300; letter-spacing: -.03em; line-height: 1; color: var(--sage); font-variant-numeric: tabular-nums; }
+  .usd-l { font-size: 19px; color: var(--stone-2); margin-top: 8px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; }
+  td { padding: 7px 0; border-top: 1px solid var(--line); color: var(--stone-2); vertical-align: top; }
+  td:last-child { text-align: right; font: 500 18px "JetBrains Mono", monospace; color: var(--sand); white-space: nowrap; padding-left: 12px; }
+  td small { display: block; font-size: 14px; color: var(--stone); }
+  tr.total td { border-top: 2px solid var(--stone); color: var(--sand); font-weight: 500; } tr.total td:last-child { color: var(--sage); font-size: 22px; }
+  .legend { position: absolute; left: 48px; bottom: 76px; display: flex; gap: 24px; font-size: 16px; color: var(--stone); }
+  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 8px; }
+  .foot { position: absolute; left: 48px; bottom: 16px; max-width: 1000px; font-size: 13px; color: #77726c; }
+  .node-label { font-size: 19px; fill: var(--sand); } .node-sub { font: 14px "JetBrains Mono", monospace; fill: var(--stone-2); }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <svg class="map" id="map" viewBox="0 0 1600 900"></svg>
+  <div class="hud-top"><div class="brand">Terra<small>Live</small></div><div class="clock" id="clock">connecting…</div></div>
+  <div class="count" id="count"></div>
+  <div class="panel">
+    <div class="card"><h3>Right now</h3><div class="now" id="now">—</div></div>
+    <div class="card saved"><h3>What Utah saves</h3>
+      <div class="usd">$10M<small> a year</small></div>
+      <div class="usd-l">per <b>100 MW</b> of AI work moved off Utah's rush hours</div>
+      <div class="live-h" id="liveH">This week · one simulated site</div>
+      <table>
+        <tr><td>Power moved off the rush</td><td id="kwh">0 kWh</td></tr>
+        <tr><td>AI jobs moved</td><td id="jobs">0</td></tr>
+        <tr class="total"><td>Saved so far</td><td id="tUsd">$0</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="legend"><span><i style="background:var(--sage)"></i>room to run</span><span><i style="background:var(--copper)"></i>rush hour likely</span><span><i style="background:var(--sand)"></i>AI work moving</span></div>
+  <div class="foot">Real EIA grid data, Oct 19–25, 2026, unseen in training · real Utah prices (CAISO) · the data center and its jobs are simulated</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const NAMES = { PACE: "Utah", CISO: "California", BPAT: "Pacific NW", ERCO: "Texas" };
+const WAIT = { now: "now", wait_3h: "in 3 hours", wait_6h: "in 6 hours", wait_12h: "in 12 hours" };
+const JOB_NAMES = { "nightly-evals": "Nightly AI testing", "embed-catalog": "Product search update", "chat-support": "Customer chat", "finetune-ckpt": "AI model training", "finetune-ckpt-7": "AI model training", "batch-translate": "Document translation" };
+const C = { sage: "#9fb07e", copper: "#c99068", sand: "#ece6da", stone: "#9b9591" };
+const fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); document.getElementById("stage").style.transform = `translate(${(innerWidth - 1600 * k) / 2}px, ${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
+addEventListener("resize", fit); fit();
+const svg = d3.select("#map"); let pos = {}, nodes = {}, proj = null, route = [];
+const $ = id => document.getElementById(id);
+const usd = v => v >= 100 ? `$${Math.round(v).toLocaleString()}` : `$${v.toFixed(2)}`;
+
+// the week's ledger, replayed with the same jobs and routing (deck/utah_savings.ts)
+let S = null; fetch("/deck/utah_savings.json").then(r => r.json()).then(s => { S = s; });
+function ledger(utc) {
+  const l = S?.ledger[utc]; if (!l) return;
+  const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
+  $("tUsd").textContent = usd(l.usd + cap);
+  $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
+  $("jobs").textContent = `${l.moved} of ${l.jobs}`;
+}
+
+const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
+function draw(meta) {
+  atlas.then(us => {
+    const states = { type: "FeatureCollection", features: topojson.feature(us, us.objects.states).features.filter(f => !["02", "15", "72", "78", "60", "66", "69"].includes(f.id)) };
+    proj = d3.geoAlbers().fitExtent([[40, 120], [1060, 840]], states); const path = d3.geoPath(proj);
+    const glow = svg.append("defs").append("filter").attr("id", "glow").attr("x", "-50%").attr("y", "-50%").attr("width", "200%").attr("height", "200%");
+    glow.append("feGaussianBlur").attr("stdDeviation", 4).attr("result", "b"); const m = glow.append("feMerge"); m.append("feMergeNode").attr("in", "b"); m.append("feMergeNode").attr("in", "SourceGraphic");
+    svg.append("g").selectAll("path").data(states.features).join("path").attr("d", path).attr("fill", "#1f1d1a").attr("fill-opacity", .8).attr("stroke", "#3a362f").attr("stroke-opacity", .5);
+    for (const id in meta) pos[id] = proj(meta[id].ll);
+    svg.append("g").attr("id", "arcs");
+    const ng = svg.append("g");
+    for (const id in meta) { if (route.includes(id)) continue; const [x, y] = pos[id];
+      nodes[id] = { dot: ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 4).attr("fill", C.sage).attr("fill-opacity", .5) }; }
+    for (const id of route) { const [x, y] = pos[id], left = id === "ERCO", dx = left ? -20 : 20, an = left ? "end" : "start";
+      const ring = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 10).attr("fill", "none").attr("stroke", C.sage);
+      ring.append("animate").attr("attributeName", "r").attr("values", "10;34").attr("dur", "2.6s").attr("repeatCount", "indefinite");
+      ring.append("animate").attr("attributeName", "stroke-opacity").attr("values", ".7;0").attr("dur", "2.6s").attr("repeatCount", "indefinite");
+      const dot = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 9).attr("fill", C.sage).attr("filter", "url(#glow)");
+      ng.append("text").attr("class", "node-label").attr("x", x + dx).attr("y", y - 4).attr("text-anchor", an).text(NAMES[id]);
+      const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 16).attr("text-anchor", an);
+      nodes[id] = { ring, dot, sub }; }
+  });
+}
+
+// an AI job leaving Utah: one clean arc that draws, carries a dot, and fades (same as web/index.html)
+function fly(dest) {
+  const a = pos.PACE, b = pos[dest]; if (!a || !b) return;
+  const [x1, y1, x2, y2] = [a[0], a[1], b[0], b[1]], lift = 40 + Math.hypot(x2 - x1, y2 - y1) * .22;
+  const g = d3.select("#arcs").append("g");
+  const arc = g.append("path").attr("d", `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 2.5).attr("stroke-opacity", .8);
+  const L = arc.node().getTotalLength();
+  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(800).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
+  const dot = g.append("circle").attr("r", 8).attr("fill", C.sand).attr("filter", "url(#glow)");
+  dot.transition().duration(800).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
+    .on("end", () => dot.transition().duration(400).attr("r", 18).attr("opacity", 0));
+  g.transition().delay(1200).duration(400).attr("opacity", 0).remove();
+}
+
+const es = new EventSource("/stream");
+es.onmessage = e => {
+  const d = JSON.parse(e.data);
+  if (d.hello) { if (!proj) { route = d.route; draw(d.meta); } return; }
+  const t = new Date(d.utc * 1000), u = d.regions.PACE, inPeak = u.inPeak;
+  $("clock").innerHTML = `${t.toLocaleString("en-US", { timeZone: "America/Denver", weekday: "short", hour: "numeric" })} in Utah · power use at <b style="color:${inPeak ? C.copper : C.sage}">${Math.round(u.share * 100)}% of today's high${inPeak ? " · RUSH HOUR" : ""}</b>`;
+  // d.grids = regions with data this replay hour (HST and WAUW have none in Oct 19–25); 50 = trained regions, as on the other slides
+  $("count").innerHTML = `<b>50</b> regions forecast · <b style="color:${d.nPeak ? C.copper : C.sand}">${d.nPeak}</b> expecting rush hour`;
+  const j = d.job, name = j.label ?? JOB_NAMES[j.name] ?? j.name;  // labels come from router/src/jobs.ts
+  $("now").innerHTML = !j.deadlineHours
+    ? `${name} stays in Utah<div class="sub">${d.utilityCall ? "Utility called (simulated): power-saving mode" : "People are using it now"}</div>`
+    : d.ours.region
+      ? `${name} → <span class="to">${NAMES[d.ours.region]}, ${WAIT[d.ours.wait]}</span><div class="sub">Utah rush-hour chance ${Math.round(d.utahPeak * 100)}%</div>`
+      : `${name} waits<div class="sub">Every site is full</div>`;
+  for (const id in d.regions) { const r = d.regions[id], n = nodes[id]; if (!n) continue; const hot = r.pPeakNow > .5, col = hot ? C.copper : C.sage;
+    n.dot.attr("fill", col); n.ring?.attr("stroke", col); n.sub?.text(hot ? "rush hour likely" : "room to run").attr("fill", hot ? C.copper : "#bfbcb8"); }
+  if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE" && d.ours.wait === "now") fly(d.ours.region);
+  ledger(d.utc);
+};
+
+// inside the deck: hand slide keys back to the deck
+if (window.parent !== window) addEventListener("keydown", e => {
+  if (["ArrowRight", "ArrowLeft", "PageDown", "PageUp", " ", "f"].includes(e.key)) { e.preventDefault(); window.parent.dispatchEvent(new KeyboardEvent("keydown", { key: e.key })); }
+});
+// P = skip the replay to 2 hours before Rocky Mountain Power's (simulated) call; no button on screen
+addEventListener("keydown", e => { if (e.key === "p" || e.key === "P") fetch("/jump", { method: "POST" }); });
+window.jump = () => fetch("/jump", { method: "POST" });
+</script>
+</body>
+</html>

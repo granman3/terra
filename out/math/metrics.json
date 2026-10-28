@@ -1,0 +1,97 @@
+{
+ "region": "PACE",
+ "model": "out/v2/mycelium.pt",
+ "enroll": {
+  "rule": "slow down when the utility calls; enroll a chip iff it is worth less than the breakeven per hour",
+  "assumptions": {
+   "gpu_hour_usd": 0.27,
+   "slow_pct": 0.06,
+   "saved_w": 80.0,
+   "dr_usd_kw_year": 100.0,
+   "dr_max_hours": 65
+  },
+  "per_chip_year_usd": {
+   "paid": 8.0,
+   "worst_case_cost": 1.05,
+   "net": 6.95
+  },
+  "per_1000_chips_year_usd": {
+   "paid": 8000,
+   "worst_case_cost": 1053,
+   "net": 6947
+  },
+  "breakeven_chip_hour_usd": 2.05,
+  "times_over_breakeven": 7.6,
+  "wholesale_breakeven_usd_kwh": 0.202,
+  "wholesale_rush_usd_kwh": 0.0223,
+  "levels": [
+   {
+    "program": "Real-time or advance notice",
+    "usd_kw_year": 100.0,
+    "net_per_1000_chips_year_usd": 6947,
+    "breakeven_chip_hour_usd": 2.05
+   },
+   {
+    "program": "Tariff maximum",
+    "usd_kw_year": 125.0,
+    "net_per_1000_chips_year_usd": 8947,
+    "breakeven_chip_hour_usd": 2.56
+   },
+   {
+    "program": "Both",
+    "usd_kw_year": 175.0,
+    "net_per_1000_chips_year_usd": 12947,
+    "breakeven_chip_hour_usd": 3.59
+   }
+  ],
+  "replay_event": {
+   "utc": [
+    1792519200,
+    1792522800
+   ],
+   "simulated": true,
+   "why": "Rocky Mountain Power doesn't publish its event history; placed at the replay week's highest demand"
+  }
+ },
+ "conformal_rush": {
+  "alpha": 0.1,
+  "calibration_hours": 52992,
+  "test_hours": 84552,
+  "split": {
+   "q_hat": 0.5106,
+   "test_coverage": 0.8604,
+   "share_decided": 0.9934,
+   "share_cant_rule_out": 0.0066
+  },
+  "adaptive": {
+   "gamma": 0.005,
+   "alpha_end": -0.112,
+   "test_coverage": 0.8997,
+   "share_decided": 0.775,
+   "share_cant_rule_out": 0.1972,
+   "worst_month_coverage": 0.8978
+  }
+ },
+ "market": {
+  "question": "Will Utah be in rush hour 12 h from now?",
+  "b_usd": 100.0,
+  "opening_price": 0.5,
+  "max_loss_per_question_usd": 69.31,
+  "questions": 3523,
+  "orders_averaged": 6,
+  "profit_usd": {
+   "Terra": 70299,
+   "EIA forecast": 20487,
+   "Same as yesterday": 14528
+  },
+  "log_loss": {
+   "Terra": 0.3193,
+   "EIA forecast": 0.4253,
+   "Same as yesterday": 0.438
+  },
+  "same_as_yesterday_rates": {
+   "after_rush": 0.779,
+   "after_clear": 0.091
+  }
+ }
+}

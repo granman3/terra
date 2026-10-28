@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terra Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --soil:#12110f; --soil-2:#1b1a17; --soil-3:#262420; --line:#34312b; --stone:#9b9591; --stone-2:#bfbcb8; --sand:#ece6da; --sage:#9fb07e; --sage-dim:#6e755f; --copper:#c99068; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: #0b0a09; color: var(--sand); font-family: Figtree, system-ui, sans-serif; overflow: hidden; }
+  .stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; }
+  .slide { position: absolute; inset: 0; padding: 96px 110px; display: none; flex-direction: column; justify-content: center;
+           background: radial-gradient(120% 90% at 30% 40%, #1d1b17 0%, var(--soil) 60%, #0d0c0b 100%); }
+  .slide.on { display: flex; }
+  .hidden { display: none !important; }
+  canvas.web { position: absolute; inset: 0; pointer-events: none; }
+  .eyebrow { font-size: 22px; letter-spacing: .26em; text-transform: uppercase; color: var(--sage); margin-bottom: 28px; position: relative; }
+  .big { font-weight: 300; font-size: 230px; line-height: .9; letter-spacing: -.04em; font-variant-numeric: tabular-nums; position: relative; }
+  .big .vs { color: var(--stone); font-size: .45em; letter-spacing: -.01em; margin: 0 .25em; }
+  .big .cu { color: var(--copper); } .big .sg { color: var(--sage); }
+  .say { margin-top: 36px; font-size: 44px; font-weight: 300; line-height: 1.25; color: var(--stone-2); max-width: 1250px; position: relative; }
+  .say b { color: var(--sand); font-weight: 500; }
+  .src { position: absolute; left: 110px; bottom: 34px; font: 15px "JetBrains Mono", monospace; color: #6f6a64; }
+  .count { position: absolute; right: 48px; bottom: 30px; font: 15px "JetBrains Mono", monospace; color: #5c5853; }
+  h1 { font-weight: 300; font-size: 170px; line-height: .92; letter-spacing: -.035em; position: relative; }
+  .tagline { margin-top: 36px; font-size: 46px; font-weight: 300; line-height: 1.2; color: var(--stone-2); max-width: 1000px; position: relative; }
+  .tagline b { font-weight: 500; color: var(--sand); }
+  .slide.title { justify-content: flex-start; padding-top: 140px; }
+  .title .t-left { max-width: 1040px; position: relative; }
+  .title .t-steps { max-width: 1040px; }
+  .qr1 { position: absolute; right: 100px; top: 150px; width: 330px; text-align: center; }
+  .qr1 img { width: 330px; height: 330px; display: block; border-radius: 16px; }
+  .qr1 .cta { margin-top: 18px; font-size: 30px; color: var(--sand); } .qr1 .cta b { color: var(--sage); font-weight: 500; }
+  .qr1 .url { font: 500 21px "JetBrains Mono", monospace; color: var(--stone-2); margin-top: 6px; white-space: nowrap; }
+  .proof-nums { display: flex; gap: 64px; margin-top: 44px; position: relative; font-size: 24px; color: var(--stone); }
+  .proof-nums b { display: block; font-size: 60px; font-weight: 300; color: var(--sand); letter-spacing: -.02em; }
+  .impact .cols { margin-top: 26px; } .impact .col { padding: 22px 26px; } .impact .col .t { font-size: 38px; } .impact .col .d { font-size: 23px; }
+  .impact .row { margin-top: 38px; gap: 64px; } .impact .stat .n { font-size: 72px; white-space: nowrap; } .impact .stat .l { font-size: 23px; }
+  .impact .say { margin-top: 30px; }
+  [data-cut] { display: none !important; }
+  .title h1 { font-size: 132px; }
+  .title .tagline { margin-top: 18px; font-size: 40px; }
+  .slide.title { justify-content: center; padding-top: 96px; } .title h1 { font-size: 150px; } .title .qr1 { top: 250px; }
+  .title .one { margin-top: 34px; font-size: 68px; font-weight: 300; line-height: 1.12; letter-spacing: -.02em; color: var(--stone-2); max-width: 1000px; position: relative; } .title .one b { font-weight: 400; color: var(--sand); }
+  .sources .big { font-size: 190px; } .sources .say { margin-top: 20px; }
+  .sources .cred-l { margin-top: 56px; gap: 22px 40px; position: relative; } .sources .cred-l span { font-size: 20px; } .sources .cred-l b { font-size: 28px; margin-bottom: 2px; }
+  .gain { margin-top: 40px; display: flex; align-items: center; gap: 44px; position: relative; }
+  .gain .n { font-size: 150px; font-weight: 300; letter-spacing: -.04em; line-height: .9; color: var(--sage); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .gain .l { font-size: 32px; font-weight: 300; line-height: 1.25; color: var(--stone-2); } .gain .l b { color: var(--sand); font-weight: 500; }
+  .t-ex { margin-top: 26px; font-size: 30px; font-weight: 300; line-height: 1.35; color: var(--stone-2); max-width: 1180px; position: relative; } .t-ex b { color: var(--copper); font-weight: 500; }
+  .t-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; max-width: 1380px; position: relative; }
+  .t-steps div { border: 1px solid var(--line); border-radius: 14px; padding: 20px 24px; background: rgba(27,26,23,.75); font-size: 23px; color: var(--stone-2); line-height: 1.35; }
+  .t-steps b { display: block; font-size: 32px; font-weight: 400; color: var(--sand); margin-bottom: 6px; } .t-steps i { font: 500 18px "JetBrains Mono", monospace; color: var(--sage); font-style: normal; margin-right: 10px; }
+  .t-nums { display: flex; gap: 56px; margin-top: 30px; position: relative; font-size: 22px; color: var(--stone); }
+  .t-nums b { display: block; font-size: 44px; font-weight: 300; color: var(--sand); letter-spacing: -.02em; } .t-nums b.sg { color: var(--sage); }
+  .byline { position: absolute; left: 110px; top: 70px; right: 110px; display: flex; justify-content: space-between; font-size: 22px; color: var(--stone); }
+  .chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; max-width: 1300px; position: relative; }
+  .chip { font-size: 28px; padding: 12px 24px; border-radius: 999px; border: 1px solid var(--sage-dim); color: var(--sand); background: rgba(27,26,23,.7); }
+  .row { display: flex; gap: 90px; margin-top: 48px; position: relative; }
+  .stat .n { font-size: 96px; font-weight: 300; letter-spacing: -.03em; font-variant-numeric: tabular-nums; } .stat .l { font-size: 26px; color: var(--stone); margin-top: 6px; }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 46px; position: relative; }
+  .col { border: 1px solid var(--line); border-radius: 14px; padding: 30px 32px; background: rgba(27,26,23,.75); }
+  .col.us { border-color: var(--sage); }
+  .col .k { font-size: 22px; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); } .col .t { font-size: 46px; margin: 10px 0 6px; }
+  .col .d { font-size: 26px; color: var(--stone-2); line-height: 1.3; }
+  .col.us .k { color: var(--sage); }
+  .qr { position: absolute; right: 110px; top: 84px; width: 250px; text-align: center; }
+  .qr img { width: 250px; height: 250px; display: block; border-radius: 12px; }
+  .qr div { margin-top: 12px; font-size: 22px; color: var(--stone-2); } .qr b { display: block; font: 500 19px "JetBrains Mono", monospace; color: var(--sage); margin-top: 4px; white-space: nowrap; margin-left: -40px; margin-right: -40px; }
+  iframe { position: absolute; inset: 0; width: 1600px; height: 900px; border: 0; }
+  .problem .head { font-weight: 300; font-size: 76px; line-height: 1.05; letter-spacing: -.025em; max-width: 1300px; position: relative; }
+  .problem .head .cu { color: var(--copper); }
+  .problem .cols { margin-top: 36px; } .problem .col { padding: 22px 28px; } .problem .col .t { font-size: 40px; } .problem .col .d { font-size: 23px; }
+  .problem .col.stuck { border-color: var(--copper); } .problem .col.stuck .k, .problem .col.stuck .t { color: var(--copper); }
+  .problem .row { margin-top: 36px; gap: 80px; } .problem .stat .n { font-size: 76px; } .problem .stat .l { font-size: 23px; line-height: 1.3; }
+  .problem .stat .ax { font: 500 17px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--sage); margin-bottom: 4px; }
+  .problem .stat .n.cu { color: var(--copper); }
+  .cred { position: absolute; left: 110px; right: 110px; bottom: 70px; border-top: 1px solid var(--line); padding-top: 22px; }
+  .cred-h { font-size: 22px; letter-spacing: .04em; color: var(--sage); margin-bottom: 14px; } .cred-h b { color: var(--sand); font-weight: 500; }
+  .cred-l { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 34px; }
+  .cred-l span { font-size: 17px; color: var(--stone); line-height: 1.3; } .cred-l b { display: block; font-size: 22px; font-weight: 500; color: var(--sand); }
+  .slide .head { font-weight: 300; font-size: 76px; line-height: 1.05; letter-spacing: -.025em; max-width: 1380px; position: relative; }
+  .head .cu, .n.cu, b.cu { color: var(--copper); } .head .sg, .n .sg, .n.sg { color: var(--sage); }
+  .cost .row { margin-top: 50px; gap: 60px; } .cost .stat { flex: 1; } .cost .stat .n { font-size: 84px; white-space: nowrap; } .cost .stat .l { font-size: 23px; line-height: 1.3; }
+  .band { margin-top: 50px; border: 1px solid var(--copper); border-radius: 14px; padding: 24px 30px; background: rgba(27,26,23,.8); position: relative; }
+  .band .b-l { font-size: 34px; font-weight: 300; color: var(--stone-2); } .band .b-l b { font-weight: 500; color: var(--sand); } .band .b-l b.cu { color: var(--copper); }
+  .eq { display: block; margin-top: 12px; font: 21px "JetBrains Mono", monospace; color: var(--stone); } .eq b { color: var(--copper); font-weight: 500; }
+  .mv { display: grid; grid-template-columns: 780px 1fr; gap: 50px; margin-top: 34px; position: relative; }
+  .chart .cap { font-size: 17px; color: var(--stone); margin-top: 4px; }
+  .mv-r { display: flex; flex-direction: column; gap: 30px; justify-content: center; } .mv-r .stat .n { font-size: 84px; } .mv-r .stat .l { font-size: 23px; line-height: 1.3; }
+  .mv-r .l2 { font-size: 22px; color: var(--stone-2); line-height: 1.35; border-top: 1px solid var(--line); padding-top: 18px; }
+  #peaks text { font-family: Figtree, sans-serif; }
+  .keys { display: flex; gap: 22px; font-size: 18px; white-space: nowrap; margin-top: 6px; } .keys span { display: flex; align-items: center; gap: 8px; } .keys i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  .flow { display: grid; grid-template-columns: 1.25fr 60px 1fr 60px 1fr; align-items: stretch; margin-top: 44px; position: relative; }
+  .flow > div:not(.arrow) { border: 1px solid var(--line); border-radius: 14px; padding: 22px 26px; background: rgba(27,26,23,.8); }
+  .flow .arrow { display: flex; align-items: center; justify-content: center; font-size: 46px; color: var(--sage); }
+  .flow .k { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-bottom: 12px; }
+  .flow .in span { display: inline-block; font-size: 19px; padding: 6px 13px; margin: 0 6px 8px 0; border-radius: 999px; border: 1px solid var(--sage-dim); color: var(--sand); }
+  .flow .k2 { font-size: 18px; color: var(--stone); margin-top: 6px; } .flow .k2 b { color: var(--sand); font-weight: 500; }
+  .flow .mid { border-color: var(--sage) !important; } .flow .mid .k { color: var(--sage); }
+  .flow .t { font-size: 44px; font-weight: 400; margin-bottom: 8px; } .flow .d { font-size: 22px; color: var(--stone-2); line-height: 1.3; }
+  .lean .say { font-size: 34px; margin-top: 40px; max-width: 1380px; }
+  .impact .worth { margin-top: 34px; font-size: 36px; font-weight: 300; color: var(--stone-2); position: relative; } .impact .worth b { color: var(--sage); font-weight: 500; }
+  .impact .worth .eq { font-size: 19px; margin-top: 6px; }
+  .how-h { margin-top: 30px; font-size: 18px; letter-spacing: .26em; text-transform: uppercase; color: var(--sage); position: relative; }
+  .t-steps.how { margin-top: 14px; max-width: none; } .t-steps.how b { font-size: 28px; } .t-steps.how div { font-size: 21px; padding: 16px 22px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+<section class="slide title" data-web>
+  <div class="byline"><span>Hard Tech Hackathon · Torus bounty</span><span>Granite Tait · Oct 28, 2026</span></div>
+  <div class="qr1"><img src="qr.svg" alt="QR code for terra.granitetait.com"><div class="cta"><b>Scan now.</b> It's live.</div><div class="url">terra.granitetait.com</div></div>
+  <div class="t-left">
+  <h1>Terra</h1>
+  <div class="one">A custom AI model that <b>moves AI work off the grid's rush hours.</b></div>
+  </div>
+</section>
+<section class="slide sources" data-web>
+  <div class="eyebrow">Built only on public government data</div>
+  <div class="big"><span data-n="raw_values" data-f="millions">33 million</span></div>
+  <div class="say">data points, every hour since January 2022, from <b data-n="grids">50</b> US power regions.</div>
+  <div class="cred-l">
+    <span><b>EIA-930</b>hourly demand, forecasts and fuel mix for every US grid · eia.gov</span>
+    <span><b>EIA-860M</b>every power plant planned in Utah · eia.gov</span>
+    <span><b>Weather forecasts</b>NOAA and other national models, as forecast at the time · Open-Meteo</span>
+    <span><b>CAISO OASIS</b>Utah's real-time wholesale price, hourly · oasis.caiso.com</span>
+    <span><b>Utah PSC</b>Rocky Mountain Power tariffs and demand-response prices · psc.utah.gov</span>
+    <span><b>EIA prices</b>wholesale power at 5 hubs + Henry Hub gas · eia.gov</span>
+  </div>
+  <div class="src"><span data-src="raw_values"></span></div>
+</section>
+<section class="slide cost" data-web>
+  <div class="eyebrow">The problem</div>
+  <div class="head">Utah builds power plants for its worst hour. <span class="cu">AI is making that hour worse.</span></div>
+  <div class="row">
+    <div class="stat"><div class="n">4.4% → 12%</div><div class="l">of all US electricity going to data centers, 2023 → 2028 (high case)</div></div>
+    <div class="stat"><div class="n cu">$16.4B</div><div class="l">one year of standby power plants on the biggest US grid (PJM), and still 6.8 GW short</div></div>
+    <div class="stat"><div class="n">10 GW</div><div class="l">the largest data center asking Utah for power. Another was told: not until 2031.</div></div>
+  </div>
+  <div class="band">
+    <div class="b-l">In Utah, the top 10% of the grid, <b data-n="utah_top10" data-f="top10">972 MW</b>, was needed for only <b class="cu" data-n="utah_top10" data-f="topHours">153 hours</b> in 2025. <span>That's <span data-n="utah_top10" data-f="topShare">1.7%</span> of the year.</span></div>
+    <div class="eq">972,000 kW × $728–1,969 per kW of new gas peaker = <b>$0.7–1.9 billion</b> of plants that aren't needed 98% of the year</div>
+  </div>
+  <div class="src">DOE/LBNL, Dec 2024 · PJM 2028/29 capacity auction, Jul 2026 · Lehi Free Press, Feb 2026 · EIA-930, PACE 2025, hours ≥ 90% of the year's peak · GridLab, Sept 2025, peaker costs</div>
+</section>
+<section class="slide move" data-web>
+  <div class="eyebrow">The opportunity</div>
+  <div class="head">Power plants can't move. <span class="sg">AI work can.</span></div>
+  <div class="mv">
+    <div class="chart"><svg id="peaks" viewBox="0 0 760 400"></svg><div class="keys" id="peakKeys"></div><div class="cap">Average demand through the day, 2026, each grid vs its own high (Utah time)</div></div>
+    <div class="mv-r">
+      <div class="stat"><div class="n sg"><span data-n="peaks_differ" data-f="room">85%</span></div><div class="l">of Utah's rush hours in 2026, California, the Pacific NW or Texas had room to spare</div></div>
+      <div class="stat"><div class="n"><span data-n="peak_hours_hit" data-f="naive">1.14</span> → <span class="sg" data-n="peak_hours_hit" data-f="ours">0.04</span></div><div class="l">rush hours a 4-hour AI job runs into: start now in Utah vs Terra</div></div>
+    </div>
+  </div>
+  <div class="src">EIA-930, 2026, rush hour = demand ≥ 95% of that day's high · <span data-src="peak_hours_hit"></span>, held-out 2026</div>
+</section>
+<section class="slide lean" data-web>
+  <div class="eyebrow">How it decides</div>
+  <div class="head">We don't spend energy <span class="sg">to save energy.</span></div>
+  <div class="flow">
+    <div class="in"><div class="k">Every input, every hour</div>
+      <span>Grid demand + the utility's forecast</span><span>Fuel mix and carbon</span><span>Weather forecasts</span><span>Sun position</span><span>Holidays and calendar</span><span>Power and gas prices</span>
+      <div class="k2"><b data-n="features_per_sample">492</b> numbers per decision · <b data-n="grids">50</b> regions</div></div>
+    <div class="arrow">→</div>
+    <div class="mid"><div class="k">The Terra model</div><div class="t"><span data-n="tiny_params" data-f="k">561K</span> settings</div><div class="d">Built and trained by me, at home on one RTX 4080. Made for one job. Big AI models have billions.</div></div>
+    <div class="arrow">→</div>
+    <div class="out"><div class="k">Decision</div><div class="t">Where, when, how hard</div><div class="d">for every AI job, in a fraction of a millisecond</div></div>
+  </div>
+  <div class="gain"><div class="n"><span data-n="tiny_efficiency" data-f="effX">690,000×</span></div>
+    <div class="l"><b>less energy per decision</b> than a 4-billion-parameter AI model. A full year of Terra's decisions uses less than one answer from it.</div></div>
+  <div class="src">measured on the same MacBook, total chip power, one forecast = one region's next 24 h · <span data-src="tiny_efficiency"></span></div>
+</section>
+<section class="slide problem" data-web data-cut>
+  <div class="eyebrow">The problem</div>
+  <div class="head">The grid can move power plants and energy. <span class="cu">It can't move demand.</span></div>
+  <div class="cols">
+    <div class="col"><div class="k">Supply</div><div class="t">Moves</div><div class="d">Power plants ramp up and down to follow demand.</div></div>
+    <div class="col"><div class="k">Energy</div><div class="t">Moves, at a cost</div><div class="d">Power lines carry it and batteries hold it. Every megawatt has to be built.</div></div>
+    <div class="col stuck"><div class="k">Demand</div><div class="t">Stuck</div><div class="d">Every load is treated as fixed, so everything else gets built around it.</div></div>
+  </div>
+  <div class="row">
+    <div class="stat" data-needs="utah_expansion"><div class="ax">Place</div><div class="n cu"><span data-n="utah_expansion" data-f="front">0 MW</span></div><div class="l">of the <span data-n="utah_expansion" data-f="gw">3.6 GW</span> planned in Utah is on the Wasatch Front,<br>where the demand is. <span data-n="utah_expansion" data-f="ldwp">69%</span> is wired to LA's grid.</div></div>
+    <div class="stat" data-needs="daily_swing_mw"><div class="ax">Time</div><div class="n cu"><span data-n="daily_swing_mw" data-f="gwSwing">1.8 GW</span></div><div class="l">how far Rocky Mountain Power's demand swings<br>every day, night to afternoon. The grid is built for the top.</div></div>
+  </div>
+  <div class="src">EIA-860M, Sept 2026, planned generators · EIA-930, PACE, 2026, median daily peak minus low · <span data-src="daily_swing_mw"></span></div>
+</section>
+
+<section class="slide" data-web data-cut>
+  <div class="eyebrow">What it learned from</div>
+  <div class="big"><span data-n="raw_values" data-f="millions"></span></div>
+  <div class="say">public data points from <b data-n="grids"></b> US grids, every hour since January 2022.</div>
+  <div class="chips" id="types"></div>
+  <div class="src"><span data-src="raw_values"></span></div>
+</section>
+
+<section class="slide" data-web data-cut>
+  <div class="eyebrow">A model the size of a JPEG</div>
+  <div class="big"><span data-n="train_seconds" data-f="s"></span></div>
+  <div class="say">to train on an RTX 4080 at home, using <b data-n="train_energy_wh" data-f="wh"></b>, a 10 W bulb left on for <b data-n="train_energy_wh" data-f="bulb"></b>.
+    <b data-n="tiny_params" data-f="k"></b> parameters.</div>
+  <div class="src"><span data-src="train_seconds"></span></div>
+</section>
+
+<section class="slide" data-web data-cut>
+  <div class="eyebrow">Knowing when: Utah rush hours caught, on 2026 data it never saw</div>
+  <div class="big"><span class="sg" data-n="utah_catch" data-f="model%"></span><span class="vs">vs</span><span data-n="utah_catch" data-f="eia%"></span></div>
+  <div class="say">Terra vs Rocky Mountain Power's own day-ahead forecast, which put Utah's fall peak at <b data-n="fall_peak_forecast_hour" data-f="hour"></b>. It came at <b data-n="fall_peak_actual_hour" data-f="hour"></b>.</div>
+  <div class="proof-nums">
+    <div><b data-n="raw_values" data-f="millions">33 million</b>public data points it learned from</div>
+    <div><b data-n="tiny_params" data-f="k">561K</b>settings: small on purpose (big AI models have billions)</div>
+    <div><b data-n="tiny_efficiency" data-f="yearJ">20 joules</b>a full year of hourly forecasts for all 50 regions, on a laptop</div>
+  </div>
+  <div class="src"><span data-src="utah_catch"></span> · peak hours: EIA-930, PACE, Oct 2026, <span data-src="fall_peak_actual_hour"></span></div>
+</section>
+
+<section class="slide" data-web data-needs="big_vs_tiny" data-cut>
+  <div class="eyebrow">Right-size the model</div>
+  <div class="big"><span data-n="big_vs_tiny" data-f="ratio"></span></div>
+  <div class="say">the energy per forecast when a <b data-n="big_vs_tiny" data-f="bigB"></b> fine-tuned LLM answers the same question.
+    Its peak forecast error: <b data-n="big_vs_tiny" data-f="bigBrier"></b>. Terra's: <b data-n="big_vs_tiny" data-f="tinyBrier"></b>.</div>
+  <div class="src">same <span data-n="big_vs_tiny" data-f="rows"></span> test hours, same RTX 4080 · <span data-src="big_vs_tiny"></span></div>
+</section>
+
+<section class="slide" id="math" data-page="math.html" data-cut>
+  <iframe data-src-live="/deck/math.html" title="The math under the AI"></iframe>
+</section>
+<section class="slide" id="live">
+  <iframe data-src-live="/" title="Terra live map"></iframe>
+</section>
+
+<section class="slide" data-web data-cut>
+  <div class="eyebrow">Where it fits</div>
+  <div class="cols">
+    <div class="col"><div class="k">Torus Spin</div><div class="t">Milliseconds</div><div class="d">Flywheel catches the fast swings.</div></div>
+    <div class="col"><div class="k">Torus Pulse</div><div class="t">Hours</div><div class="d">Battery covers the long peak.</div></div>
+    <div class="col us"><div class="k">Terra</div><div class="t">The load itself</div><div class="d">AI work moves away from the peak, and smooths its own surges. Nothing new to build.</div></div>
+  </div>
+  <div class="say" style="margin-top:44px">Lasso already dispatches Spin and Pulse. Terra hands it a third asset: <b>every GPU on the grid.</b></div>
+  <div class="say" style="font-size:32px;margin-top:22px" data-needs="surge_1mw">Staggered starts shrink a 1 MW AI site's one-second power jump from <b data-n="surge_1mw" data-f="atOnce"></b> to <b data-n="surge_1mw" data-f="staggered"></b>. Less for Spin to catch.</div>
+  <div class="src" data-needs="surge_1mw">one RTX 4080 start measured, the site simulated · <span data-src="surge_1mw"></span></div>
+</section>
+
+<section class="slide" id="utah" data-needs="utah_expansion" data-cut>
+  <iframe data-src-live="/deck/utah.html" title="Where Utah's next power is being built"></iframe>
+</section>
+
+<section class="slide impact" data-web>
+  <div class="eyebrow">Why it matters for Torus</div>
+  <div class="cols">
+    <div class="col"><div class="k">Torus Spin</div><div class="t">Milliseconds</div><div class="d">Flywheel catches the fast swings.</div></div>
+    <div class="col"><div class="k">Torus Pulse</div><div class="t">Hours</div><div class="d">Battery covers the long rush hour.</div></div>
+    <div class="col us"><div class="k">Terra</div><div class="t">The load itself</div><div class="d">Moves the demand: to a region with room, or a later hour. A third asset for Lasso, nothing new to build.</div></div>
+  </div>
+  <div class="worth"><b>$10 million a year</b> for every 100 MW of AI work that can wait <span class="eq">100,000 kW × $100 per kW a year (Rocky Mountain Power's own price for cutting peak load)</span></div>
+  <div class="how-h">How we get there</div>
+  <div class="t-steps how">
+    <div><i>Built</i><b>Forecast the rush, a day ahead</b>50 regions. Utah: <span data-n="utah_catch" data-f="model%">80%</span> of rush hours caught vs <span data-n="utah_catch" data-f="eia%">69%</span> for the utility.</div>
+    <div><i>Next</i><b>Plug into Lasso</b>Pilot with one Utah AI site on Rocky Mountain Power's demand-response program.</div>
+    <div><i>Then</i><b>Every GPU on the grid</b>Utah's regulators have a docket open on a flexible large-load tariff (PSC 24-035-43).</div>
+  </div>
+  <div class="src">Wattsmart Business demand response, Rocky Mountain Power · Utah Code 54-26 (SB 132, 2025), PSC docket 24-035-43 · rush hours caught: held-out 2026 data</div>
+</section>
+
+<div class="count" id="count"></div>
+</div>
+<script>
+const fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); document.getElementById("stage").style.transform = `translate(${(innerWidth - 1600 * k) / 2}px, ${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
+addEventListener("resize", fit); fit();
+const hour = h => `${h % 12 || 12} ${h < 12 ? "AM" : "PM"}`;
+const F = {
+  yearJ: v => `${Math.round(v.year_all_regions_joules)} joules`, effX: v => `${Math.round(v.vs_4b_ratio / 1000)},000×`,
+  hour: v => hour(v), millions: v => `${(v / 1e6).toFixed(0)} million`, s: v => v >= 120 ? `${Math.round(v / 60)} minutes` : `${Math.round(v)} seconds`, wh: v => `${v} Wh`, bulb: v => { const m = v / 10 * 60; return m < 1.5 ? "one minute" : `${Math.round(m)} minutes`; },
+  k: v => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1000)}K`, pct: v => `${v}%`, "model%": v => `${v.model}%`, "eia%": v => `${v.eia}%`,
+  err2026: v => `${v["2026"]}%`, ratio: v => `${v.energy_ratio.toLocaleString()}×`, bigB: v => `${(v.big_params / 1e9).toFixed(1)}B-parameter`,
+  bigBrier: v => v.big_brier.toFixed(3), tinyBrier: v => v.tiny_brier.toFixed(3), rows: v => v.test_rows.toLocaleString(),
+  drop: v => v.power_drop_pct, macBig: v => `${Math.round(v.big.watts)} W`, macTiny: v => `${v.tiny.watts < 10 ? v.tiny.watts.toFixed(1) : Math.round(v.tiny.watts)} W`, speed: v => v.speed_drop_pct, naive: v => v.run_now_in_utah.toFixed(2), ours: v => v.mycelium.toFixed(2),
+  atOnce: v => `${v.jump_1s_at_once_kw} kW`, staggered: v => `${Math.round(v.jump_1s_staggered_kw)} kW`,
+  front: v => `${v.planned_on_wasatch_front_mw} MW`,
+  top10: v => `${v.top10_mw} MW`, topHours: v => `${v.hours} hours`, topShare: v => `${v.share_of_year_pct}%`, room: v => `${v.another_has_room_pct}%`,
+  bigJ: v => `${Math.round(v.big_joules_per_forecast)} joules`, gw: v => `${(v.planned_mw / 1000).toFixed(1)} GW`, ldwp: v => `${v.ldwp_share_pct}%`, gwSwing: v => `${(v / 1000).toFixed(1)} GW`,
+};
+const slides = [...document.querySelectorAll(".slide")];
+let i = 0;
+fetch("numbers.json").then(r => r.json()).then(N => {
+  document.querySelectorAll("[data-n]").forEach(el => { const n = N[el.dataset.n]; if (n) el.textContent = (F[el.dataset.f] ?? String)(n.value); });
+  document.querySelectorAll("[data-src]").forEach(el => { const n = N[el.dataset.src]; if (n) el.textContent = n.source; });
+  document.querySelectorAll("[data-needs]").forEach(el => { if (!N[el.dataset.needs]) el.classList.add("hidden"); });
+  if (N.peaks_differ) peaks(N.peaks_differ.value);
+  if (N.data_types) document.getElementById("types").innerHTML = N.data_types.list.map(t => `<span class="chip">${t}</span>`).join("");
+  // slides built as their own page (data-page) show up only once that page exists
+  Promise.all([...document.querySelectorAll("[data-page]")].map(el => fetch(el.dataset.page, { method: "HEAD" })
+    .then(r => { if (!r.ok) el.classList.add("hidden"); }).catch(() => el.classList.add("hidden"))))
+    .then(() => show(+(location.hash.slice(1) || 1) - 1));
+});
+function show(k) {
+  const vis = slides.filter(s => !s.classList.contains("hidden") && !s.hasAttribute("data-cut"));
+  i = Math.max(0, Math.min(vis.length - 1, k));
+  slides.forEach(s => s.classList.remove("on")); vis[i].classList.add("on");
+  const f = vis[i].querySelector("iframe[data-src-live]"); if (f && !f.src) f.src = f.dataset.srcLive;
+  document.getElementById("count").textContent = `${i + 1} / ${vis.length}`; history.replaceState(null, "", `#${i + 1}`);
+  if (vis[i].hasAttribute("data-web")) web(vis[i]);
+}
+addEventListener("hashchange", () => { const k = +location.hash.slice(1) - 1; if (k !== i) show(k); });
+addEventListener("keydown", e => {
+  if (["ArrowRight", "PageDown", " "].includes(e.key)) show(i + 1);
+  if (["ArrowLeft", "PageUp"].includes(e.key)) show(i - 1);
+  if (e.key === "f") document.documentElement.requestFullscreen?.();
+  // P on the live slide skips the replay to just before Rocky Mountain Power's (simulated) call
+  const live = document.querySelector(".slide.on iframe")?.contentWindow;
+  if (live?.jump && (e.key === "p" || e.key === "P")) live.jump();
+});
+// four grids' average day (numbers.json peaks_differ), each against its own high; dots on each peak hour
+function peaks(P) {
+  const svg = document.getElementById("peaks"), W = 760, H = 400, L = 54, R = 20, T = 24, B = 44, lo = .7;
+  const x = h => L + h / 23 * (W - L - R), y = v => T + (1 - (v - lo) / (1 - lo)) * (H - T - B);
+  const NAME = { ERCO: "Texas", PACE: "Utah", CISO: "California", BPAT: "Pacific NW" }, COL = { PACE: "#c99068", ERCO: "#ece6da", CISO: "#9fb07e", BPAT: "#6e8fa0" };
+  let g = "";
+  for (const h of [0, 6, 12, 18, 23]) g += `<text x="${x(h)}" y="${H - 14}" fill="#9b9591" font-size="17" text-anchor="middle">${h === 0 ? "midnight" : h === 12 ? "noon" : h === 23 ? "11 PM" : h < 12 ? h + " AM" : h - 12 + " PM"}</text>`;
+  for (const v of [.7, .8, .9, 1]) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#34312b"/><text x="${L - 10}" y="${y(v) + 5}" fill="#6f6a64" font-size="15" text-anchor="end">${Math.round(v * 100)}%</text>`;
+  const order = ["BPAT", "CISO", "ERCO", "PACE"];
+  for (const k of order) { const p = P.profile[k]; if (!p) continue;
+    g += `<polyline fill="none" stroke="${COL[k]}" stroke-width="${k === "PACE" ? 5 : 3}" stroke-opacity="${k === "PACE" ? 1 : .8}" points="${p.map((v, h) => `${x(h)},${y(v)}`).join(" ")}"/>`; }
+  for (const k of order) g += `<circle cx="${x(P.peak_hour_mt[k])}" cy="${y(1)}" r="8" fill="${COL[k]}"/>`;
+  document.getElementById("peakKeys").innerHTML = ["ERCO", "PACE", "CISO", "BPAT"].map(k => { const h = P.peak_hour_mt[k];
+    return `<span style="color:${COL[k]}"><i style="background:${COL[k]}"></i>${NAME[k]} peaks ${h % 12 || 12} ${h < 12 ? "AM" : "PM"}</span>`; }).join("");
+  svg.innerHTML = g;
+}
+// faint hyphae behind each slide (seeded, so a slide always looks the same)
+function web(slide) {
+  if (slide.querySelector("canvas.web")) return;
+  const c = Object.assign(document.createElement("canvas"), { width: 1600, height: 900, className: "web" }); slide.prepend(c);
+  const x = c.getContext("2d"); let s = slides.indexOf(slide) * 97 + 11; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  for (let k = 0; k < 160; k++) { let px = 900 + r() * 700, py = r() * 900, a = r() * 6.28; x.beginPath(); x.moveTo(px, py);
+    for (let j = 0; j < 14 + r() * 24; j++) { a += (r() - .5) * .8; px += Math.cos(a) * 9; py += Math.sin(a) * 9; x.lineTo(px, py); }
+    x.strokeStyle = `rgba(159,176,126,${.05 + r() * .09})`; x.lineWidth = .8; x.stroke(); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+node_modules/
+.venv/
+__pycache__/
+.env*
+.vercel*
+.DS_Store
+data/raw/
+models/
+data/train/dataset*.npz

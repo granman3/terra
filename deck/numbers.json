@@ -1,0 +1,376 @@
+{
+ "fall_peak_actual_hour": {
+  "value": 13,
+  "source": "data/train/hourly_v2.parquet",
+  "note": "Utah, Oct 2026, mean demand by local hour"
+ },
+ "fall_peak_forecast_hour": {
+  "value": 18,
+  "source": "data/train/hourly_v2.parquet",
+  "note": "EIA day-ahead forecast, same hours"
+ },
+ "october_forecast_error_pct": {
+  "value": {
+   "2022": 2.8,
+   "2023": 7.9,
+   "2024": 3.2,
+   "2025": 4.3,
+   "2026": 8.9
+  },
+  "source": "data/train/hourly_v2.parquet",
+  "note": "mean absolute % error of EIA day-ahead forecast, Utah, October"
+ },
+ "daily_swing_mw": {
+  "value": 1826,
+  "source": "data/train/hourly_v2.parquet",
+  "note": "PACE 2026, median of each full day's peak minus its low",
+  "days": 298,
+  "mean_low_mw": 5156,
+  "mean_peak_mw": 7197
+ },
+ "utah_top10": {
+  "value": {
+   "peak_mw": 9717,
+   "top10_mw": 972,
+   "hours": 153,
+   "share_of_year_pct": 1.7,
+   "top5_hours": 26
+  },
+  "source": "data/train/hourly_v2.parquet",
+  "note": "PACE 2025, hours with demand at or above 90% of the year's peak"
+ },
+ "peaks_differ": {
+  "value": {
+   "peak_hour_mt": {
+    "BPAT": 19,
+    "CISO": 19,
+    "ERCO": 16,
+    "PACE": 17
+   },
+   "profile": {
+    "BPAT": [
+     0.862,
+     0.835,
+     0.816,
+     0.808,
+     0.809,
+     0.825,
+     0.864,
+     0.912,
+     0.947,
+     0.96,
+     0.959,
+     0.953,
+     0.948,
+     0.945,
+     0.943,
+     0.943,
+     0.95,
+     0.968,
+     0.992,
+     1.0,
+     0.995,
+     0.979,
+     0.949,
+     0.906
+    ],
+    "CISO": [
+     0.842,
+     0.813,
+     0.775,
+     0.749,
+     0.736,
+     0.732,
+     0.749,
+     0.786,
+     0.846,
+     0.915,
+     0.944,
+     0.948,
+     0.947,
+     0.943,
+     0.942,
+     0.94,
+     0.942,
+     0.953,
+     0.984,
+     1.0,
+     0.994,
+     0.977,
+     0.952,
+     0.899
+    ],
+    "ERCO": [
+     0.77,
+     0.75,
+     0.738,
+     0.737,
+     0.749,
+     0.771,
+     0.784,
+     0.805,
+     0.835,
+     0.866,
+     0.898,
+     0.928,
+     0.956,
+     0.976,
+     0.989,
+     0.999,
+     1.0,
+     0.991,
+     0.971,
+     0.949,
+     0.922,
+     0.881,
+     0.837,
+     0.799
+    ],
+    "PACE": [
+     0.806,
+     0.769,
+     0.761,
+     0.756,
+     0.762,
+     0.772,
+     0.79,
+     0.823,
+     0.873,
+     0.91,
+     0.935,
+     0.955,
+     0.968,
+     0.978,
+     0.986,
+     0.991,
+     0.997,
+     1.0,
+     0.977,
+     0.941,
+     0.915,
+     0.897,
+     0.869,
+     0.835
+    ]
+   },
+   "utah_rush_hours": 2105,
+   "another_has_room_pct": 85
+  },
+  "source": "data/train/hourly_v2.parquet",
+  "note": "2026, Utah (Mountain) time; rush = demand >= 95% of that day's high"
+ },
+ "grids": {
+  "value": 50,
+  "source": "data/train/checks_v2.json"
+ },
+ "data_types": {
+  "value": 6,
+  "source": "data/train/checks_v2.json",
+  "list": [
+   "Grid operations",
+   "Generation mix",
+   "Weather forecasts",
+   "Sun position",
+   "Calendar + holidays",
+   "Energy markets"
+  ]
+ },
+ "raw_values": {
+  "value": 32639616,
+  "source": "data/train/checks_v2.json",
+  "breakdown": {
+   "eia930": 17620173,
+   "weather_forecasts": 15008245,
+   "markets": 11141,
+   "sun_position": 2144166,
+   "holidays": 57,
+   "total": 32639616
+  }
+ },
+ "hours_of_grid_history": {
+  "value": 2144166,
+  "source": "data/train/checks_v2.json"
+ },
+ "features_per_sample": {
+  "value": 492,
+  "source": "data/train/checks_v2.json"
+ },
+ "samples": {
+  "value": 1036098,
+  "source": "data/train/checks_v2.json",
+  "split": [
+   754786,
+   109476,
+   171836
+  ]
+ },
+ "tiny_params": {
+  "value": 561016,
+  "source": "out/v2/metrics.json"
+ },
+ "train_seconds": {
+  "value": 80.3,
+  "source": "out/v2/metrics.json",
+  "device": "NVIDIA GeForce RTX 4080 SUPER"
+ },
+ "train_energy_wh": {
+  "value": 5.6,
+  "source": "out/v2/metrics.json"
+ },
+ "brier_vs_eia_pct": {
+  "value": 29,
+  "source": "out/v2/metrics.json",
+  "model": 0.05039212480187416,
+  "eia": 0.0713868960738182
+ },
+ "utah_catch": {
+  "value": {
+   "model": 80,
+   "eia": 69
+  },
+  "source": "out/v2/metrics.json"
+ },
+ "peak_hours_hit": {
+  "value": {
+   "run_now_in_utah": 1.14,
+   "mycelium": 0.04
+  },
+  "source": "out/v2/metrics.json",
+  "note": "4 h job that can wait 16 h, routed between 4 grids, 1162 test cases"
+ },
+ "gpu_4080": {
+  "value": {
+   "watts_before": 276,
+   "watts_after": 196,
+   "power_drop_pct": 29,
+   "speed_drop_pct": 6
+  },
+  "source": "out/sweep/jtoken.csv",
+  "note": "RTX 4080 Super, 27B model decoding, default clocks vs SM clock locked at 2400 MHz"
+ },
+ "mac_downshift": {
+  "value": {
+   "idle_watts": 3.6,
+   "big": {
+    "watts": 30.8,
+    "forecasts_per_s": 0.8,
+    "joules_per_forecast": 38.5454,
+    "model": "big"
+   },
+   "tiny": {
+    "watts": 3.8,
+    "forecasts_per_s": 198.9,
+    "joules_per_forecast": 0.0198,
+    "model": "tiny"
+   },
+   "power_drop_pct": 88,
+   "measured": "2026-10-27 16:04",
+   "machine": "MacBook Pro M4 Pro",
+   "power": "CPU+GPU+ANE via macmon"
+  },
+  "source": "out/mac/downshift.json"
+ },
+ "solar_forecast": {
+  "value": {
+   "skill_vs_persistence_pct": 42.1,
+   "nmae_pct": 7.08,
+   "persistence_nmae_pct": 12.53,
+   "slc_only_nmae_pct": 10.49,
+   "capacity_mw": 3107
+  },
+  "source": "out/solar/metrics.json",
+  "note": "daylight hours, 2026-01-01 onward"
+ },
+ "surge_1mw": {
+  "value": {
+   "gpus": 2862,
+   "mw": 1.0,
+   "stagger_s": 60,
+   "jump_1s_at_once_kw": 813,
+   "jump_1s_staggered_kw": 15.6,
+   "smaller_x": 52
+  },
+  "source": "out/surge/metrics.json",
+  "note": "one GPU measured, the site is N identical GPUs (simulated)"
+ },
+ "utah_expansion": {
+  "value": {
+   "planned_mw": 3587,
+   "ldwp_share_pct": 69,
+   "planned_on_wasatch_front_mw": 0,
+   "planned_by_county_mw": {
+    "Millard": 2074,
+    "Iron": 1013,
+    "Beaver": 398,
+    "Kane": 95,
+    "Box Elder": 8
+   },
+   "planned_by_kind_mw": {
+    "solar": 1786,
+    "pumped hydro": 1000,
+    "battery": 706,
+    "geothermal": 88,
+    "gas/other": 8
+   }
+  },
+  "source": "out/expansion/utah.json",
+  "source_data": "EIA-860M, september 2026 (september_generator2026.xlsx)"
+ },
+ "tiny_efficiency": {
+  "value": {
+   "forecasts_per_s": 305389,
+   "joules_per_forecast": 4.52e-05,
+   "year_all_regions_joules": 19.8,
+   "params": 561016,
+   "vs_4b_ratio": 690000.0,
+   "big_joules_per_forecast": 38.5454
+  },
+  "source": "out/mac/tiny_efficiency.json",
+  "note": "one forecast = one power region's next 24 h; ratio uses total chip power on both sides, same MacBook"
+ },
+ "model_sizes": {
+  "value": [
+   {
+    "name": "Terra",
+    "params": 561016,
+    "energy_x": 1,
+    "fewer_errors_pct": 29,
+    "shipped": true
+   },
+   {
+    "name": "Transformer",
+    "params": 4779267,
+    "energy_x": 590.0,
+    "fewer_errors_pct": 31
+   },
+   {
+    "name": "Fine-tuned LLM",
+    "params": 4000000000.0,
+    "energy_x": 690000.0,
+    "fewer_errors_pct": 3,
+    "earlier_test": true
+   }
+  ],
+  "source": "out/v2/metrics.json, out/v3_candidate/, out/mac/",
+  "note": "energy per forecast vs Terra; fewer errors = Brier vs the utility's calibrated day-ahead forecast, held-out 2026"
+ },
+ "utah_savings": {
+  "value": {
+   "week": "2026-10-19..2026-10-26",
+   "site": "one simulated 1,000-chip AI data center in Utah (RTX 4080-class, 276 W each), jobs as on the map",
+   "flexible_jobs": 66,
+   "moved_out_of_utah": 66,
+   "delayed_in_utah": 0,
+   "utah_rush_hours": 37,
+   "kwh_off_utah_rush": 775,
+   "avg_kw_off_rush": 21,
+   "max_kw_off_rush": 27,
+   "energy_usd": 26.6,
+   "avg_price_usd_kwh": 0.0343,
+   "capacity_usd_week": 40,
+   "capacity_usd_year": 2095,
+   "usd_kw_year": 100
+  },
+  "source": "deck/utah_savings.json"
+ }
+}

@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12110f">
+<title>Terra</title>
+<meta name="description" content="Power grids have rush hours. Terra predicts them for 50 US regions and moves AI work around them, automatically.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='7' fill='%239fb07e'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --soil:#12110f; --soil-2:#1b1a17; --soil-3:#262420; --line:#34312b; --stone:#9b9591; --stone-2:#bfbcb8; --sand:#ece6da; --sage:#9fb07e; --sage-dim:#6e755f; --copper:#c99068; --warn:#d9785f; }
+  * { box-sizing: border-box; margin: 0; -webkit-tap-highlight-color: transparent; }
+  html { background: var(--soil); }
+  body { min-height: 100vh; background: radial-gradient(140% 70% at 30% 0%, #1d1b17 0%, var(--soil) 55%, #0d0c0b 100%) fixed; color: var(--sand);
+         font-family: Figtree, system-ui, sans-serif; padding: env(safe-area-inset-top) 0 calc(24px + env(safe-area-inset-bottom)); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 0 6px; }
+  .brand { font-size: 24px; letter-spacing: -.01em; }
+  .auto { display: inline-flex; align-items: center; gap: 8px; font: 500 12px "JetBrains Mono", monospace; letter-spacing: .08em; padding: 7px 12px;
+          border-radius: 999px; border: 1px solid var(--sage-dim); color: var(--sage); background: rgba(159,176,126,.08); }
+  .auto i { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 0 rgba(159,176,126,.6); animation: pulse 1.8s infinite; }
+  .auto.off { color: var(--warn); border-color: var(--warn); background: rgba(217,120,95,.08); } .auto.off i { background: var(--warn); animation: none; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(159,176,126,0); } 100% { box-shadow: 0 0 0 0 rgba(159,176,126,0); } }
+  .clock { font: 13px "JetBrains Mono", monospace; color: var(--stone-2); margin-bottom: 4px; } .clock b { font-weight: 500; }
+  .tag { font-size: 15px; color: var(--stone); line-height: 1.4; }
+  .layout { display: grid; gap: 14px; margin-top: 10px; }
+  @media (min-width: 900px) { .layout { grid-template-columns: 1.45fr 1fr; align-items: start; } .side { position: sticky; top: 12px; } }
+  .mapbox { position: relative; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(180deg, #1a1916 0%, #121110 100%); overflow: hidden; touch-action: manipulation; transition: border-color .4s; }
+  .mapbox.rush { border-color: var(--copper); } .mapbox.soon { border-color: #b8a06a; }
+  .m-head { display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: center; padding: 14px 16px 0; }
+  .m-clock { flex: none; min-width: 86px; } .m-clock b { display: block; font-size: 30px; font-weight: 400; letter-spacing: -.02em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .m-clock span { font: 12px "JetBrains Mono", monospace; color: var(--stone); } .m-clock i { font-style: normal; margin-right: 4px; }
+  .m-say { display: contents; } .m-state { font-size: 18px; font-weight: 500; color: var(--sage); line-height: 1.2; transition: color .4s; }
+  .mapbox.rush .m-state { color: var(--copper); } .mapbox.soon .m-state { color: #d7b86e; } .mapbox.off .m-state { color: var(--warn); }
+  .m-doing { grid-column: 1 / -1; font-size: 14px; line-height: 1.4; color: var(--sand); margin-top: 8px; min-height: 4.2em; }
+  svg.map { display: block; width: 100%; height: auto; }
+  .day { padding: 0 16px 6px; } .day svg { display: block; width: 100%; height: auto; }
+  .day-lbl { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--stone); margin-bottom: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 9px 16px 11px; font-size: 12px; color: var(--stone); border-top: 1px solid var(--line); }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+  .hint { position: absolute; left: 12px; top: 10px; font-size: 12px; color: var(--stone); pointer-events: none; }
+  .card { background: rgba(27,26,23,.88); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card h3 { font-size: 11.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; display: flex; justify-content: space-between; gap: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat { background: var(--soil-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .stat .n { font-size: 24px; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -.02em; } .stat .l { font-size: 11.5px; color: var(--stone); margin-top: 2px; line-height: 1.3; }
+  .stat .n.good { color: var(--sage); } .stat .n.bad { color: var(--warn); }
+  .actions { display: grid; gap: 10px; }
+  button { font: 500 16px Figtree, sans-serif; border-radius: 12px; padding: 15px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--soil-3); color: var(--sand); width: 100%; text-align: left; display: flex; align-items: center; gap: 12px; }
+  button .ic { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 16px; flex: none; }
+  button small { display: block; font-size: 12.5px; color: var(--stone); font-weight: 400; margin-top: 2px; }
+  button.primary { background: var(--sage); border-color: var(--sage); color: #151a0f; } button.primary small { color: #3c4630; } button.primary .ic { background: rgba(0,0,0,.12); }
+  button.peak { background: rgba(201,144,104,.14); border-color: var(--copper); } button.peak .ic { background: var(--copper); color: #1a120c; }
+  button:active { transform: scale(.985); }
+  .switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; }
+  .switch small { display: block; color: var(--stone); font-size: 12.5px; margin-top: 2px; }
+  .tog { width: 52px; height: 30px; border-radius: 999px; background: var(--sage); position: relative; flex: none; border: 0; padding: 0; cursor: pointer; }
+  .tog::after { content: ""; position: absolute; top: 3px; left: 25px; width: 24px; height: 24px; border-radius: 50%; background: #151a0f; transition: left .2s; }
+  .tog.off { background: var(--soil-3); outline: 1px solid var(--line); } .tog.off::after { left: 3px; background: var(--stone); }
+  .fleet { display: flex; align-items: baseline; gap: 10px; } .fleet .w { font-size: 40px; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .fleet .w small { font-size: 16px; color: var(--stone); } .fleet .d { font: 13px "JetBrains Mono", monospace; color: var(--sage); }
+  .note { font-size: 12px; color: #807a73; margin-top: 8px; line-height: 1.45; }
+  .log { list-style: none; padding: 0; max-height: 260px; overflow: auto; font-size: 13.5px; line-height: 1.4; }
+  .log li { padding: 8px 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 58px 1fr; gap: 8px; animation: in .4s ease; }
+  .log li:last-child { border-bottom: 0; } .log time { font: 12px "JetBrains Mono", monospace; color: var(--stone); padding-top: 1px; }
+  .log li.me { color: var(--sand); } .log li.me b { color: var(--sage); } .log li.warn b { color: var(--warn); } .log li.shed b { color: var(--copper); }
+  @keyframes in { from { opacity: 0; transform: translateY(-4px); } }
+  .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .facts div { background: var(--soil-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px; } .facts b { display: block; font-size: 22px; font-weight: 300; } .facts span { font-size: 12px; color: var(--stone); }
+  .ahead .head { font-size: 19px; line-height: 1.3; margin-bottom: 2px; } .ahead .head b { color: var(--copper); font-weight: 500; } .ahead .head.calm b { color: var(--sage); }
+  .plan { list-style: none; padding: 0; margin-top: 10px; font-size: 14px; line-height: 1.4; } .plan li { display: grid; grid-template-columns: 62px 1fr; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+  .plan time { font: 12px "JetBrains Mono", monospace; color: var(--stone); padding-top: 2px; }
+  .score { display: flex; justify-content: space-between; align-items: baseline; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--stone-2); }
+  .score b { font-size: 22px; font-weight: 300; color: var(--sage); white-space: nowrap; margin-left: 10px; }
+  .barsx { display: flex; align-items: flex-end; gap: 2px; height: 64px; margin: 10px 0 4px; } .barsx i { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; position: relative; }
+  .barsx i.now { outline: 1px solid var(--sand); outline-offset: 1px; }
+  .rooms { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .room { font: 12px "JetBrains Mono", monospace; color: var(--stone-2); } .room .bar { height: 6px; background: var(--soil-3); border-radius: 3px; margin-top: 5px; overflow: hidden; }
+  .room .fill { height: 100%; background: var(--sage); transition: width .6s; } .room.full { color: var(--copper); } .room.full .fill { background: var(--copper); }
+  .surge { font: 12.5px "JetBrains Mono", monospace; color: var(--stone-2); margin-top: 10px; line-height: 1.45; } .surge b { color: var(--sage); font-weight: 500; }
+  .how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; }
+  .how div { background: rgba(27,26,23,.7); border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 13px; color: var(--stone-2); line-height: 1.35; }
+  .how b { display: block; font-size: 15px; font-weight: 500; color: var(--sand); margin-bottom: 3px; } .how i { font-style: normal; color: var(--sage); font: 500 12px "JetBrains Mono", monospace; }
+  .simple { max-width: 640px; }
+  .one { font-size: 17px; color: var(--stone-2); margin: 2px 0 12px; } .one b { color: var(--copper); font-weight: 500; }
+  .status { border-radius: 16px; padding: 16px 18px; border: 1px solid var(--sage-dim); background: rgba(159,176,126,.08); transition: background .4s, border-color .4s; }
+  .status.soon { border-color: #b8a06a; background: rgba(201,170,104,.10); } .status.rush { border-color: var(--copper); background: rgba(201,144,104,.16); }
+  .st-when { font: 13px "JetBrains Mono", monospace; color: var(--stone-2); }
+  .st-state { font-size: 34px; font-weight: 500; letter-spacing: -.01em; margin: 2px 0 4px; color: var(--sage); } .soon .st-state { color: #d7b86e; } .rush .st-state { color: var(--copper); }
+  .st-doing { font-size: 16px; line-height: 1.4; color: var(--sand); }
+  .benefit { margin-top: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; background: rgba(27,26,23,.88); }
+  .b-lbl { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); } .b-lbl span { letter-spacing: 0; text-transform: none; }
+  .b-big { font-size: 64px; font-weight: 300; letter-spacing: -.03em; line-height: 1.05; color: var(--sage); font-variant-numeric: tabular-nums; } .b-big small { font-size: 22px; color: var(--stone); letter-spacing: 0; }
+  .b-sub { font-size: 15px; color: var(--stone-2); } .b-sub b { color: var(--sand); font-weight: 500; }
+  .b-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; } .b-row div { background: var(--soil-2); border-radius: 10px; padding: 10px 12px; }
+  .b-row b { display: block; font-size: 28px; font-weight: 300; font-variant-numeric: tabular-nums; } .b-row span { font-size: 12.5px; color: var(--stone); }
+  .cmp { margin-top: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 12px 16px; background: rgba(27,26,23,.88); }
+  .cmp-h, .cmp-r { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; align-items: baseline; }
+  .cmp-h { font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--stone); padding-bottom: 6px; } .cmp-h .w { color: var(--sage); }
+  .cmp-r { padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--stone-2); }
+  .cmp-r b { font-size: 20px; font-weight: 400; color: var(--stone); font-variant-numeric: tabular-nums; } .cmp-r b.w { color: var(--sage); font-weight: 500; }
+  .why { margin-top: 8px; font-size: 15px; line-height: 1.45; color: var(--stone-2); } .why b { color: var(--copper); font-weight: 500; }
+  .problem { margin-top: 16px; } .problem h2 { font-size: 22px; font-weight: 400; line-height: 1.3; letter-spacing: -.01em; } .problem h2 b { color: var(--sage); font-weight: 500; }
+  .proof { display: grid; gap: 8px; margin-top: 12px; } .proof div { border-left: 2px solid var(--line); padding: 2px 0 2px 12px; font-size: 14px; line-height: 1.45; color: var(--stone-2); }
+  .proof .k { display: block; font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-bottom: 1px; } .proof b { color: var(--sand); font-weight: 500; }
+  .fit { margin-top: 14px; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; background: rgba(27,26,23,.88); }
+  .fit-lbl { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; }
+  .fit-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .fit-cols div { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font-size: 12.5px; color: var(--stone); line-height: 1.35; }
+  .fit-cols b { display: block; font-size: 15px; font-weight: 500; color: var(--sand); margin-bottom: 2px; } .fit-cols .t { border-color: var(--sage); } .fit-cols .t b { color: var(--sage); }
+  .fit-f { margin-top: 10px; font-size: 13.5px; color: var(--stone-2); line-height: 1.45; } .fit-f b { color: var(--sand); font-weight: 500; }
+  .cmp-f { font-size: 11.5px; color: #807a73; margin-top: 6px; line-height: 1.4; }
+  .simple .actions { margin-top: 14px; } .simple .mapbox { margin-top: 6px; } .simple .why { margin-top: 14px; }
+  .more { margin-top: 14px; } .more summary { cursor: pointer; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; font-size: 15px; color: var(--stone-2); list-style: none; }
+  .more summary::after { content: "  ▾"; color: var(--stone); } .more[open] summary::after { content: "  ▴"; }
+  .more > * + * { margin-top: 12px; }
+  footer { color: #77726c; font-size: 12px; line-height: 1.5; margin-top: 18px; }
+  /* bottom sheet */
+  .scrim { position: fixed; inset: 0; background: rgba(0,0,0,.5); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 10; }
+  .sheet { position: fixed; left: 0; right: 0; bottom: 0; z-index: 11; max-width: 560px; margin: 0 auto; background: #1b1a17; border: 1px solid var(--line); border-bottom: 0;
+           border-radius: 18px 18px 0 0; padding: 10px 18px calc(20px + env(safe-area-inset-bottom)); transform: translateY(105%); transition: transform .25s ease; max-height: 85vh; overflow: auto; }
+  .open .scrim { opacity: 1; pointer-events: auto; } .sheet.on { transform: none; }
+  .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 12px; }
+  .sheet h2 { font-size: 22px; font-weight: 400; margin-bottom: 4px; } .sheet .sub { color: var(--stone); font-size: 14px; margin-bottom: 14px; }
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0 14px; }
+  .seg button { padding: 11px 6px; font-size: 14px; text-align: center; justify-content: center; display: block; }
+  .seg button.on { border-color: var(--sage); color: var(--sage); background: rgba(159,176,126,.1); }
+  .lbl { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--stone); }
+  .result { margin-top: 14px; padding: 14px; border-radius: 12px; border: 1px solid var(--sage-dim); background: rgba(159,176,126,.07); display: none; }
+  .result.on { display: block; animation: in .3s ease; } .result .big { font-size: 26px; margin: 2px 0 6px; } .result ul { padding-left: 18px; color: var(--stone-2); font-size: 14px; line-height: 1.5; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 70px; margin: 8px 0 4px; } .bars i { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; }
+  .axis { display: flex; justify-content: space-between; font: 11px "JetBrains Mono", monospace; color: var(--stone); }
+  .kv { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 12px; } .kv div { background: var(--soil-2); border-radius: 10px; padding: 9px; } .kv b { display: block; font-size: 18px; font-weight: 400; } .kv span { font-size: 11.5px; color: var(--stone); }
+  .close { margin-top: 14px; justify-content: center; }
+</style>
+</head>
+<body>
+<div class="wrap simple">
+  <header><div class="brand">Terra</div><div class="auto" id="auto"><i></i><span>AUTOPILOT ON</span></div></header>
+  <p class="one">Moves AI work out of the power grid's <b>rush hour</b>, automatically.</p>
+
+  <section class="mapbox" id="stBox">
+    <div class="m-head">
+      <div class="m-clock"><b id="mHour">—</b><span><i id="mSun"></i><span id="mDay"></span></span></div>
+      <div class="m-say"><div class="m-state" id="stState">loading…</div><div class="m-doing" id="stDoing"></div></div>
+    </div>
+    <svg class="map" id="map" viewBox="0 0 960 590" role="img" aria-label="Map of US power regions"></svg>
+    <div class="day"><div class="day-lbl"><span>Utah, today</span><span id="dayNote"></span></div><svg id="daySvg" viewBox="0 0 960 172"></svg></div>
+    <div class="legend"><span><i style="background:var(--sage)"></i>column height = how hard that grid is working</span><span><i style="background:var(--copper)"></i>rush hour</span><span><i style="background:var(--sand);border-radius:50%"></i>AI work Terra moved</span></div>
+  </section>
+
+  <div class="actions">
+    <button class="peak" id="btnPeak"><span class="ic">⚡</span><span>Watch it answer the utility's call<small>Skips to Tuesday's call (simulated). Then nobody touches anything.</small></span></button>
+  </div>
+  <section class="problem">
+    <h2>The grid can move power plants and energy. It can't move demand. <b>AI work can move.</b></h2>
+    <div class="proof" id="proof"></div>
+  </section>
+
+  <section class="benefit">
+    <div class="b-lbl">In one real week, Terra took <span id="bSpan"></span></div>
+    <div class="b-big"><span id="bKw">0</span><small> kW</small></div>
+    <div class="b-sub">off Utah's grid each hour the utility called, like <b id="bHomes">0 homes</b> · <b id="bKwh">0 kWh</b> over the week · <b id="bUsd">$0</b>*</div>
+    <div class="b-row"><div><b id="bJobs">0</b><span>AI jobs moved out of rush hour</span></div><div><b id="bHours">0</b><span>hours of utility calls answered, with no one touching it</span></div></div>
+  </section>
+
+  <section class="cmp">
+    <div class="cmp-h"><span></span><span>Without Terra</span><span class="w">With Terra</span></div>
+    <div class="cmp-r"><span>Rush hour an AI job runs into</span><b id="cNoJob">—</b><b class="w" id="cJob">—</b></div>
+    <div class="cmp-r"><span>Utah rush hours seen coming</span><b id="cNoCatch">—</b><b class="w" id="cCatch">—</b></div>
+    <div class="cmp-f">Measured on real 2026 data the model never saw. "Without" = run right away, using Rocky Mountain Power's own day-ahead forecast.</div>
+  </section>
+
+  <section class="fit">
+    <div class="fit-lbl">Where Terra fits with Torus</div>
+    <div class="fit-cols">
+      <div><b>Torus Spin</b>Milliseconds. A flywheel catches sudden swings.</div>
+      <div><b>Torus Pulse</b>Hours. A battery covers the long peak.</div>
+      <div class="t"><b>Terra</b>The load itself. AI work moves or saves power. Nothing new to build.</div>
+    </div>
+    <div class="fit-f" id="fitF"></div>
+  </section>
+
+
+
+  <details class="more"><summary>How it works, in detail</summary>
+    <div class="clock" id="clock"></div>
+    <div class="how">
+      <div><i>1</i><b>Predict</b>When will each region hit its rush hour? Checked every hour.</div>
+      <div><i>2</i><b>Move</b>AI work that can wait goes to a calmer region or a later time.</div>
+      <div><i>3</i><b>Save</b>Work that can't move switches to power-saving mode, using 29% less power.</div>
+    </div>
+    <div class="card ahead"><h3><span>Utah · the next 24 hours</span><span>prediction</span></h3>
+        <div class="head" id="aHead"></div>
+        <div class="barsx" id="aBars"></div><div class="axis" id="aAxis"></div>
+        <ul class="plan" id="aPlan"></ul>
+        <div class="score"><span id="aScoreL">How often the 3-hours-ahead prediction was right</span><b id="aScore">—</b></div>
+      </div>
+      <div class="card"><h3><span>How full each AI data center is</span><span>simulated</span></h3>
+        <div class="rooms" id="rooms"></div>
+        <div class="surge" id="surgeLine"></div>
+        <div class="note">A job only goes where there is room for its whole 4-hour run. If the best place is full, it goes to the next best. Jobs also start a few at a time over a minute, so there's less sudden swing for a flywheel like Torus Spin to catch.</div>
+      </div>
+      <div class="card"><h3><span>What Terra is doing, live</span><span>newest first</span></h3><ul class="log" id="log"></ul></div>
+<div class="card" style="display:none"><h3><span>What it has done on its own</span><span id="tick"></span></h3>
+        <div class="stats">
+          <div class="stat"><div class="n" id="sJobs">0</div><div class="l">AI jobs scheduled, no human involved</div></div>
+          <div class="stat"><div class="n good" id="sAvoid">0</div><div class="l">hours of AI work kept out of rush hour</div></div>
+          <div class="stat"><div class="n" id="sShed">0</div><div class="l" id="sShedL">kWh of power saved during rush hour</div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px"><h3><span>The numbers behind it</span></h3>
+    <div class="facts" id="facts"></div>
+    <div class="note">This replays a real week of US power data (Oct 19–25, 2026, from the U.S. Energy Information Administration) that the model never saw while learning. Every prediction here is the real model's; the scheduling runs live on your phone. "Rush hour" = demand within 5% of that day's high. The data centers, how full they are and the utility's call are simulated; the jobs are simulated too, but in the real mix of Alibaba's 2026 trace of 155,410 GPUs; the swing numbers scale up one measured chip.</div>
+  </div>
+  </details>
+  <p class="note" style="margin-top:12px">* Dollars: Rocky Mountain Power's Wattsmart Business program pays $100 per kW a year for load it can cut on call, up to 65 hours a year. This is one week's share for the kW cut, plus Utah's real wholesale price for each kWh not used (CAISO real-time market, PacifiCorp East). The call itself (Tue, noon–2 PM) is simulated: Rocky Mountain Power lists its real calls in an annual report to the Utah PSC, and none fell in this week. Its real Wattsmart Business calls run 15–60 minutes (24 in 2023–25); the replay stretches this one to 2 hours so you can see it. kWh are computed from the measured chip power. Homes use the EIA's 2024 Utah average of 774 kWh a month (about 1.06 kW). The Utah data center (1,000 chips) and its jobs are simulated (the job mix follows Alibaba's 2026 GPU trace); the grid data, the prices and every prediction are real.</p>
+  <footer>Terra · Granite Tait · Hard Tech Hackathon, Oct 28, 2026</footer>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="gridSheet">
+  <div class="grab"></div>
+  <h2 id="gName"></h2><div class="sub" id="gSub"></div>
+  <div class="lbl">Chance of rush hour, next 24 hours</div>
+  <div class="bars" id="gBars"></div><div class="axis"><span>now</span><span>+12 h</span><span>+24 h</span></div>
+  <div class="kv" id="gKv"></div>
+  <button class="close" id="closeGrid">Close</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const C = { sage: "#9fb07e", copper: "#c99068", sand: "#ece6da", stone: "#9b9591", warn: "#d9785f" };
+const NAMES = { PACE: "Utah", CISO: "California", BPAT: "Pacific Northwest", ERCO: "Texas" };
+const JOB_NAMES = { "nightly-evals": "Nightly AI testing", "embed-catalog": "Product search update", "chat-support": "Customer chat", "finetune-ckpt": "AI model training", "batch-translate": "Document translation" };
+const HOME_KW = 1.06, HOME_KWH_DAY = 25.4; // average Utah home (EIA 2024, table 5A): 774 kWh a month
+const homes = kw => Math.round(kw / HOME_KW).toLocaleString();
+const clean = g => g < 150 ? "very clean" : g < 400 ? "mixed" : "mostly fossil";
+const when = w => w === "now" ? "starting now" : `starting ${w}`;
+const hrs = n => `${n} hour${n === 1 ? "" : "s"}`;
+const WAITS = [["now", 0], ["in 3 h", 3], ["in 6 h", 6], ["in 12 h", 12]], JOB_HOURS = 4;
+let AUTO_JOBS = [];  // the real job mix (router/src/jobs.ts via data/week.json): one arrives each replay hour
+const TICK_MS = 1500, GPUS = 1000, W_ON = 276, W_LOCK = 196, W_IDLE = 30;
+// slow down only while Rocky Mountain Power calls a demand-response event, the same rule as the stage router
+// (train/math_layer.py, enroll). The replay week's call is simulated (data/dr_event.json). RUSH_LIKELY only colors the
+// forecast and drives "rush hour soon"; routing still uses the full forecast.
+const RUSH_LIKELY = 0.5, DR_USD_KW_YEAR = 100;  // Wattsmart Business: $100 per kW a year, up to 65 h of calls
+const calls = utc => W.events.has(utc);
+let W, i = 0, auto = true, shedding = false, jobs = 0, avoided = 0, shedKwh = 0, proj, pos = {};
+
+const DATA_V = "2026-10-27c";  // bump when web/data changes, so phones that visited earlier don't keep old data
+const ld = d3.json("data/week.json?v=" + DATA_V);
+const pr = d3.json("data/prices.json?v=" + DATA_V);  // real PACE wholesale $/kWh per replay hour (train/rush_prices.py)
+const dr = d3.json("data/dr_event.json?v=" + DATA_V);  // simulated utility call hours (train/math_layer.py)
+const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const mt = utc => new Date(utc * 1000).toLocaleString("en-US", { timeZone: "America/Denver", weekday: "short", hour: "numeric" });
+const name = id => NAMES[id] ?? `${W.grids[id].city} area`;
+
+// --- routing: the same rule as router/src/decide.ts, on the real model's forecasts ---
+function options(h, dl) {
+  const out = [];
+  for (const r of W.route) { const f = h.g[r]; if (!f) continue;
+    for (const [label, start] of WAITS) { if (start + JOB_HOURS > Math.max(dl, JOB_HOURS)) continue;
+      let peak = 0, g = 0; for (let k = start; k < start + JOB_HOURS; k++) { peak += f.p[k] / 100; g += f.c[k]; }
+      out.push({ region: r, wait: label, start, cost: peak + g / JOB_HOURS / 1000, peak, g: g / JOB_HOURS }); } }
+  return out.sort((a, b) => a.cost - b.cost);
+}
+// --- site room: the same rule as router/src/capacity.ts (site sizes and in-house load are simulated) ---
+const SITE_GPUS = { PACE: 1000, CISO: 800, BPAT: 600, ERCO: 800 }, HORIZON = 48, STAGGER_S = 60;
+const booked = Object.fromEntries(Object.keys(SITE_GPUS).map(r => [r, new Float64Array(HORIZON)])); let lastUtc = 0;
+const inHouse = (utc, tz) => { const h = +new Date(utc * 1000).toLocaleString("en-US", { timeZone: tz, hour: "numeric", hourCycle: "h23" }); return .45 + .3 * Math.exp(-(((h - 14) / 4) ** 2)); };
+function advance(utc) {
+  const dh = lastUtc ? Math.round((utc - lastUtc) / 3600) : 0; lastUtc = utc;
+  for (const b of Object.values(booked)) { if (dh < 0 || dh >= HORIZON) b.fill(0); else if (dh > 0) { b.copyWithin(0, dh); b.fill(0, HORIZON - dh); } }
+}
+const used = (r, h) => SITE_GPUS[r] * inHouse(lastUtc + h * 3600, W.grids[r].tz) + booked[r][h];
+const fits = (r, s, g) => { for (let h = s; h < s + JOB_HOURS; h++) if (used(r, h) + g > SITE_GPUS[r]) return false; return true; };
+function withRoom(opts, gpus) {
+  const best = opts.find(o => fits(o.region, o.start, gpus)); if (!best) return null;
+  for (let h = best.start; h < best.start + JOB_HOURS; h++) booked[best.region][h] += gpus;
+  return { ...best, gpus, skipped: [...new Set(opts.slice(0, opts.indexOf(best)).map(o => o.region))].filter(r => r !== best.region) };
+}
+function rooms() { $("rooms").innerHTML = W.route.map(r => { const b = Math.min(1, used(r, 0) / SITE_GPUS[r]); return `<div class="room${b > .97 ? " full" : ""}">${({ PACE: "Utah", CISO: "Calif.", BPAT: "Pac NW", ERCO: "Texas" })[r]}<br>${b > .97 ? "full" : Math.round(b * 100) + "% full"}<div class="bar"><div class="fill" style="width:${b * 100}%"></div></div></div>`; }).join(""); }
+// surge: the same as router/src/surge.ts, from one measured RTX 4080 job start
+function jump(n, stagger) {
+  const g = W.gpuStart, offs = Array.from({ length: n }, (_, k) => stagger ? Math.round(k * stagger / n / g.dt) : 0);
+  const steps = Math.max(...offs) + g.watts.length + 10, tot = new Float64Array(steps);
+  for (const o of offs) for (let t = 0; t < steps; t++) tot[t] += t < o ? g.idle : g.watts[Math.min(t - o, g.watts.length - 1)];
+  const win = Math.round(1 / g.dt); let best = 0; for (let t = 0; t + win < steps; t++) best = Math.max(best, tot[t + win] - tot[t]); return best / 1000;
+}
+const surgeText = gpus => `Starting its ${gpus} chips a few at a time: the sudden power swing drops from <s>${jump(gpus, 0).toFixed(1)} kW</s> to <b>${jump(gpus, STAGGER_S).toFixed(2)} kW</b>, less for a flywheel like Torus Spin to catch`;
+
+
+// actual peak hours a job overlapped (from the real demand data, which the model didn't see)
+function hit(at, region, start) { let n = 0; for (let k = start; k < start + JOB_HOURS; k++) n += W.hours[(at + k) % W.hours.length].g[region]?.k ?? 0; return n; }
+function place(job, at, manual) {
+  const h = W.hours[at];
+  if (!auto || job.dl === 0) return { region: "PACE", wait: "now", start: 0, peak: h.g.PACE.p.slice(0, 4).reduce((a, b) => a + b, 0) / 100, g: h.g.PACE.c.slice(0, 4).reduce((a, b) => a + b, 0) / 4, forced: job.dl === 0 ? "must run now" : "autopilot off" };
+  const o = withRoom(options(h, job.dl), Math.round(job.gpuh / JOB_HOURS));
+  return o ?? { region: "PACE", wait: "now", start: 0, peak: 0, g: 0, forced: "no room anywhere" };
+}
+
+// --- map: the US tilted back like a table top, one 3D column per routing region ---
+// Column height = that grid's power use right now, as a share of today's high (real EIA data).
+// Copper = rush hour right now. AI jobs Terra moves fly as arcs that lift off the map.
+const TILT = 0.56, VX = 480;  // vertical squash, and the line the map narrows toward (a little perspective)
+const tilt = (x, y) => { const k = 0.82 + 0.18 * (y / 800); return [VX + (x - VX) * k, 110 + y * TILT]; };
+const colH = s => 20 + 150 * Math.max(0, Math.min(1, (s - 0.55) / 0.45));
+let cols = {}, flat = {};
+function drawMap(us) {
+  const svg = d3.select("#map");
+  const nation = topojson.merge(us, us.objects.states.geometries.filter(g => !["02", "15", "72", "78", "60", "66", "69"].includes(g.id)));
+  const states = { type: "FeatureCollection", features: topojson.feature(us, us.objects.states).features.filter(f => !["02", "15", "72", "78", "60", "66", "69"].includes(f.id)) };
+  // frame the West and Texas, where the four regions Terra routes between are; the rest of the country runs off the edge
+  const west = { type: "FeatureCollection", features: states.features.filter(f => d3.geoCentroid(f)[0] < -97) };
+  proj = d3.geoAlbers().fitExtent([[10, 40], [950, 830]], west);
+  const tiltT = d3.geoTransform({ point(x, y) { this.stream.point(...tilt(x, y)); } });
+  const path = d3.geoPath({ stream: s => proj.stream(tiltT.stream(s)) });
+  const defs = svg.append("defs");
+  for (const [id, c] of [["gS", C.sage], ["gC", C.copper]]) {  // lit from the right: dark edge, bright face, soft edge
+    const g = defs.append("linearGradient").attr("id", id);
+    [[0, d3.color(c).darker(1.4)], [0.55, d3.color(c).brighter(0.15)], [1, d3.color(c).darker(0.5)]].forEach(([o, col]) => g.append("stop").attr("offset", o).attr("stop-color", col));
+  }
+  const slab = defs.append("linearGradient").attr("id", "slab").attr("x1", 0).attr("x2", 0).attr("y1", 0).attr("y2", 1);
+  slab.append("stop").attr("offset", 0).attr("stop-color", "#2a2723"); slab.append("stop").attr("offset", 1).attr("stop-color", "#141311");
+  // the slab: the whole country, drawn again lower down, gives the map its thickness
+  for (let d = 14; d > 0; d -= 2) svg.append("path").datum(nation).attr("d", path).attr("transform", `translate(0,${d})`).attr("fill", "url(#slab)").attr("opacity", d === 14 ? .9 : .5);
+  svg.append("path").datum(nation).attr("d", path).attr("fill", "#24221e");
+  svg.append("path").datum(topojson.mesh(us, us.objects.states, (a, b) => a !== b)).attr("d", path).attr("fill", "none").attr("stroke", "#3b3731").attr("stroke-width", .8);
+  svg.append("path").datum(nation).attr("d", path).attr("fill", "none").attr("stroke", "#5a554c").attr("stroke-width", 1.2);
+  for (const id in W.grids) pos[id] = tilt(...proj(W.grids[id].ll));
+  // every other region: a small flat disc on the map
+  const fg = svg.append("g");
+  for (const id in W.grids) { if (W.route.includes(id)) continue; const [x, y] = pos[id];
+    flat[id] = fg.append("ellipse").attr("cx", x).attr("cy", y).attr("rx", 5).attr("ry", 2.8).attr("fill", C.stone).attr("fill-opacity", .55).style("cursor", "pointer").on("click", () => openGrid(id)); }
+  svg.append("g").attr("id", "arcs");
+  // the four regions Terra routes between: columns, drawn back to front
+  const cg = svg.append("g");
+  for (const id of [...W.route].sort((a, b) => pos[a][1] - pos[b][1])) {
+    const [x, y] = pos[id], g = cg.append("g").style("cursor", "pointer").on("click", () => openGrid(id)), rx = 22, ry = 8, h = 40;
+    g.append("ellipse").attr("cx", x + 12).attr("cy", y + 4).attr("rx", 34).attr("ry", 11).attr("fill", "#000").attr("opacity", .45);
+    const body = g.append("rect").attr("x", x - rx).attr("width", 2 * rx).attr("y", y - h).attr("height", h).attr("fill", "url(#gS)");
+    const base = g.append("ellipse").attr("cx", x).attr("cy", y).attr("rx", rx).attr("ry", ry).attr("fill", "url(#gS)");
+    const top = g.append("ellipse").attr("cx", x).attr("cy", y - h).attr("rx", rx).attr("ry", ry).attr("fill", d3.color(C.sage).brighter(.5));
+    const left = id === "ERCO", below = id === "CISO", tx = left ? x - 32 : below ? x - 20 : x + 32, an = left ? "end" : "start";
+    const label = g.append("text").attr("x", tx).attr("y", y - h - 2).attr("text-anchor", an).attr("fill", C.sand).attr("font-size", 36).attr("font-weight", 500).text(NAMES[id].replace("Pacific Northwest", "Pacific NW"));
+    const sub = g.append("text").attr("x", tx).attr("y", y - h + 28).attr("text-anchor", an).attr("fill", "#bfbcb8").attr("font-size", 26).attr("font-family", "JetBrains Mono, monospace");
+    cols[id] = { x, y, rx, body, base, top, label, sub, below };
+  }
+}
+function updateMap(h) {
+  for (const id in cols) {
+    const f = h.g[id], c = cols[id]; if (!f) continue;
+    const hh = colH(f.s), rush = f.k === 1, grad = rush ? "url(#gC)" : "url(#gS)", topCol = d3.color(rush ? C.copper : C.sage).brighter(.5);
+    const t = d3.transition().duration(TICK_MS * .7).ease(d3.easeCubicInOut);
+    c.body.attr("fill", grad).transition(t).attr("y", c.y - hh).attr("height", hh);
+    c.base.attr("fill", grad); c.top.attr("fill", topCol).transition(t).attr("cy", c.y - hh);
+    if (c.below) { c.label.attr("y", c.y + 50); c.sub.attr("y", c.y + 78); }
+    else { c.label.transition(t).attr("y", c.y - hh - 6); c.sub.transition(t).attr("y", c.y - hh + 24); }
+    const saving = id === "PACE" && shedding;  // Utah's site is the one Terra runs: its label says when it's saving power
+    c.sub.text(saving ? "SAVING POWER −29%" : rush ? "RUSH HOUR" : `${Math.round(f.s * 100)}% of peak`).attr("fill", saving ? C.sand : rush ? C.copper : "#bfbcb8").attr("font-weight", saving ? 700 : 400);
+  }
+  for (const id in flat) { const f = h.g[id]; if (f) flat[id].attr("fill", f.k ? C.copper : C.stone).attr("fill-opacity", f.k ? .9 : .5); }
+}
+// an AI job leaving Utah: an arc that lifts off the map, with its shadow on the ground
+function fly(dest) {
+  const a = cols.PACE, b = cols[dest]; if (!a || !b) return;
+  const [x1, y1, x2, y2] = [a.x, a.y - 20, b.x, b.y - 20], lift = 70 + Math.hypot(x2 - x1, y2 - y1) * .25;
+  const d = `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`, g = d3.select("#arcs").append("g");
+  g.append("line").attr("x1", a.x).attr("y1", a.y).attr("x2", b.x).attr("y2", b.y).attr("stroke", "#000").attr("stroke-opacity", .35).attr("stroke-width", 3).attr("stroke-dasharray", "2 6");
+  const arc = g.append("path").attr("d", d).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 2.5).attr("stroke-opacity", .8);
+  const L = arc.node().getTotalLength();
+  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(1300).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
+  const dot = g.append("circle").attr("r", 8).attr("fill", C.sand);
+  dot.transition().duration(1300).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
+    .on("end", () => dot.transition().duration(400).attr("r", 18).attr("opacity", 0));
+  g.transition().delay(2200).duration(600).attr("opacity", 0).remove();
+}
+
+// --- the 24-hour strip: what happened so far today (real demand, Terra's actual slow-downs) and what Terra predicts next ---
+const local = utc => { const d = new Date(utc * 1000); return { hr: +d.toLocaleString("en-US", { timeZone: "America/Denver", hour: "numeric", hourCycle: "h23" }),
+  day: d.toLocaleDateString("en-US", { timeZone: "America/Denver", weekday: "long" }) }; };
+const slowedAt = {};  // replay index -> was the Utah site slowed that hour (recorded as the autopilot runs)
+function dayStrip(idx) {
+  const svg = d3.select("#daySvg"); svg.selectAll("*").remove();
+  const h = W.hours[idx], now = local(h.utc).hr, x = hr => 24 + hr * 38, base = 124, top = 40, sh = s => base - (base - top) * Math.max(0, Math.min(1, (s - .4) / .6));
+  // night and day
+  svg.append("rect").attr("x", x(0)).attr("y", top - 8).attr("width", x(6.5) - x(0)).attr("height", base - top + 8).attr("fill", "#000").attr("opacity", .22);
+  svg.append("rect").attr("x", x(19.5)).attr("y", top - 8).attr("width", x(24) - x(19.5)).attr("height", base - top + 8).attr("fill", "#000").attr("opacity", .22);
+  const pts = [];
+  for (let k = 0; k < 24; k++) {
+    const j = idx - now + k, hk = W.hours[j]; if (!hk || j < 0) continue;
+    if (k <= now) {
+      const u = hk.g.PACE, y = sh(u.s);
+      pts.push([x(k + .5), y]);
+      svg.append("rect").attr("x", x(k) + 3).attr("width", 32).attr("y", y).attr("height", base - y).attr("rx", 3)
+        .attr("fill", u.k ? C.copper : C.sage).attr("opacity", k === now ? 1 : .55);
+      if (slowedAt[j]) svg.append("rect").attr("x", x(k) + 3).attr("width", 32).attr("y", base + 6).attr("height", 6).attr("rx", 3).attr("fill", C.sand);
+    } else {  // ahead: Terra's prediction, made now, of rush hour
+      const pk = h.g.PACE.p[k - now] / 100, y = base - (base - top) * pk;
+      svg.append("rect").attr("x", x(k) + 3).attr("width", 32).attr("y", y).attr("height", base - y).attr("rx", 3)
+        .attr("fill", "none").attr("stroke", pk >= RUSH_LIKELY ? C.copper : "#5a554c").attr("stroke-width", 1.5).attr("stroke-dasharray", "3 3");
+    }
+  }
+  svg.append("line").attr("x1", x(now + .5)).attr("x2", x(now + .5)).attr("y1", top - 12).attr("y2", base + 14).attr("stroke", C.sand).attr("stroke-width", 2);
+  svg.append("text").attr("x", x(now + .5)).attr("y", top - 14).attr("text-anchor", "middle").attr("fill", C.sand).attr("font-size", 22).attr("font-weight", 600).text("now");
+  [[0, "12 AM"], [6, "6 AM"], [12, "12 PM"], [18, "6 PM"], [24, "12 AM"]].forEach(([k, t]) => svg.append("text").attr("x", x(k)).attr("y", 164).attr("text-anchor", k === 0 ? "start" : k === 24 ? "end" : "middle").attr("fill", C.stone).attr("font-size", 22).attr("font-family", "JetBrains Mono, monospace").text(t));
+  $("dayNote").innerHTML = `<span style="color:var(--sand)">▬</span> saving power · <span style="color:#b8a06a">┆</span> Terra's forecast`;
+}
+
+// --- log + counters ---
+function log(utc, html, cls = "") {
+  const li = document.createElement("li"); li.className = cls; li.innerHTML = `<time>${mt(utc).replace(/^\w+ /, "")}</time><span>${html}</span>`;
+  $("log").prepend(li); while ($("log").children.length > 40) $("log").lastChild.remove();
+}
+function counters() { $("sJobs").textContent = jobs; $("sAvoid").textContent = Math.round(avoided); $("sShed").textContent = Math.round(shedKwh).toLocaleString();
+  $("sShedL").textContent = shedKwh >= HOME_KWH_DAY ? `kWh saved in rush hour: what ${Math.round(shedKwh / HOME_KWH_DAY)} homes use in a day` : "kWh of power saved during rush hour"; }
+
+// --- prediction: what the model expects next, and what the autopilot plans to do about it ---
+const at = (utc, k) => new Date((utc + k * 3600) * 1000).toLocaleString("en-US", { timeZone: "America/Denver", hour: "numeric" });
+let checked = 0, right = 0, peaks = 0, caught = 0;
+function ahead(h, idx) {
+  const p = h.g.PACE.p, win = [];
+  for (let k = 0; k < 24; k++) if (p[k] > 50) win.push(k);
+  const s = win.length ? win[0] : -1; let e = s; while (e + 1 < 24 && p[e + 1] > 50) e++;
+  if (s < 0) $("aHead").innerHTML = `<span class="head calm">No rush hour expected in Utah in the next 24 hours. <b>Business as usual.</b></span>`;
+  else $("aHead").innerHTML = s === 0 ? `Utah is in rush hour now, until about <b>${at(h.utc, e + 1)}</b> (${Math.max(...p.slice(0, e + 1))}% chance).`
+    : `Utah's rush hour is expected <b>${at(h.utc, s)} – ${at(h.utc, e + 1)}</b> (up to ${Math.max(...p.slice(s, e + 1))}% chance), ${s} hour${s > 1 ? "s" : ""} from now.`;
+  $("aHead").className = "head" + (s < 0 ? " calm" : "");
+  $("aBars").innerHTML = p.map((v, k) => `<i class="${k === 0 ? "now" : ""}" style="height:${Math.max(3, v)}%;background:${v > 50 ? C.copper : C.sage};opacity:${k === 0 ? 1 : .85}" title="${at(h.utc, k)}: ${v}% chance of rush hour"></i>`).join("");
+  $("aAxis").innerHTML = `<span>now</span><span>${at(h.utc, 6)}</span><span>${at(h.utc, 12)}</span><span>${at(h.utc, 18)}</span><span>${at(h.utc, 23)}</span>`;
+  const plan = [], next = options(h, 16)[0];
+  if (s === 0) plan.push(["now", `Utah's AI chips are in power-saving mode: 29% less power, work takes 6% longer.`]);
+  if (s > 0) plan.push([at(h.utc, s), `Switch Utah's AI chips to power-saving mode: 29% less power, work takes 6% longer.`]);
+  if (s >= 0) plan.push([at(h.utc, e + 1), `Utah back to full speed.`]);
+  if (s >= 0 && s < 12) plan.push(["until then", `AI work that can wait avoids Utah. The next job goes to <b>${name(next.region)}, ${when(next.wait)}</b>.`]);
+  else plan.push(["next job", `Best place to run: <b>${name(next.region)}, ${when(next.wait)}</b> (power there is ${clean(next.g)}).`]);
+  if (!auto) plan.unshift(["paused", `Autopilot is off, so none of this will happen.`]);
+  $("aPlan").innerHTML = plan.map(([t, x]) => `<li><time>${t}</time><span>${x}</span></li>`).join("");
+  // score: the call made 3 hours ago for this hour, vs what Utah's demand actually did
+  const past = W.hours[(idx - 3 + W.hours.length) % W.hours.length].g.PACE;
+  if (past) { checked++; if ((past.p[3] > 50) === (h.g.PACE.k === 1)) right++; if (h.g.PACE.k === 1) { peaks++; if (past.p[3] > 50) caught++; } }
+  $("aScore").textContent = checked ? `${Math.round(right / checked * 100)}% right` : "—";
+  $("aScoreL").textContent = `Each prediction made 3 hours ahead, checked against what really happened (${checked} so far${peaks ? `; saw ${caught} of ${peaks} rush hours coming` : ""})`;
+}
+
+// --- the simple view: what is happening now, and what it has saved ---
+function status(h, fl, ev) {
+  const u = h.g.PACE, p = u.p; let s = -1; for (let k = 0; k < 24; k++) if (p[k] >= RUSH_LIKELY * 100) { s = k; break; }
+  const next = options(h, 16)[0], mode = !auto ? "off" : shedding ? "rush" : s === 0 ? "now" : s > 0 && s <= 6 ? "soon" : "calm";
+  $("stBox").className = "mapbox " + (mode === "now" ? "soon" : mode);
+  const L = local(h.utc);
+  $("mHour").textContent = `${L.hr % 12 || 12} ${L.hr < 12 ? "AM" : "PM"}`; $("mSun").textContent = L.hr >= 7 && L.hr < 19 ? "☀" : "☾"; $("mDay").textContent = `${L.day}, Utah`;
+  $("stState").textContent = { rush: "Utility called: saving power", now: "Rush hour now", soon: `Rush hour in ${s} hour${s > 1 ? "s" : ""}`, calm: "Calm", off: "Autopilot off" }[mode];
+  $("stDoing").textContent = {
+    rush: `Rocky Mountain Power called for less power (simulated). Terra switched Utah's AI chips to power-saving mode (29% less power)${fl ? `, saving ${Math.round(fl.normal - fl.kw)} kW right now, like ${Math.round((fl.normal - fl.kw) / HOME_KW)} homes` : ""}. AI work that can wait goes to ${name(next.region)}.`,
+    now: `Utah is in rush hour. AI work that can wait goes to ${name(next.region)}; the chips stay at full speed unless the utility calls.`,
+    soon: `Terra sees it coming. AI work that can wait is already being scheduled around it.`,
+    calm: `AI runs at full speed. Terra is watching all ${Object.keys(h.g).length} power regions, every hour.`,
+    off: `Nothing is protecting the grid: AI work runs in Utah right away, rush hour or not.` }[mode];
+  if (ev && auto) $("stDoing").innerHTML = ev;
+}
+function weekTotals() {
+  const keep = { shedding, lastUtc, booked: Object.fromEntries(Object.entries(booked).map(([r, b]) => [r, b.slice()])) };
+  let kwh = 0, usd = 0, moved = 0, flexible = 0, handled = 0, rush = 0; shedding = false; lastUtc = 0; for (const b of Object.values(booked)) b.fill(0);
+  W.hours.forEach((h, k) => {
+    shedding = calls(h.utc);
+    advance(h.utc);
+    const fl = fleet(h); if (shedding) { rush++; handled++; kwh += fl.normal - fl.kw; usd += (fl.normal - fl.kw) * (W.price[h.utc] ?? 0); }
+    const job = AUTO_JOBS[k % AUTO_JOBS.length]; if (job.dl === 0) return;
+    flexible++; const o = place(job, k); if (hit(k, "PACE", 0) - hit(k, o.region, o.start) > 0) moved++;
+  });
+  shedding = keep.shedding; lastUtc = keep.lastUtc; for (const r in booked) booked[r].set(keep.booked[r]);
+  return { kwh, usd, moved, flexible, handled, rush };
+}
+function benefit(t) {
+  const kw = t.handled ? t.kwh / t.handled : 0;  // average kW taken off the grid per called hour (1 h each)
+  const pay = kw * DR_USD_KW_YEAR / 52;  // one week's share of the program's yearly payment for that kW
+  $("bKw").textContent = Math.round(kw).toLocaleString();
+  $("bHomes").textContent = `${Math.round(kw / HOME_KW).toLocaleString()} homes`;
+  $("bKwh").textContent = `${Math.round(t.kwh).toLocaleString()} kWh`;
+  $("bUsd").textContent = `$${Math.round(pay + t.usd).toLocaleString()}`;
+  $("bJobs").innerHTML = `${t.moved}<small style="font-size:15px;color:var(--stone)"> of ${t.flexible}</small>`;
+  $("bHours").innerHTML = `${t.handled}<small style="font-size:15px;color:var(--stone)"> of ${t.rush}</small>`;
+  $("bSpan").textContent = "· Oct 19–25, 2026 · one simulated 1,000-chip AI data center in Utah";
+}
+
+// --- the autopilot: one replay hour per tick ---
+function fleet(h) {
+  const loc = +new Date(h.utc * 1000).toLocaleString("en-US", { timeZone: "America/Denver", hour: "numeric", hourCycle: "h23" });
+  const busy = GPUS * (0.55 + 0.25 * Math.exp(-(((loc - 14) / 4) ** 2)));
+  const perGpu = shedding ? W_LOCK : W_ON;
+  return { kw: (busy * perGpu + (GPUS - busy) * W_IDLE) / 1000, normal: (busy * W_ON + (GPUS - busy) * W_IDLE) / 1000 };
+}
+function step() {
+  const h = W.hours[i], u = h.g.PACE, call = calls(h.utc);
+  $("clock").innerHTML = `${mt(h.utc)} in Utah · power use at <b style="color:${u.k ? C.copper : C.sage}">${Math.round(u.s * 100)}% of today's high${u.k ? " · RUSH HOUR" : ""}</b>`;
+  $("tick").textContent = `decides in ${W.modelMsPerHour} ms`;
+  let ev = "";
+  // demand response at the Utah site: automatic, the moment the utility calls
+  if (auto && !shedding && call) { shedding = true; ev = `<b>Rocky Mountain Power calls for less power</b> (simulated). Terra switches the AI chips to power-saving mode right away: <b>29% less power</b>, work takes 6% longer.`; log(h.utc, `<b>Rocky Mountain Power called for less power (simulated).</b> Utah's AI chips switched to power-saving mode: 29% less power. Work that can wait is held or moved.`, "shed"); }
+  if (shedding && (!call || !auto)) { shedding = false; ev = `The utility's call is over. The AI chips leave power-saving mode.`; log(h.utc, `The utility's call is over. AI chips back to full speed.`); }
+  advance(h.utc);
+  slowedAt[i] = shedding; updateMap(h); dayStrip(i);
+  ahead(h, i);
+  const fl = fleet(h); shedKwh += fl.normal - fl.kw;
+  // one incoming job per hour, placed with no human involved
+  const job = AUTO_JOBS[i % AUTO_JOBS.length], o = place(job, i);
+  const saved = hit(i, "PACE", 0) - hit(i, o.region, o.start); jobs++; avoided += Math.max(0, saved);
+  const jn = JOB_NAMES[job.name] ?? job.name;
+  if (job.dl === 0) log(h.utc, `${jn} can't wait, so it stays in Utah${shedding ? ", in power-saving mode" : ""}.`);
+  else if (!auto) { log(h.utc, `<b>${jn} ran in Utah right away${hit(i, "PACE", 0) ? `, during ${hrs(hit(i, "PACE", 0))} of rush hour` : ""}.</b> Autopilot is off.`, hit(i, "PACE", 0) ? "warn" : ""); }
+  else { const full = o.skipped?.length ? ` (${o.skipped.map(name).join(", ")} was full)` : "";
+    log(h.utc, `${jn} → <b>${name(o.region)}, ${when(o.wait)}</b>${full}${saved > 0 ? `. Avoids ${hrs(saved)} of Utah's rush hour` : ""}.`, full ? "shed" : "");
+    if (o.gpus) $("surgeLine").innerHTML = `Last job: ${surgeText(o.gpus)}`;
+    if (!ev && o.region !== "PACE") ev = `Terra sends <b>${jn}</b> to ${name(o.region)}${o.start ? `, starting in ${o.start} hours` : ""}${saved > 0 ? `, keeping it out of Utah's rush hour` : `, where there's room`}.`;
+    if (o.region !== "PACE") fly(o.region); }
+  rooms(); counters(); status(h, fl, ev);
+  i = (i + 1) % W.hours.length;
+}
+
+// --- actions ---
+function sheet(id, on) { document.body.classList.toggle("open", on); $(id).classList.toggle("on", on); }
+$("scrim").onclick = () => sheet("gridSheet", false);
+$("closeGrid").onclick = () => sheet("gridSheet", false);
+$("btnPeak").onclick = () => {
+  const peak = k => calls(W.hours[k % W.hours.length].utc);
+  for (let d = 3; d < W.hours.length + 3; d++) { const k = i + d; if (peak(k) && !peak(k - 1)) { i = (k - 2) % W.hours.length; break; } }
+  log(W.hours[i].utc, `Fast-forwarded to 2 hours before Rocky Mountain Power's call (simulated). Now just watch.`, "me");
+  step(); clearInterval(timer); timer = setInterval(step, TICK_MS);
+  $("stBox").scrollIntoView({ behavior: "smooth", block: "start" });
+};
+function openGrid(id) {
+  const h = W.hours[(i + W.hours.length - 1) % W.hours.length], f = h.g[id]; if (!f) return;
+  $("gName").textContent = name(id); $("gSub").textContent = `Power region around ${W.grids[id].city} · ${mt(h.utc)} Utah time`;
+  $("gBars").innerHTML = f.p.map(p => `<i style="height:${Math.max(2, p)}%;background:${p > 50 ? C.copper : C.sage}"></i>`).join("");
+  $("gKv").innerHTML = `<div><b>${Math.round(f.s * 100)}%</b><span>of today's highest power use</span></div><div><b>${f.k ? "Yes" : "No"}</b><span>in rush hour right now</span></div><div><b style="text-transform:capitalize">${clean(f.g)}</b><span>power right now</span></div>`;
+  sheet("gridSheet", true);
+}
+
+let timer;
+Promise.all([ld, atlas, pr, dr]).then(([w, us, p, e]) => {
+  W = w; W.price = p.usd_per_kwh;
+  AUTO_JOBS = W.jobs.map(j => ({ name: j.name, gpuh: j.gpuHours, dl: j.deadlineHours })); W.jobs.forEach(j => JOB_NAMES[j.name] = j.label); W.events = new Set(e.utc); drawMap(us);
+  const n = W.numbers;
+  $("facts").innerHTML = [[`${Math.round(n.rawValues / 1e6)} million`, "public data points it learned from"], [n.grids, "US power regions predicted every hour"],
+    ["42%", "of AI chip-hours can wait (training and batch work); 53% are live answers Terra never moves. Alibaba's 2026 trace, 155,410 GPUs"],
+    [`${n.brierVsEia}% fewer`, "prediction mistakes than the grid operators' own day-ahead forecasts, across all regions"], [n.tinyParams >= 1e6 ? `${(n.tinyParams / 1e6).toFixed(1)}M` : `${Math.round(n.tinyParams / 1000)}K`, "settings in the model: small and cheap to run, on purpose (big AI models have billions)"],
+    [`${n.surge1mw.jump_1s_at_once_kw} → ${Math.round(n.surge1mw.jump_1s_staggered_kw)} kW`, "one-second power swing at a 1 MW AI site (simulated) when jobs start a few at a time: less for Torus Spin to catch"]]
+    .map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join("");
+  const hr = v => `${v % 12 || 12} ${v < 12 ? "AM" : "PM"}`;
+  const ut = n.utah, toGW = v => (v / 1000).toFixed(1);
+  $("proof").innerHTML = [
+    ["Place", `<b>0 MW</b> of the ${toGW(ut.planned_mw)} GW of power plants planned in Utah is on the Wasatch Front, where people live. <b>${ut.ldwp_share_pct}%</b> is wired to Los Angeles's grid.`],
+    ["Time", `Rocky Mountain Power's demand swings about <b>${toGW(n.dailySwingMw)} GW</b> every day, night to afternoon, and the grid is built for the top.`],
+    ["Knowing when", `This October Rocky Mountain Power's own day-ahead forecast put Utah's rush hour at ${hr(n.fallForecastHour)}. It came at <b>${hr(n.fallActualHour)}</b>. Terra sees it coming.`],
+  ].map(([k, t]) => `<div><span class="k">${k}</span>${t}</div>`).join("");
+  $("fitF").innerHTML = `Torus's control software, Lasso, already sends grid events to Spin and Pulse in under 250 ms. Terra predicts all ${n.grids} power regions in <b>${W.modelMsPerHour < 1 ? `${W.modelMsPerHour} ms` : `${Math.round(W.modelMsPerHour)} ms`}</b>, so it plugs in as a third option. It doesn't replace either.`;
+  const c = n.peakHoursHit;
+  $("cNoJob").textContent = `${c.run_now_in_utah.toFixed(1)} h`; $("cJob").textContent = `${c.mycelium.toFixed(2)} h`;
+  $("cNoCatch").textContent = `${n.utahCatch.eia}%`; $("cCatch").textContent = `${n.utahCatch.model}%`;
+  benefit(weekTotals());
+  log(W.hours[0].utc, "<b>Autopilot on.</b> Predicting rush hour for 48 power regions, every hour.", "me");
+  step(); timer = setInterval(step, TICK_MS);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+{
+ "jobs_with_gpu": 719560,
+ "total_gpu_hours": 4966783.1,
+ "gpu_hours_per_job": {
+  "p50": 0.12,
+  "p90": 6.089,
+  "p99": 114.664
+ },
+ "mean_gpu_hours_per_job": 6.903,
+ "gpus_per_job": {
+  "p50": 1.0,
+  "p90": 5.0,
+  "p99": 30.0
+ },
+ "runtime_h": {
+  "p50": 0.174,
+  "p90": 3.589,
+  "p99": 19.541
+ },
+ "queue_min": {
+  "p50": 0.0,
+  "p90": 0.05,
+  "p99": 0.407
+ },
+ "share_gpu_hours_top1pct_jobs": 0.6266,
+ "share_gpu_hours_jobs_ge_10gpuh": 0.892,
+ "share_jobs_ge_10gpuh": 0.0699,
+ "share_gpu_hours_jobs_runtime_ge_4h": 0.7813,
+ "status_share_gpu_hours": {
+  "Failed": 0.0545,
+  "Running": 0.0004,
+  "Terminated": 0.9451
+ },
+ "buckets": [
+  {
+   "bucket": "<0.1",
+   "jobs": 339578,
+   "gpu_hours": 11193.9347,
+   "median_gpu_hours": 0.0233,
+   "median_runtime_h": 0.0367,
+   "median_gpus": 0.75,
+   "share_jobs": 0.4719,
+   "share_gpu_hours": 0.0023
+  },
+  {
+   "bucket": "0.1-1",
+   "jobs": 197991,
+   "gpu_hours": 69538.5296,
+   "median_gpu_hours": 0.2692,
+   "median_runtime_h": 0.4017,
+   "median_gpus": 1.0,
+   "share_jobs": 0.2752,
+   "share_gpu_hours": 0.014
+  },
+  {
+   "bucket": "1-10",
+   "jobs": 131726,
+   "gpu_hours": 455905.6122,
+   "median_gpu_hours": 2.6222,
+   "median_runtime_h": 1.7097,
+   "median_gpus": 1.0,
+   "share_jobs": 0.1831,
+   "share_gpu_hours": 0.0918
+  },
+  {
+   "bucket": "10-100",
+   "jobs": 42125,
+   "gpu_hours": 1216895.9901,
+   "median_gpu_hours": 21.4764,
+   "median_runtime_h": 3.9353,
+   "median_gpus": 6.25,
+   "share_jobs": 0.0585,
+   "share_gpu_hours": 0.245
+  },
+  {
+   "bucket": "100-1000",
+   "jobs": 7602,
+   "gpu_hours": 2050020.8009,
+   "median_gpu_hours": 203.5948,
+   "median_runtime_h": 10.6119,
+   "median_gpus": 20.0,
+   "share_jobs": 0.0106,
+   "share_gpu_hours": 0.4127
+  },
+  {
+   "bucket": ">=1000",
+   "jobs": 538,
+   "gpu_hours": 1163228.2589,
+   "median_gpu_hours": 1503.3979,
+   "median_runtime_h": 41.7261,
+   "median_gpus": 40.0,
+   "share_jobs": 0.0007,
+   "share_gpu_hours": 0.2342
+  }
+ ],
+ "role_share_gpu_hours_top10": {
+  "worker": 0.7362,
+  "PyTorchWorker": 0.1726,
+  "tensorflow": 0.0816,
+  "evaluator+worker": 0.0044,
+  "OpenmpiWorker": 0.0032,
+  "ps+worker": 0.0006,
+  "xComputeWorker": 0.0005,
+  "TVMTuneMain": 0.0004,
+  "JupyterTask": 0.0004,
+  "evaluator": 0.0001
+ },
+ "tagged_workload_gpu_hours_top10": {
+  "bert": 294863.1,
+  "ctr": 135256.3,
+  "graphlearn": 81827.1,
+  "nmt": 80596.7,
+  "inception": 50884.0,
+  "resnet": 7035.5,
+  "xlnet": 4134.3,
+  "rl": 1784.9,
+  "vgg": 1644.4
+ },
+ "tagged_share_of_gpu_hours": 0.1325,
+ "submits_by_hour_utc8": {
+  "0": 49822,
+  "1": 31532,
+  "2": 26874,
+  "3": 20500,
+  "4": 26034,
+  "5": 25908,
+  "6": 32773,
+  "7": 34360,
+  "8": 27033,
+  "9": 27241,
+  "10": 38336,
+  "11": 37721,
+  "12": 29710,
+  "13": 30019,
+  "14": 30218,
+  "15": 32432,
+  "16": 31789,
+  "17": 34568,
+  "18": 32067,
+  "19": 28185,
+  "20": 27357,
+  "21": 24166,
+  "22": 20956,
+  "23": 19959
+ }
+}

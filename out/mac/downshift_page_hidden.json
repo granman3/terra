@@ -1,0 +1,19 @@
+{
+ "idle_watts": 0.1,
+ "big": {
+  "watts": 24.0,
+  "forecasts_per_s": 0.54,
+  "joules_per_forecast": 44.9544,
+  "model": "big"
+ },
+ "tiny": {
+  "watts": 0.1,
+  "forecasts_per_s": 193.8,
+  "joules_per_forecast": 0.0006,
+  "model": "tiny"
+ },
+ "power_drop_pct": 100,
+ "measured": "2026-10-27 13:59",
+ "machine": "MacBook Pro M4 Pro",
+ "power": "CPU+GPU+ANE via macmon"
+}

@@ -1,0 +1,573 @@
+{
+ "source": "EIA-860M, september 2026 (september_generator2026.xlsx)",
+ "planned_mw": 3587,
+ "planned_by_kind_mw": {
+  "solar": 1786,
+  "pumped hydro": 1000,
+  "battery": 706,
+  "geothermal": 88,
+  "gas/other": 8
+ },
+ "planned_by_county_mw": {
+  "Millard": 2074,
+  "Iron": 1013,
+  "Beaver": 398,
+  "Kane": 95,
+  "Box Elder": 8
+ },
+ "planned_by_ba_mw": {
+  "LDWP": 2470,
+  "PACE": 1117
+ },
+ "ldwp_share_pct": 69,
+ "planned_generation_mw": 1874,
+ "planned_generation_ldwp_pct": 70,
+ "planned_on_wasatch_front_mw": 0,
+ "operating_solar_mw": 3454,
+ "operating_coal_mw": 3045,
+ "plants": [
+  {
+   "name": "Intermountain Pumped Storage Project",
+   "county": "Millard",
+   "kind": "pumped hydro",
+   "ba": "LDWP",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 39.4147,
+   "lon": -112.4404,
+   "mw": 1000.0,
+   "year": 2028.0
+  },
+  {
+   "name": "Notch Peak Solar LLC",
+   "county": "Millard",
+   "kind": "solar",
+   "ba": "LDWP",
+   "status": "(T) Regulatory approvals received. Not under construction",
+   "lat": 39.5201,
+   "lon": -112.6602,
+   "mw": 324.0,
+   "year": 2028.0
+  },
+  {
+   "name": "Milford Solar Phase II",
+   "county": "Beaver",
+   "kind": "solar",
+   "ba": "LDWP",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 38.5224,
+   "lon": -113.0148,
+   "mw": 310.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Gale 1 Solar",
+   "county": "Millard",
+   "kind": "solar",
+   "ba": "LDWP",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 39.523,
+   "lon": -112.546,
+   "mw": 300.0,
+   "year": 2030.0
+  },
+  {
+   "name": "Red Butte Solar and Storage",
+   "county": "Iron",
+   "kind": "solar",
+   "ba": "PACE",
+   "status": "(L) Regulatory approvals pending. Not under construction",
+   "lat": 37.6134,
+   "lon": -113.644,
+   "mw": 300.0,
+   "year": 2029.0
+  },
+  {
+   "name": "Red Butte Solar and Storage",
+   "county": "Iron",
+   "kind": "battery",
+   "ba": "PACE",
+   "status": "(L) Regulatory approvals pending. Not under construction",
+   "lat": 37.6134,
+   "lon": -113.644,
+   "mw": 300.0,
+   "year": 2029.0
+  },
+  {
+   "name": "Utah Solar 1",
+   "county": "Millard",
+   "kind": "solar",
+   "ba": "LDWP",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 39.5048,
+   "lon": -112.5077,
+   "mw": 300.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Fremont Solar",
+   "county": "Iron",
+   "kind": "battery",
+   "ba": "PACE",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 37.9789,
+   "lon": -112.7761,
+   "mw": 198.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Gale 1 Solar",
+   "county": "Millard",
+   "kind": "battery",
+   "ba": "LDWP",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 39.523,
+   "lon": -112.546,
+   "mw": 150.0,
+   "year": 2030.0
+  },
+  {
+   "name": "Fremont Solar",
+   "county": "Iron",
+   "kind": "solar",
+   "ba": "PACE",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 37.9789,
+   "lon": -112.7761,
+   "mw": 99.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Glen Canyon Solar A, LLC",
+   "county": "Kane",
+   "kind": "solar",
+   "ba": "PACE",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 37.0915,
+   "lon": -111.7255,
+   "mw": 95.0,
+   "year": 2028.0
+  },
+  {
+   "name": "Parowan Solar",
+   "county": "Iron",
+   "kind": "battery",
+   "ba": "PACE",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 37.8758,
+   "lon": -112.8885,
+   "mw": 58.0,
+   "year": 2028.0
+  },
+  {
+   "name": "Parowan Solar",
+   "county": "Iron",
+   "kind": "solar",
+   "ba": "PACE",
+   "status": "(P) Planned for installation, but regulatory approvals not initiated",
+   "lat": 37.8758,
+   "lon": -112.8885,
+   "mw": 58.0,
+   "year": 2028.0
+  },
+  {
+   "name": "Cape Generating Station",
+   "county": "Beaver",
+   "kind": "geothermal",
+   "ba": "LDWP",
+   "status": "(TS) Construction complete, but not yet in commercial operation",
+   "lat": 38.5067,
+   "lon": -112.9175,
+   "mw": 43.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Cape Generating Station",
+   "county": "Beaver",
+   "kind": "geothermal",
+   "ba": "LDWP",
+   "status": "(V) Under construction, more than 50 percent complete",
+   "lat": 38.5067,
+   "lon": -112.9175,
+   "mw": 43.0,
+   "year": 2027.0
+  },
+  {
+   "name": "Brigham City Gas",
+   "county": "Box Elder",
+   "kind": "gas/other",
+   "ba": "PACE",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 41.5072,
+   "lon": -112.0027,
+   "mw": 7.5,
+   "year": 2028.0
+  },
+  {
+   "name": "Rodatherm Milford 1",
+   "county": "Beaver",
+   "kind": "geothermal",
+   "ba": "PACE",
+   "status": "(U) Under construction, less than or equal to 50 percent complete",
+   "lat": 38.5729,
+   "lon": -112.9786,
+   "mw": 1.8,
+   "year": 2028.0
+  }
+ ],
+ "operating_solar": [
+  {
+   "name": "Appaloosa Solar I",
+   "lat": 37.8402,
+   "lon": -113.1359,
+   "mw": 200.0
+  },
+  {
+   "name": "Beryl Solar Plant",
+   "lat": 37.6392,
+   "lon": -113.6458,
+   "mw": 3.0
+  },
+  {
+   "name": "Bloomington Solar I",
+   "lat": 37.0438,
+   "lon": -113.6275,
+   "mw": 2.0
+  },
+  {
+   "name": "Bonanza",
+   "lat": 40.0864,
+   "lon": -109.2844,
+   "mw": 12.5
+  },
+  {
+   "name": "Buckhorn Solar Plant",
+   "lat": 38.0233,
+   "lon": -112.7317,
+   "mw": 3.0
+  },
+  {
+   "name": "Castle Solar, LLC",
+   "lat": 39.3344,
+   "lon": -110.9907,
+   "mw": 40.0
+  },
+  {
+   "name": "Cedar Valley Solar Plant",
+   "lat": 37.8078,
+   "lon": -113.09,
+   "mw": 3.0
+  },
+  {
+   "name": "Clover Creek Solar Community Solar",
+   "lat": 39.8407,
+   "lon": -111.8877,
+   "mw": 80.0
+  },
+  {
+   "name": "Copperton Solar Plant No. 1",
+   "lat": 40.5766,
+   "lon": -112.0846,
+   "mw": 30.0
+  },
+  {
+   "name": "Cove Mountain Solar",
+   "lat": 37.6231,
+   "lon": -113.6192,
+   "mw": 58.0
+  },
+  {
+   "name": "Cove Mountain Solar 2",
+   "lat": 37.6386,
+   "lon": -113.6371,
+   "mw": 122.0
+  },
+  {
+   "name": "Elektron Solar, LLC",
+   "lat": 40.8683,
+   "lon": -112.7034,
+   "mw": 80.0
+  },
+  {
+   "name": "Enterprise Solar, LLC",
+   "lat": 37.6411,
+   "lon": -113.6125,
+   "mw": 80.0
+  },
+  {
+   "name": "Escalante Solar I, LLC",
+   "lat": 38.5242,
+   "lon": -113.0339,
+   "mw": 80.0
+  },
+  {
+   "name": "Escalante Solar II, LLC",
+   "lat": 38.5008,
+   "lon": -113.03,
+   "mw": 80.0
+  },
+  {
+   "name": "Escalante Solar III, LLC",
+   "lat": 38.4978,
+   "lon": -112.9869,
+   "mw": 80.0
+  },
+  {
+   "name": "Faraday Solar",
+   "lat": 40.0936,
+   "lon": -112.0833,
+   "mw": 525.0
+  },
+  {
+   "name": "Fiddler's Canyon #1",
+   "lat": 37.7503,
+   "lon": -113.2537,
+   "mw": 3.0
+  },
+  {
+   "name": "Fiddler's Canyon #2",
+   "lat": 37.7947,
+   "lon": -113.2837,
+   "mw": 3.0
+  },
+  {
+   "name": "Fiddler's Canyon 3",
+   "lat": 37.7313,
+   "lon": -113.2166,
+   "mw": 3.0
+  },
+  {
+   "name": "Granite Mountain Solar East, LLC",
+   "lat": 37.7751,
+   "lon": -113.2264,
+   "mw": 80.0
+  },
+  {
+   "name": "Granite Mountain Solar West, LLC",
+   "lat": 37.7989,
+   "lon": -113.322,
+   "mw": 50.4
+  },
+  {
+   "name": "Granite Peak Solar Plant",
+   "lat": 38.4028,
+   "lon": -112.9889,
+   "mw": 3.0
+  },
+  {
+   "name": "Graphite Solar I",
+   "lat": 39.5484,
+   "lon": -110.7121,
+   "mw": 80.0
+  },
+  {
+   "name": "Green River Energy Center - Hybrid",
+   "lat": 38.9987,
+   "lon": -111.1172,
+   "mw": 400.0
+  },
+  {
+   "name": "Greenville Solar Plant",
+   "lat": 38.2561,
+   "lon": -112.7358,
+   "mw": 2.2
+  },
+  {
+   "name": "Gunnison Solar",
+   "lat": 39.1674,
+   "lon": -111.801,
+   "mw": 1.5
+  },
+  {
+   "name": "Hornshadow Solar II, LLC",
+   "lat": 39.1824,
+   "lon": -110.9772,
+   "mw": 200.0
+  },
+  {
+   "name": "Hornshadow Solar, LLC",
+   "lat": 39.1824,
+   "lon": -110.9772,
+   "mw": 100.0
+  },
+  {
+   "name": "Horseshoe Solar, LLC",
+   "lat": 40.7183,
+   "lon": -112.6658,
+   "mw": 75.0
+  },
+  {
+   "name": "Hunter Solar LLC (UT)",
+   "lat": 39.1422,
+   "lon": -111.0511,
+   "mw": 100.0
+  },
+  {
+   "name": "Iron Springs Solar, LLC",
+   "lat": 37.7212,
+   "lon": -113.1516,
+   "mw": 80.0
+  },
+  {
+   "name": "Laho Solar Plant",
+   "lat": 38.2914,
+   "lon": -113.0356,
+   "mw": 3.0
+  },
+  {
+   "name": "Milford 2",
+   "lat": 38.3882,
+   "lon": -112.9908,
+   "mw": 3.0
+  },
+  {
+   "name": "Milford Flat Solar Plant",
+   "lat": 38.2914,
+   "lon": -113.0083,
+   "mw": 3.0
+  },
+  {
+   "name": "Milford Solar 1",
+   "lat": 38.4907,
+   "lon": -113.0183,
+   "mw": 99.0
+  },
+  {
+   "name": "Pavant Solar II LLC",
+   "lat": 39.1625,
+   "lon": -112.343,
+   "mw": 50.0
+  },
+  {
+   "name": "Pavant Solar III",
+   "lat": 39.1545,
+   "lon": -112.3598,
+   "mw": 20.0
+  },
+  {
+   "name": "Pavant Solar, LLC",
+   "lat": 38.9605,
+   "lon": -112.3633,
+   "mw": 50.0
+  },
+  {
+   "name": "Quichapa 1",
+   "lat": 37.6582,
+   "lon": -113.2167,
+   "mw": 3.0
+  },
+  {
+   "name": "Quichapa 2",
+   "lat": 37.6668,
+   "lon": -113.189,
+   "mw": 3.0
+  },
+  {
+   "name": "Quichapa 3",
+   "lat": 37.6498,
+   "lon": -113.2369,
+   "mw": 3.0
+  },
+  {
+   "name": "Red Mesa Solar Project",
+   "lat": 37.1208,
+   "lon": -109.4115,
+   "mw": 72.0
+  },
+  {
+   "name": "Rocket Solar, LLC",
+   "lat": 41.6363,
+   "lon": -112.4441,
+   "mw": 80.0
+  },
+  {
+   "name": "SF Auto O1",
+   "lat": 41.207,
+   "lon": -112.004,
+   "mw": 3.4
+  },
+  {
+   "name": "SF Auto T1",
+   "lat": 41.7307,
+   "lon": -112.1796,
+   "mw": 3.1
+  },
+  {
+   "name": "Sage Solar I-III",
+   "lat": 41.77,
+   "lon": -111.06,
+   "mw": 57.6
+  },
+  {
+   "name": "Salt Palace Solar Gen Plant",
+   "lat": 40.7672,
+   "lon": -111.895,
+   "mw": 1.3
+  },
+  {
+   "name": "Sigurd Solar LLC",
+   "lat": 38.8505,
+   "lon": -112.0052,
+   "mw": 80.0
+  },
+  {
+   "name": "Smithfield 1",
+   "lat": 38.3881,
+   "lon": -112.9946,
+   "mw": 5.0
+  },
+  {
+   "name": "Smithfield 3",
+   "lat": 38.2245,
+   "lon": -113.1054,
+   "mw": 2.0
+  },
+  {
+   "name": "South Milford Solar Plant",
+   "lat": 38.3111,
+   "lon": -113.0536,
+   "mw": 2.9
+  },
+  {
+   "name": "Spanish Fork Community Solar",
+   "lat": 40.128,
+   "lon": -111.6334,
+   "mw": 4.0
+  },
+  {
+   "name": "Steel Solar LLC",
+   "lat": 41.886,
+   "lon": -112.1817,
+   "mw": 80.0
+  },
+  {
+   "name": "Swire Coca-Cola Draper",
+   "lat": 40.5213,
+   "lon": -111.9006,
+   "mw": 3.7
+  },
+  {
+   "name": "Three Peaks Power",
+   "lat": 37.8271,
+   "lon": -113.1371,
+   "mw": 80.0
+  },
+  {
+   "name": "Tooele Army Depot(CSG)",
+   "lat": 40.503,
+   "lon": -112.3706,
+   "mw": 1.5
+  },
+  {
+   "name": "Utah Red Hills Renewable Energy Park",
+   "lat": 37.8828,
+   "lon": -112.9042,
+   "mw": 80.0
+  },
+  {
+   "name": "Weber State University - Davis Campus PV",
+   "lat": 41.099,
+   "lon": -111.9822,
+   "mw": 1.3
+  }
+ ]
+}

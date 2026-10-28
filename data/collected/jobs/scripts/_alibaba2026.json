@@ -1,0 +1,148 @@
+{
+ "maas_llm_inference": {
+  "shards_sampled": 12,
+  "of_shards": 61,
+  "rows": 29177776,
+  "days": [
+   0,
+   181
+  ],
+  "gpu_hours": 73569170.0,
+  "share_gpu_hours": {
+   "offline": 0.6006,
+   "online": 0.3994
+  },
+  "offline_share_range_across_shards": [
+   0.5743,
+   0.6117
+  ]
+ },
+ "asi_gpu_cluster": {
+  "hour_snapshots": 58,
+  "days_sampled": [
+   0,
+   10,
+   20,
+   30,
+   40,
+   50,
+   60,
+   70,
+   80,
+   90,
+   100,
+   110,
+   120,
+   130,
+   140,
+   150,
+   160,
+   170,
+   180,
+   184
+  ],
+  "used_gpu_hours_sampled": 7358703.0,
+  "share_gpu_hours_by_job_type": {
+   "dev": 0.0361,
+   "offline_inference": 0.2015,
+   "online_inference": 0.5301,
+   "other": 0.0081,
+   "training": 0.2208,
+   "unknown": 0.0034
+  },
+  "share_gpu_hours_by_job_type_excl_unknown": {
+   "dev": 0.0362,
+   "offline_inference": 0.2022,
+   "online_inference": 0.5319,
+   "other": 0.0081,
+   "training": 0.2216
+  },
+  "share_gpu_hours_by_priority": {
+   "HP": 0.7708,
+   "LP": 0.221,
+   "Other": 0.0082
+  },
+  "share_by_job_type_x_priority": {
+   "dev|HP": 0.0357,
+   "dev|LP": 0.0003,
+   "dev|Other": 0.0001,
+   "offline_inference|HP": 0.0055,
+   "offline_inference|LP": 0.1916,
+   "offline_inference|Other": 0.0044,
+   "online_inference|HP": 0.5202,
+   "online_inference|LP": 0.0098,
+   "online_inference|Other": 0.0001,
+   "other|HP": 0.008,
+   "other|LP": 0.0001,
+   "other|Other": 0.0,
+   "training|HP": 0.1986,
+   "training|LP": 0.0187,
+   "training|Other": 0.0035,
+   "unknown|HP": 0.0028,
+   "unknown|LP": 0.0005,
+   "unknown|Other": 0.0001
+  },
+  "online_share_range_across_snapshots": [
+   0.4617,
+   0.6993
+  ],
+  "training_or_offline_share_range": [
+   0.2668,
+   0.4905
+  ],
+  "day100_hourly_gpu_hours_by_type_peak_to_trough": {
+   "dev": 1.024,
+   "offline_inference": 1.476,
+   "online_inference": 1.005,
+   "other": 1.277,
+   "training": 1.14,
+   "unknown": 1.015
+  }
+ },
+ "spot_gpu_jobs": {
+  "jobs": 466867,
+  "by_type": {
+   "HP": {
+    "jobs": 415713,
+    "share_jobs": 0.8904,
+    "share_gpu_hours": 0.9757,
+    "gpu_hours_per_job": {
+     "p50": 0.412,
+     "p90": 54.008,
+     "p99": 2026.813
+    },
+    "duration_h": {
+     "p50": 0.306,
+     "p90": 16.325,
+     "p99": 1659.086
+    },
+    "gpus_per_job": {
+     "p50": 1.0,
+     "p90": 8.0,
+     "p99": 64.0
+    }
+   },
+   "Spot": {
+    "jobs": 51154,
+    "share_jobs": 0.1096,
+    "share_gpu_hours": 0.0243,
+    "gpu_hours_per_job": {
+     "p50": 1.646,
+     "p90": 28.479,
+     "p99": 263.983
+    },
+    "duration_h": {
+     "p50": 0.582,
+     "p90": 6.039,
+     "p99": 51.756
+    },
+    "gpus_per_job": {
+     "p50": 2.0,
+     "p90": 10.0,
+     "p99": 53.0
+    }
+   }
+  },
+  "note": "HP jobs include long-lived services (duration up to months); share of GPU-hours over the trace window is dominated by them"
+ }
+}

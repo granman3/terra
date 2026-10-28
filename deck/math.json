@@ -1,0 +1,56 @@
+{
+ "source": "out/math/metrics.json",
+ "model": "out/v2/mycelium.pt",
+ "enroll": {
+  "assumptions": {
+   "gpu_hour_usd": 0.27,
+   "slow_pct": 0.06,
+   "saved_w": 80.0,
+   "dr_usd_kw_year": 100.0,
+   "dr_max_hours": 65
+  },
+  "per_1000_chips_year_usd": {
+   "paid": 8000,
+   "worst_case_cost": 1053,
+   "net": 6947
+  },
+  "breakeven_chip_hour_usd": 2.05,
+  "times_over_breakeven": 7.6,
+  "wholesale_breakeven_usd_kwh": 0.202,
+  "wholesale_rush_usd_kwh": 0.0223,
+  "levels": [
+   {
+    "program": "Real-time or advance notice",
+    "usd_kw_year": 100.0,
+    "net_per_1000_chips_year_usd": 6947,
+    "breakeven_chip_hour_usd": 2.05
+   },
+   {
+    "program": "Tariff maximum",
+    "usd_kw_year": 125.0,
+    "net_per_1000_chips_year_usd": 8947,
+    "breakeven_chip_hour_usd": 2.56
+   },
+   {
+    "program": "Both",
+    "usd_kw_year": 175.0,
+    "net_per_1000_chips_year_usd": 12947,
+    "breakeven_chip_hour_usd": 3.59
+   }
+  ]
+ },
+ "rush_target": 0.9,
+ "rush_adaptive": 0.8997,
+ "rush_split": 0.8604,
+ "solar_adaptive": 0.8986,
+ "market": {
+  "questions": 3523,
+  "profit_usd": {
+   "Terra": 70299,
+   "EIA forecast": 20487,
+   "Same as yesterday": 14528
+  },
+  "max_loss_usd": 69.31,
+  "lead_h": 12
+ }
+}

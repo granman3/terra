@@ -1,0 +1,18 @@
+{
+ "model": "out/v2/mycelium.pt",
+ "params": 561016,
+ "threads": 1,
+ "idle_w": 3.35,
+ "load_w": 17.17,
+ "forecasts_per_s": 305389,
+ "joules_per_forecast": 4.52e-05,
+ "samples": {
+  "idle": 39,
+  "load": 67
+ },
+ "unit": "one forecast = one power region's next 24 h",
+ "measured": "2026-10-27 15:21",
+ "joules_per_forecast_total_chip": 5.62e-05,
+ "year_all_regions_joules": 19.8,
+ "note": "joules_per_forecast is above idle; *_total_chip counts all chip power, the convention of out/mac/downshift*.json"
+}

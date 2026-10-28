@@ -1,0 +1,33 @@
+{
+ "share_used_gpu_hours_by_state": {
+  "Standby": 0.0109,
+  "Unknown": 0.9891
+ },
+ "share_by_job_type_running_only": {},
+ "gpus_per_pod_hour_by_job_type": {
+  "dev": {
+   "p50": 1.0,
+   "p90": 8.0
+  },
+  "offline_inference": {
+   "p50": 1.0,
+   "p90": 1.0
+  },
+  "online_inference": {
+   "p50": 1.0,
+   "p90": 1.0
+  },
+  "other": {
+   "p50": 8.0,
+   "p90": 16.0
+  },
+  "training": {
+   "p50": 1.0,
+   "p90": 16.0
+  },
+  "unknown": {
+   "p50": 1.0,
+   "p90": 1.0
+  }
+ }
+}

@@ -1,0 +1,398 @@
+{
+  "model": "terra",
+  "epochs": 10,
+  "best_epoch": 6,
+  "params": 4779267,
+  "device": "NVIDIA GeForce RTX 4080 SUPER",
+  "train_seconds": 725.6,
+  "train_energy_wh": 56.62,
+  "train_avg_watts": 280.9,
+  "temperature": 1.279,
+  "samples": {
+    "train": 754786,
+    "val": 109476,
+    "test": 171836
+  },
+  "test_peak_brier": {
+    "model": 0.04911951720714569,
+    "climatology": 0.1782207190990448,
+    "eia_forecast_rule": 0.09080802649259567,
+    "eia_forecast_calibrated": 0.0713868960738182
+  },
+  "test_peak_accuracy": {
+    "model": 0.9317215085029602,
+    "eia_forecast_rule": 0.9091920256614685
+  },
+  "test_gco2_mae_g": 26.62762451171875,
+  "test_share_mae": 0.028001366183161736,
+  "by_region": {
+    "PACE": {
+      "brier_model": 0.09664581716060638,
+      "brier_eia_rule": 0.19991247355937958,
+      "brier_eia_calibrated": 0.13407385349273682,
+      "peak_hours_caught_model": 0.8083715438842773,
+      "peak_hours_caught_eia_rule": 0.6867362260818481
+    },
+    "CISO": {
+      "brier_model": 0.14869271218776703,
+      "brier_eia_rule": 0.1710972934961319,
+      "brier_eia_calibrated": 0.14932775497436523,
+      "peak_hours_caught_model": 0.5355127453804016,
+      "peak_hours_caught_eia_rule": 0.48939046263694763
+    },
+    "BPAT": {
+      "brier_model": 0.045021578669548035,
+      "brier_eia_rule": 0.07438141852617264,
+      "brier_eia_calibrated": 0.0650278702378273,
+      "peak_hours_caught_model": 0.8859642148017883,
+      "peak_hours_caught_eia_rule": 0.8862363696098328
+    },
+    "ERCO": {
+      "brier_model": 0.0323571152985096,
+      "brier_eia_rule": 0.048052676022052765,
+      "brier_eia_calibrated": 0.04607300087809563,
+      "peak_hours_caught_model": 0.9156879782676697,
+      "peak_hours_caught_eia_rule": 0.9035727381706238
+    },
+    "PJM": {
+      "brier_model": 0.04507627338171005,
+      "brier_eia_rule": 0.13603462278842926,
+      "brier_eia_calibrated": 0.08891032636165619,
+      "peak_hours_caught_model": 0.8722516894340515,
+      "peak_hours_caught_eia_rule": 0.7352918982505798
+    },
+    "MISO": {
+      "brier_model": 0.036989785730838776,
+      "brier_eia_rule": 0.051111266016960144,
+      "brier_eia_calibrated": 0.05576351657509804,
+      "peak_hours_caught_model": 0.9349819421768188,
+      "peak_hours_caught_eia_rule": 0.9535977840423584
+    },
+    "SWPP": {
+      "brier_model": 0.0767497718334198,
+      "brier_eia_rule": 0.11584276705980301,
+      "brier_eia_calibrated": 0.10086649656295776,
+      "peak_hours_caught_model": 0.8263432383537292,
+      "peak_hours_caught_eia_rule": 0.7767593860626221
+    },
+    "SOCO": {
+      "brier_model": 0.02884748764336109,
+      "brier_eia_rule": 0.014219668693840504,
+      "brier_eia_calibrated": 0.03601543977856636,
+      "peak_hours_caught_model": 0.9274032711982727,
+      "peak_hours_caught_eia_rule": 0.9763240218162537
+    },
+    "TVA": {
+      "brier_model": 0.03588011488318443,
+      "brier_eia_rule": 0.05776594579219818,
+      "brier_eia_calibrated": 0.04992929846048355,
+      "peak_hours_caught_model": 0.8955042362213135,
+      "peak_hours_caught_eia_rule": 0.8874937891960144
+    },
+    "NYIS": {
+      "brier_model": 0.028037069365382195,
+      "brier_eia_rule": 0.04052223637700081,
+      "brier_eia_calibrated": 0.04087141156196594,
+      "peak_hours_caught_model": 0.9168984293937683,
+      "peak_hours_caught_eia_rule": 0.9024805426597595
+    },
+    "FPL": {
+      "brier_model": 0.03347747400403023,
+      "brier_eia_rule": 0.06457865983247757,
+      "brier_eia_calibrated": 0.04715364798903465,
+      "peak_hours_caught_model": 0.9036238193511963,
+      "peak_hours_caught_eia_rule": 0.8730290532112122
+    },
+    "ISNE": {
+      "brier_model": 0.02080840989947319,
+      "brier_eia_rule": 0.027548111975193024,
+      "brier_eia_calibrated": 0.028802644461393356,
+      "peak_hours_caught_model": 0.9176405668258667,
+      "peak_hours_caught_eia_rule": 0.8815481662750244
+    },
+    "DUK": {
+      "brier_model": 0.031878452748060226,
+      "brier_eia_rule": 0.06552153825759888,
+      "brier_eia_calibrated": 0.053982626646757126,
+      "peak_hours_caught_model": 0.8890067338943481,
+      "peak_hours_caught_eia_rule": 0.832605242729187
+    },
+    "CPLE": {
+      "brier_model": 0.03940825164318085,
+      "brier_eia_rule": 0.0574989952147007,
+      "brier_eia_calibrated": 0.0444093719124794,
+      "peak_hours_caught_model": 0.8596791625022888,
+      "peak_hours_caught_eia_rule": 0.8756862282752991
+    },
+    "FPC": {
+      "brier_model": 0.03670184686779976,
+      "brier_eia_rule": 0.05991346761584282,
+      "brier_eia_calibrated": 0.04622099548578262,
+      "peak_hours_caught_model": 0.8454198241233826,
+      "peak_hours_caught_eia_rule": 0.8489204049110413
+    },
+    "WACM": {
+      "brier_model": 0.13355600833892822,
+      "brier_eia_rule": 0.2958791255950928,
+      "brier_eia_calibrated": 0.19288088381290436,
+      "peak_hours_caught_model": 0.8320489525794983,
+      "peak_hours_caught_eia_rule": 0.6410852074623108
+    },
+    "PSCO": {
+      "brier_model": 0.08683755993843079,
+      "brier_eia_rule": 0.1879027634859085,
+      "brier_eia_calibrated": 0.1352265179157257,
+      "peak_hours_caught_model": 0.6378982067108154,
+      "peak_hours_caught_eia_rule": 0.5257799625396729
+    },
+    "NEVP": {
+      "brier_model": 0.06487277895212173,
+      "brier_eia_rule": 0.11796218901872635,
+      "brier_eia_calibrated": 0.0953858271241188,
+      "peak_hours_caught_model": 0.7525784373283386,
+      "peak_hours_caught_eia_rule": 0.6681652069091797
+    },
+    "LGEE": {
+      "brier_model": 0.05305371433496475,
+      "brier_eia_rule": 0.07950571924448013,
+      "brier_eia_calibrated": 0.06295275688171387,
+      "peak_hours_caught_model": 0.8750109076499939,
+      "peak_hours_caught_eia_rule": 0.8905691504478455
+    },
+    "AZPS": {
+      "brier_model": 0.04950359836220741,
+      "brier_eia_rule": 0.12361858785152435,
+      "brier_eia_calibrated": 0.08624938875436783,
+      "peak_hours_caught_model": 0.8252631425857544,
+      "peak_hours_caught_eia_rule": 0.6482105255126953
+    },
+    "SRP": {
+      "brier_model": 0.06700287759304047,
+      "brier_eia_rule": 0.0928804874420166,
+      "brier_eia_calibrated": 0.06856560707092285,
+      "peak_hours_caught_model": 0.7930569052696228,
+      "peak_hours_caught_eia_rule": 0.7810350656509399
+    },
+    "SC": {
+      "brier_model": 0.04307342320680618,
+      "brier_eia_rule": 0.10199349373579025,
+      "brier_eia_calibrated": 0.07202278077602386,
+      "peak_hours_caught_model": 0.863975465297699,
+      "peak_hours_caught_eia_rule": 0.8788971900939941
+    },
+    "PSEI": {
+      "brier_model": 0.057714615017175674,
+      "brier_eia_rule": 0.2585434317588806,
+      "brier_eia_calibrated": 0.2153148055076599,
+      "peak_hours_caught_model": 0.8444210290908813,
+      "peak_hours_caught_eia_rule": 0.26847583055496216
+    },
+    "SCEG": {
+      "brier_model": 0.05441241338849068,
+      "brier_eia_rule": 0.10868324339389801,
+      "brier_eia_calibrated": 0.07945958524942398,
+      "peak_hours_caught_model": 0.8435716032981873,
+      "peak_hours_caught_eia_rule": 0.7506153583526611
+    },
+    "PGE": {
+      "brier_model": 0.04038652032613754,
+      "brier_eia_rule": 0.0680742934346199,
+      "brier_eia_calibrated": 0.05862711742520332,
+      "peak_hours_caught_model": 0.8803762793540955,
+      "peak_hours_caught_eia_rule": 0.8519361019134521
+    },
+    "LDWP": {
+      "brier_model": 0.07685869187116623,
+      "brier_eia_rule": 0.1080905944108963,
+      "brier_eia_calibrated": 0.08248119801282883,
+      "peak_hours_caught_model": 0.6730279922485352,
+      "peak_hours_caught_eia_rule": 0.6913243532180786
+    },
+    "TEC": {
+      "brier_model": 0.031775932759046555,
+      "brier_eia_rule": 0.0760113075375557,
+      "brier_eia_calibrated": 0.05440651252865791,
+      "peak_hours_caught_model": 0.8781759142875671,
+      "peak_hours_caught_eia_rule": 0.8370683789253235
+    },
+    "AECI": {
+      "brier_model": 0.03257196024060249,
+      "brier_eia_rule": 0.04767908528447151,
+      "brier_eia_calibrated": 0.038827963173389435,
+      "peak_hours_caught_model": 0.8921748995780945,
+      "peak_hours_caught_eia_rule": 0.8640705347061157
+    },
+    "PACW": {
+      "brier_model": 0.042187828570604324,
+      "brier_eia_rule": 0.058683473616838455,
+      "brier_eia_calibrated": 0.049955446273088455,
+      "peak_hours_caught_model": 0.8670548796653748,
+      "peak_hours_caught_eia_rule": 0.8379952311515808
+    },
+    "FMPP": {
+      "brier_model": 0.05564507469534874,
+      "brier_eia_rule": 0.09101737290620804,
+      "brier_eia_calibrated": 0.064612478017807,
+      "peak_hours_caught_model": 0.7942265272140503,
+      "peak_hours_caught_eia_rule": 0.7975525856018066
+    },
+    "IPCO": {
+      "brier_model": 0.04625603184103966,
+      "brier_eia_rule": 0.1369631141424179,
+      "brier_eia_calibrated": 0.10140057653188705,
+      "peak_hours_caught_model": 0.845258891582489,
+      "peak_hours_caught_eia_rule": 0.6596858501434326
+    },
+    "BANC": {
+      "brier_model": 0.04302886500954628,
+      "brier_eia_rule": 0.06982140988111496,
+      "brier_eia_calibrated": 0.055502649396657944,
+      "peak_hours_caught_model": 0.8396092653274536,
+      "peak_hours_caught_eia_rule": 0.8197002410888672
+    },
+    "PNM": {
+      "brier_model": 0.030471036210656166,
+      "brier_eia_rule": 0.05626750737428665,
+      "brier_eia_calibrated": 0.04527193307876587,
+      "peak_hours_caught_model": 0.8767832517623901,
+      "peak_hours_caught_eia_rule": 0.8781638145446777
+    },
+    "TEPC": {
+      "brier_model": 0.031514618545770645,
+      "brier_eia_rule": 0.05191836506128311,
+      "brier_eia_calibrated": 0.041325777769088745,
+      "peak_hours_caught_model": 0.8629893064498901,
+      "peak_hours_caught_eia_rule": 0.8599721789360046
+    },
+    "JEA": {
+      "brier_model": 0.032711755484342575,
+      "brier_eia_rule": 0.07865050435066223,
+      "brier_eia_calibrated": 0.05888059362769127,
+      "peak_hours_caught_model": 0.8910104036331177,
+      "peak_hours_caught_eia_rule": 0.911981999874115
+    },
+    "AVA": {
+      "brier_model": 0.04610409215092659,
+      "brier_eia_rule": 0.09397312998771667,
+      "brier_eia_calibrated": 0.07213114947080612,
+      "peak_hours_caught_model": 0.9007483124732971,
+      "peak_hours_caught_eia_rule": 0.8472458124160767
+    },
+    "NWMT": {
+      "brier_model": 0.07022932916879654,
+      "brier_eia_rule": 0.10834033787250519,
+      "brier_eia_calibrated": 0.08169293403625488,
+      "peak_hours_caught_model": 0.8404378890991211,
+      "peak_hours_caught_eia_rule": 0.8205755352973938
+    },
+    "SCL": {
+      "brier_model": 0.05969885736703873,
+      "brier_eia_rule": 0.0946778729557991,
+      "brier_eia_calibrated": 0.07693623751401901,
+      "peak_hours_caught_model": 0.8813716173171997,
+      "peak_hours_caught_eia_rule": 0.8673985600471497
+    },
+    "EPE": {
+      "brier_model": 0.02654634229838848,
+      "brier_eia_rule": 0.04863887280225754,
+      "brier_eia_calibrated": 0.03736652061343193,
+      "peak_hours_caught_model": 0.8915377259254456,
+      "peak_hours_caught_eia_rule": 0.8547419905662537
+    },
+    "WALC": {
+      "brier_model": 0.0823148638010025,
+      "brier_eia_rule": 0.11898601055145264,
+      "brier_eia_calibrated": 0.0959000214934349,
+      "peak_hours_caught_model": 0.4340786337852478,
+      "peak_hours_caught_eia_rule": 0.43154531717300415
+    },
+    "GCPD": {
+      "brier_model": 0.0564066618680954,
+      "brier_eia_rule": 0.08542962372303009,
+      "brier_eia_calibrated": 0.08301682770252228,
+      "peak_hours_caught_model": 0.9077883362770081,
+      "peak_hours_caught_eia_rule": 0.8901833295822144
+    },
+    "CPLW": {
+      "brier_model": 0.03998521715402603,
+      "brier_eia_rule": 0.0687192901968956,
+      "brier_eia_calibrated": 0.05185896158218384,
+      "peak_hours_caught_model": 0.8344306349754333,
+      "peak_hours_caught_eia_rule": 0.8266426920890808
+    },
+    "TPWR": {
+      "brier_model": 0.050188977271318436,
+      "brier_eia_rule": 0.08570261299610138,
+      "brier_eia_calibrated": 0.06700154393911362,
+      "peak_hours_caught_model": 0.8902575969696045,
+      "peak_hours_caught_eia_rule": 0.8854024410247803
+    },
+    "IID": {
+      "brier_model": 0.021235991269350052,
+      "brier_eia_rule": 0.03482869639992714,
+      "brier_eia_calibrated": 0.029033945873379707,
+      "peak_hours_caught_model": 0.9152732491493225,
+      "peak_hours_caught_eia_rule": 0.899524986743927
+    },
+    "TAL": {
+      "brier_model": 0.03997994586825371,
+      "brier_eia_rule": 0.09258221089839935,
+      "brier_eia_calibrated": 0.06668168306350708,
+      "peak_hours_caught_model": 0.8472755551338196,
+      "peak_hours_caught_eia_rule": 0.8073042035102844
+    },
+    "TIDC": {
+      "brier_model": 0.02616293914616108,
+      "brier_eia_rule": 0.046568628400564194,
+      "brier_eia_calibrated": 0.04030963033437729,
+      "peak_hours_caught_model": 0.8979213833808899,
+      "peak_hours_caught_eia_rule": 0.8685939311981201
+    },
+    "DOPD": {
+      "brier_model": 0.04275479167699814,
+      "brier_eia_rule": 0.10716620087623596,
+      "brier_eia_calibrated": 0.0789448544383049,
+      "peak_hours_caught_model": 0.8831332325935364,
+      "peak_hours_caught_eia_rule": 0.8234183192253113
+    },
+    "GVL": {
+      "brier_model": 0.03744390234351158,
+      "brier_eia_rule": 0.09913965314626694,
+      "brier_eia_calibrated": 0.07245475798845291,
+      "peak_hours_caught_model": 0.8498454689979553,
+      "peak_hours_caught_eia_rule": 0.742812991142273
+    },
+    "CHPD": {
+      "brier_model": 0.04275354743003845,
+      "brier_eia_rule": 0.07914332300424576,
+      "brier_eia_calibrated": 0.05906469747424126,
+      "peak_hours_caught_model": 0.832188606262207,
+      "peak_hours_caught_eia_rule": 0.8532886505126953
+    },
+    "HST": {
+      "brier_model": NaN,
+      "brier_eia_rule": NaN,
+      "brier_eia_calibrated": NaN,
+      "peak_hours_caught_model": NaN,
+      "peak_hours_caught_eia_rule": NaN
+    },
+    "WAUW": {
+      "brier_model": 0.12014621496200562,
+      "brier_eia_rule": 0.24124650657176971,
+      "brier_eia_calibrated": 0.16895708441734314,
+      "peak_hours_caught_model": 0.6816376447677612,
+      "peak_hours_caught_eia_rule": 0.5062633752822876
+    }
+  },
+  "decisions": {
+    "n": 1162,
+    "job_hours": 4,
+    "deadline_h": 16,
+    "exact_match": 0.42512908777969016,
+    "cost_model": 0.08198639005422592,
+    "cost_oracle": 0.05401207506656647,
+    "cost_run_now_in_utah": 1.5771011114120483,
+    "utah_peak_hours_hit_model": 0.016351118683815002,
+    "utah_peak_hours_hit_naive": 1.135111927986145
+  }
+}

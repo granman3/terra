@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Utah Next Power</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --soil:#12110f; --line:#34312b; --stone:#9b9591; --stone-2:#bfbcb8; --sand:#ece6da; --sage:#9fb07e; --sage-dim:#6e755f; --copper:#c99068; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; background: radial-gradient(120% 90% at 30% 40%, #1d1b17 0%, var(--soil) 60%, #0d0c0b 100%); color: var(--sand); font-family: Figtree, system-ui, sans-serif; overflow: hidden; }
+  .stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; }
+  .text { position: absolute; left: 110px; top: 78px; width: 760px; }
+  .eyebrow { font-size: 22px; letter-spacing: .26em; text-transform: uppercase; color: var(--sage); margin-bottom: 28px; }
+  .big { font-weight: 300; font-size: 180px; line-height: .9; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+  .say { margin-top: 30px; font-size: 38px; font-weight: 300; line-height: 1.28; color: var(--stone-2); }
+  .say b { color: var(--sand); font-weight: 500; } .say .cu { color: var(--copper); }
+  .stats { display: flex; gap: 56px; margin-top: 44px; }
+  .stat .n { font-size: 64px; font-weight: 300; letter-spacing: -.02em; } .stat .l { font-size: 21px; color: var(--stone); margin-top: 4px; line-height: 1.3; }
+  svg { position: absolute; left: 900px; top: 60px; width: 640px; height: 780px; }
+  .county { fill: #1f1d1a; stroke: #3a362f; stroke-width: .8; }
+  .county.desert { fill: #2a2520; } .county.front { fill: #22251d; stroke: var(--sage-dim); }
+  .lbl { font: 15px "JetBrains Mono", monospace; fill: var(--stone-2); } .lbl.front { fill: var(--sage); }
+  .key { position: absolute; left: 930px; bottom: 72px; display: flex; gap: 22px; font-size: 16px; color: var(--stone); }
+  .key i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; }
+  .src { position: absolute; left: 110px; bottom: 34px; font: 15px "JetBrains Mono", monospace; color: #6f6a64; max-width: 760px; }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="text">
+    <div class="eyebrow">Where Utah's next power is being built</div>
+    <div class="big" id="gw">—</div>
+    <div class="say">of new power plants are planned in Utah. <b id="desert">—</b> of it sits in four desert counties,
+      and <b class="cu" id="ldwp">—</b> is wired to <b>Los Angeles's</b> grid, not Utah's.</div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="front">—</div><div class="l">planned on the Wasatch Front,<br>where most Utahns live</div></div>
+      <div class="stat"><div class="n" id="solar">—</div><div class="l">of it is solar, the rest<br>mostly storage</div></div>
+    </div>
+    <div class="say" style="font-size:32px;margin-top:36px">Flexible AI can go <b>where the new power is</b>, and run <b>when the sun is up there</b>.</div>
+  </div>
+  <svg id="map" viewBox="0 0 640 780"></svg>
+  <div class="key"><span><i style="background:var(--copper)"></i>planned, LA's grid (LDWP)</span><span><i style="background:var(--sage)"></i>planned, Rocky Mountain Power</span><span><i style="background:#5d5a52"></i>operating solar</span></div>
+  <div class="src" id="src"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script>
+const fit = () => { const k = Math.min(innerWidth / 1600, innerHeight / 900); document.getElementById("stage").style.transform = `translate(${(innerWidth - 1600 * k) / 2}px, ${(innerHeight - 900 * k) / 2}px) scale(${k})`; };
+addEventListener("resize", fit); fit();
+const $ = id => document.getElementById(id);
+const DESERT = ["Millard", "Iron", "Beaver", "Kane"], FRONT = ["Salt Lake", "Utah", "Davis", "Weber"];
+Promise.all([fetch("utah.json").then(r => r.json()), d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/counties-10m.json")]).then(([U, us]) => {
+  const desert = DESERT.reduce((s, c) => s + (U.planned_by_county_mw[c] ?? 0), 0);
+  $("gw").textContent = `${(U.planned_mw / 1000).toFixed(1)} GW`;
+  $("desert").textContent = `${Math.floor(desert / U.planned_mw * 100)}%`;
+  $("ldwp").textContent = `${U.ldwp_share_pct}%`;
+  $("front").textContent = `${U.planned_on_wasatch_front_mw} MW`;
+  $("solar").textContent = `${Math.round(U.planned_by_kind_mw.solar / U.planned_mw * 100)}%`;
+  $("src").textContent = `${U.source} · planned generators in Utah, nameplate MW · balancing authority as reported`;
+  const counties = topojson.feature(us, us.objects.counties).features.filter(f => f.id.startsWith("49"));
+  const proj = d3.geoMercator().fitExtent([[20, 20], [620, 760]], { type: "FeatureCollection", features: counties }), path = d3.geoPath(proj);
+  const svg = d3.select("#map");
+  svg.append("g").selectAll("path").data(counties).join("path").attr("d", path)
+    .attr("class", f => "county" + (DESERT.includes(f.properties.name) ? " desert" : FRONT.includes(f.properties.name) ? " front" : ""));
+  for (const f of counties) { const n = f.properties.name; if (!DESERT.includes(n) && !FRONT.includes(n)) continue;
+    const [x, y] = path.centroid(f); const dy = n === "Davis" ? -6 : n === "Weber" ? -10 : 0;
+    svg.append("text").attr("class", "lbl" + (FRONT.includes(n) ? " front" : "")).attr("x", n === "Millard" ? x - 40 : x).attr("y", y + dy).attr("text-anchor", "middle").text(n); }
+  svg.append("g").selectAll("circle").data(U.operating_solar).join("circle")
+    .attr("cx", d => proj([d.lon, d.lat])[0]).attr("cy", d => proj([d.lon, d.lat])[1]).attr("r", d => Math.max(2, Math.sqrt(d.mw) * .9)).attr("fill", "#5d5a52").attr("fill-opacity", .7);
+  const plants = [...U.plants].sort((a, b) => b.mw - a.mw);
+  svg.append("g").selectAll("circle").data(plants).join("circle")
+    .attr("cx", d => proj([d.lon, d.lat])[0]).attr("cy", d => proj([d.lon, d.lat])[1]).attr("r", d => Math.max(4, Math.sqrt(d.mw) * 1.5))
+    .attr("fill", d => d.ba === "LDWP" ? "var(--copper)" : "var(--sage)").attr("fill-opacity", .55).attr("stroke", d => d.ba === "LDWP" ? "var(--copper)" : "var(--sage)").attr("stroke-width", 1.5);
+});
+</script>
+</body>
+</html>

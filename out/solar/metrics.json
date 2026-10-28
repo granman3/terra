@@ -1,0 +1,45 @@
+{
+ "model": {
+  "mae_mw": 233.6,
+  "nmae_pct": 7.08,
+  "hours": 3581
+ },
+ "persistence": {
+  "mae_mw": 403.8,
+  "nmae_pct": 12.53,
+  "hours": 3581
+ },
+ "slc_weather_only": {
+  "mae_mw": 341.7,
+  "nmae_pct": 10.49,
+  "hours": 3581
+ },
+ "skill_vs_persistence_pct": 42.1,
+ "fit_seconds": 10.1,
+ "capacity_mw_latest": 3107,
+ "capacity_mw_2022": 1147,
+ "test": "daylight hours, 2026-01-01 onward",
+ "cloudy_days": {
+  "days": 19,
+  "model": {
+   "mae_mw": 276.9,
+   "nmae_pct": 8.81,
+   "hours": 205
+  },
+  "persistence": {
+   "mae_mw": 532.1,
+   "nmae_pct": 17.98,
+   "hours": 205
+  }
+ },
+ "band_90": {
+  "split": {
+   "q_share_of_capacity": 0.1436,
+   "test_coverage": 0.8637
+  },
+  "adaptive": {
+   "test_coverage": 0.8986,
+   "latest_q_share_of_capacity": 0.1839
+  }
+ }
+}

@@ -1,0 +1,329 @@
+{
+  "counts": {
+    "grids": 50,
+    "data_types": 6,
+    "raw_values": {
+      "eia930": 17620173,
+      "weather_forecasts": 15008245,
+      "markets": 11141,
+      "sun_position": 2144166,
+      "holidays": 57,
+      "total": 32639616
+    },
+    "features_per_sample": 492,
+    "samples": [
+      754786,
+      109476,
+      171836
+    ],
+    "hours_of_grid_history": 2144166
+  },
+  "eia_forecast": {
+    "PACE": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 5.1
+    },
+    "CISO": {
+      "peak_hour_actual": 19,
+      "peak_hour_forecast": 19,
+      "best_lag_h": 1,
+      "mape_pct": 6.5
+    },
+    "BPAT": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.0
+    },
+    "ERCO": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 2.4
+    },
+    "PJM": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 1,
+      "mape_pct": 3.5
+    },
+    "MISO": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 2.7
+    },
+    "SWPP": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 5.2
+    },
+    "SOCO": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 1.7
+    },
+    "TVA": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 2.3
+    },
+    "NYIS": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "FPL": {
+      "peak_hour_actual": 16,
+      "peak_hour_forecast": 15,
+      "best_lag_h": 0,
+      "mape_pct": 5.0
+    },
+    "ISNE": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.6
+    },
+    "DUK": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.9
+    },
+    "CPLE": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 5.1
+    },
+    "FPC": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": -1,
+      "mape_pct": 23.3
+    },
+    "WACM": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 15.0
+    },
+    "PSCO": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 16.7
+    },
+    "NEVP": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "LGEE": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "AZPS": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 1,
+      "mape_pct": 6.0
+    },
+    "SRP": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 5.0
+    },
+    "SC": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 3.5
+    },
+    "PSEI": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 19,
+      "best_lag_h": -1,
+      "mape_pct": 33.8
+    },
+    "SCEG": {
+      "peak_hour_actual": 15,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 7.5
+    },
+    "PGE": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 1.4
+    },
+    "LDWP": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "TEC": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 16,
+      "best_lag_h": 0,
+      "mape_pct": 4.7
+    },
+    "AECI": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.9
+    },
+    "PACW": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 5.4
+    },
+    "FMPP": {
+      "peak_hour_actual": 16,
+      "peak_hour_forecast": 16,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "IPCO": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 19,
+      "best_lag_h": 0,
+      "mape_pct": 3.6
+    },
+    "BANC": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 2.5
+    },
+    "PNM": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 6.3
+    },
+    "TEPC": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 6.1
+    },
+    "JEA": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 4.8
+    },
+    "AVA": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 1.8
+    },
+    "NWMT": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.6
+    },
+    "SCL": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 3.7
+    },
+    "EPE": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 3.2
+    },
+    "WALC": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 20,
+      "best_lag_h": 0,
+      "mape_pct": 29.6
+    },
+    "GCPD": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 2.3
+    },
+    "CPLW": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 6.5
+    },
+    "TPWR": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 2.5
+    },
+    "IID": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "TAL": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 4.0
+    },
+    "TIDC": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": Infinity
+    },
+    "DOPD": {
+      "peak_hour_actual": 7,
+      "peak_hour_forecast": 7,
+      "best_lag_h": 0,
+      "mape_pct": 6.5
+    },
+    "GVL": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 17,
+      "best_lag_h": 0,
+      "mape_pct": 10.5
+    },
+    "CHPD": {
+      "peak_hour_actual": 7,
+      "peak_hour_forecast": 8,
+      "best_lag_h": 0,
+      "mape_pct": 3.2
+    },
+    "HST": {
+      "peak_hour_actual": 18,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 6.7
+    },
+    "WAUW": {
+      "peak_hour_actual": 17,
+      "peak_hour_forecast": 18,
+      "best_lag_h": 0,
+      "mape_pct": 9.6
+    }
+  }
+}

@@ -1,0 +1,37 @@
+product,spec,value,unit,source_url
+Spin,C-rating,10,C,https://www.torus.co/torus-flywheel
+Spin,full-cycle discharge time,6,minutes,https://www.torus.co/torus-flywheel
+Spin,response time,milliseconds (no number on product page),,https://www.torus.co/torus-flywheel
+Spin,response time (R&D 100 post),<250,ms,https://www.torus.co/news/torus-spin-named-winner-of-2025-r-d-100-award-for-energy-innovation
+Spin,cycle life (current pages),"25,000",cycles,https://www.torus.co/torus-flywheel
+Spin,cycle life (older Station spec table; conflicts),"50,000+ over 25 years",cycles,https://torus.co/t-torus-station-overview
+Spin,power-to-energy vs traditional BESS,20,x,https://www.torus.co/torus-flywheel
+Spin,per-unit power rating,not published on torus.co as of 2026-10-27,kW,https://www.torus.co/torus-flywheel
+Spin,per-unit energy rating,not published on torus.co as of 2026-10-27,kWh,https://www.torus.co/torus-flywheel
+Spin,recyclable materials,95,%,https://www.torus.co/news/torus-spin-named-winner-of-2025-r-d-100-award-for-energy-innovation
+Pulse,chemistry,LFP,,https://www.torus.co/torus-nova-pulse
+Pulse,C-rating,0.5,C,https://www.torus.co/torus-nova-pulse
+Pulse,cycle life,"7,500",cycles,https://www.torus.co/torus-nova-pulse
+Pulse,sizing (older Station spec table),270 kWh - 2.2 MWh (expandable to 40 MWh),kWh,https://torus.co/t-torus-station-overview
+Pulse,round-trip efficiency (older Station spec table),93,%,https://torus.co/t-torus-station-overview
+Pulse,lifespan when paired with Spin (older Station spec table),20,years,https://torus.co/t-torus-station-overview
+Station,system size,"modular, up to 100+",MW,https://www.torus.co/torus-nova
+Station,lifespan,25,years,https://www.torus.co/torus-nova
+Station,contract to operation,12-16,weeks,https://www.torus.co/torus-nova
+Station,fleet uptime,99.9,%,https://www.torus.co/torus-nova
+Station,certifications,UL 9540; IEEE 1547,,https://www.torus.co/torus-nova
+Station,ramp to full power (utility dispatch),<30,s,https://www.torus.co/utilities-electrical-utilities
+Station,facility size range served,500 kW machine shop to 15 MW plant,,https://www.torus.co/industrial-landing-page
+Lasso,dispatch latency,<250,ms,https://www.torus.co/torus-lasso
+Lasso,uptime,99.9,%,https://www.torus.co/torus-lasso
+RMP program,"flexible capacity (being deployed; MOU scale, not operating MW)",500,MW,https://www.torus.co/case-studies/case-studies-rocky-mountain-power
+RMP program,states,"Utah, Wyoming, Idaho (3, not 6)",,https://www.torus.co/case-studies/case-studies-rocky-mountain-power
+RMP program,ramp time (case-study headline),19,s,https://www.torus.co/case-studies/case-studies-rocky-mountain-power
+RMP program,unscheduled dispatches over 18 months (RMP quote),520,events,https://www.torus.co/case-studies/case-studies-rocky-mountain-power
+RMP program,unplanned events (case-study headline; differs from 520),359,events,https://www.torus.co/case-studies/case-studies-rocky-mountain-power
+RMP program,original MOU (2025-01-27),70,MW,https://torus.co/news/rocky-mountain-power-and-torus-announce-strategic-partnership
+RMP program,homes equivalent of 70 MW,"~20,000",homes,https://torus.co/news/rocky-mountain-power-and-torus-announce-strategic-partnership
+RMP program,response time in technical brief,<250,ms,https://torus.co/news/technical-brief-rocky-mountain-power-and-torus-sign-mou-to-deploy-70-megawatts
+RMP program,system uptime in technical brief,99,%,https://torus.co/news/technical-brief-rocky-mountain-power-and-torus-sign-mou-to-deploy-70-megawatts
+Company,US manufacturing facility,"582,000 (mission page); 545,000 (Station page); 540,000 (2026-02 news)",sq ft,https://www.torus.co/our-mission
+Company,funding raised,267,$M,https://www.torus.co/our-mission

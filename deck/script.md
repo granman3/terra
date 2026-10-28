@@ -1,11 +1,11 @@
-# Terra: 3-minute script (7 slides)
+# Terra: 4-minute script (11 slides)
 
-Structure: Monroe's Motivated Sequence (attention → need → satisfaction → visualization → action); see `deck/frameworks.md`.
-About 390 spoken words: ~2:35 at 150 words a minute, ~2:50 with the demo pause. Arrow key = next slide.
-The slides carry the detail; you say one number per slide.
+Story: problem → solution → why this solution → what I built → how well it works → impact. The strip at the top
+right of each slide shows where you are in it. About 560 spoken words: ~3:45 at 150 words a minute, ~4:00 with the
+demo pause, inside the 5-minute slot. Arrow key = next slide. Say one number per slide; the slide carries the rest.
 
-Before you start: deck open full screen (`f`), router running (`npm --prefix router start`). The laptop AI card is
-gone, so `mac_agent.py` is optional now; if it isn't running, the router's power-saving calls fail quietly.
+Before you start: deck open full screen (`f`), router running (`npm --prefix router start`) or the hosted deck at
+terra-live.granitetait.com/deck/.
 
 **Mirrored projector setup (during the room check):**
 - Plug in the charger, turn on Do Not Disturb, mirror the display, press `f` on the first slide.
@@ -24,41 +24,65 @@ rush hours.
 
 **2 · Public data (0:10–0:20)**
 
-It's built only on public government data: 33 million data points from the Energy Information Administration,
-weather forecasts and Utah's power prices, every hour since 2022.
+It's built only on public government data: 33 million data points, every hour since 2022. Five training runs, three
+designs, one custom model.
 
 **3 · The problem (0:20–0:50)**
 
-Utah builds power plants for its worst hour, and AI is making that hour worse. Data centers could use 12 percent of
-US electricity by 2028, up from 4. The biggest US grid just paid 16 billion dollars for one year of standby plants. In
-Utah, the top 10 percent of the grid was needed for just 153 hours last year. Building that new costs up to two
-billion dollars, for plants that aren't needed 98 percent of the year.
+Here's the problem. US power companies plan to spend 1.1 trillion dollars on the grid in just five years, the most
+ever, and data centers are the main new driver of demand. Peak demand grows 224 gigawatts in ten years. Data centers go from 4 to
+12 percent of US power. Making their electricity takes 211 billion gallons of water a year. And the plants that cover
+the worst hours burn 40 percent more fuel. Why is it so hard? Every load is treated as fixed, so the grid gets built
+for its worst few hours.
 
-**4 · AI work can move (0:50–1:15)**
+**4 · The problem in Utah (0:50–1:10)**
 
-Power plants can't move. AI work can. Grids peak at different hours: Texas at 4, Utah at 5, California at 7.
-In 85 percent of Utah's rush hours this year, another grid had room. A training run doesn't care where it runs.
-Terra moves it: a 4-hour job goes from about an hour of rush hour to almost none.
+Utah's the same. One data center is asking for 10 gigawatts. In Utah, the top 10 percent of the grid was needed for
+just 153 hours last year: up to two billion dollars of plants for 2 percent of the year. Those hours are Terra's
+target.
 
-**5 · We don't spend energy to save energy (1:15–1:35)**
+**5 · The solution (1:10–1:30)**
 
-And we don't spend energy to save energy. Every input, every hour goes into the Terra model, which I built and
-trained myself, at home, on one graphics card. Half a million settings, made for one job. It uses 690,000 times less
-energy per decision than a 4-billion-parameter AI model: a whole year of its decisions costs less than one answer
-from that model.
+Power plants can't move. AI work can. Grids peak at different hours: Texas at 4, Utah at 5, California at 7. In 85
+percent of Utah's rush hours, another grid had room. 42 percent of AI chip time is training and batch work that can
+wait. Terra moves it: a 4-hour job goes from an hour of rush hour to almost none.
 
-**6 · Live demo (1:35–2:25)**
+**6 · Why this solution (1:30–1:50)**
+
+Why this, and not more plants or batteries? Plants cost up to two thousand dollars a kilowatt and burn more fuel.
+Batteries, like Torus Pulse, cover the hours the load can't move. Moving the load that can costs nothing to
+build, so Pulse covers the rest. Duke found 98 gigawatts of new data centers fit on today's grid, no new plants, if they flex half a
+percent of the time. Terra is how they flex.
+
+**7 · What I built (1:50–2:05)**
+
+So I built a custom model for one job. Every input, every hour, from 50 grids, into a model I designed and trained
+at home on my own graphics card. It makes 29 percent fewer mistakes than the utility's own forecast, and its decision
+goes straight to Torus Lasso.
+
+**8 · The math (2:05–2:20)**
+
+Underneath it is one equation: for every job, pick the region and start hour with the least chance of rush hour,
+carbon as the tiebreak. The model supplies those chances, and it's graded on hours it never saw.
+
+**9 · Why a small model (2:20–2:35)**
+
+And I tested going bigger. A transformer eight times the size used 590 times the energy for two points of accuracy.
+A 4-billion-parameter AI model used 690,000 times the energy and barely beat the utility. Terra is small on purpose:
+we don't spend energy to save energy.
+
+**10 · Live demo (2:35–3:20)**
 
 This is last week's real grid data, replayed at about a second an hour. Copper means rush hour is coming.
 *(press **P**)* Tuesday, Utah's highest demand of the week. Every job that can wait leaves Utah for a grid with room.
 Underneath is the proof, live: real power out of Utah's rush hour, at Utah's real prices. *(pause on the ledger)*
 
-**7 · Why it matters for Torus (2:25–2:50)**
+**11 · Impact (3:20–3:50)**
 
-Torus has Spin for milliseconds and Pulse for hours. Terra moves the load itself: to a region with room, or to a
-later hour. That's 10 million dollars a year for every 100 megawatts that can wait. And it starts with a forecast:
-Terra sees Utah's rush hours a day ahead, 80 percent caught versus 69 for the utility's own. Next is a pilot with one
-Utah AI site, plugged into Lasso. Let the grid's newest load be its most flexible one. Thank you!
+For Utah, that's 10 million dollars a year for every 100 megawatts of AI work that can wait. For every grid, it's how
+98 gigawatts of new AI fits without new plants. And staggered starts shrink a site's power spike 50 times, so Spin
+has less to catch. Torus has Spin for milliseconds and Pulse for hours. Terra moves the load itself. Next is a pilot
+with one Utah AI site, plugged into Lasso. Let the grid's newest load be its most flexible one. Thank you!
 
 ---
 
@@ -138,3 +162,23 @@ Utah AI site, plugged into Lasso. Let the grid's newest load be its most flexibl
 - **"Is this forecast always late?"** No. Over five years it lines up. This fall it drifted. That's the point:
   a forecast that can drift needs a second opinion that updates every hour.
 - **"How long did this take?"** Two days, mostly on a home server and this laptop.
+
+- **"Where do the problem-slide numbers come from?"** $1.1 trillion: Edison Electric Institute, investor-owned utility
+  capital spending 2025–29 (all grid spending, not only for peaks). +224 GW: NERC 2025 Long-Term Reliability
+  Assessment, summer peak growth over 10 years, data centers the main driver; 13 of 23 areas at elevated or high risk.
+  4.4% → 12%: DOE/LBNL, Dec 2024 (high case). 211 billion gallons: LBNL's estimate of water used to generate data
+  centers' electricity in 2023, about 12× the ~17 billion gallons used on site. +40%: EIA average heat rates,
+  simple-cycle gas ~10,000 Btu/kWh vs combined cycle 7,146 (2020). 48 Utah data centers, "a couple thousand to a couple
+  million gallons a day": Deseret News, Aug 2026.
+- **"98 GW?"** Duke Nicholas Institute, "Rethinking Load Growth" (Norris et al., Feb 2025): the 22 largest US
+  balancing areas could add 76 GW of new load at 0.25% curtailment, 98 GW at 0.5%, 126 GW at 1%; average curtailment
+  about 1.7–2.5 hours. It's their study of flexible load in general; Terra is one way AI load gets that flexible.
+- **"What's the equation, exactly?"** It's `router/src/decide.ts`: for each region and start delay (0, 3, 6, 12 h)
+  that fits the deadline, cost = sum over the job's 4 hours of the forecast rush-hour chance + mean gCO2/kWh / 1000;
+  take the lowest. The model (`train/train.py`) is trained with binary cross-entropy on rush hour plus two MSE terms
+  (fuel share, carbon), temperature-calibrated on validation, scored by Brier on 2026.
+- **"Five training runs?"** v1 (4 grids), v2 (50 grids, shipped), the 4.8M transformer (a 40-epoch run that overfit,
+  then a 10-epoch rerun), and the 4B LLM fine-tune.
+- **"The chart's two energy bases?"** Transformer vs Terra was timed back to back on one laptop CPU core (590×). The
+  LLM vs Terra was total chip power on the same MacBook (690,000×). The LLM's accuracy (3% better than the utility) is
+  from the earlier 4-region test; the other two are all 50 regions, 2026.

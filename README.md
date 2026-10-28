@@ -15,11 +15,11 @@ Terra forecasts every US power grid's rush hour a day ahead and moves AI work ar
 
 <table>
 <tr>
-<td><img src="docs/phone-map.jpg" width="300" alt="Terra's live map during a utility call: Utah saving 29%, California in rush hour, a job flying to the Pacific Northwest"></td>
+<td><img src="docs/phone-map.jpg" width="300" alt="Terra's live map in Utah's rush hour: AI jobs stream to the Pacific Northwest while California and Texas are in rush hour too"></td>
 <td><img src="docs/phone-compare.jpg" width="300" alt="Without vs with Terra: 1.14 h vs 0.04 h of rush hour per job"></td>
 </tr>
 <tr>
-<td align="center"><sub>A utility call in Utah. Terra slows its chips 29% and sends work to the Pacific NW, skipping California's rush hour.</sub></td>
+<td align="center"><sub>Utah's rush hour. Every AI job that can wait streams to the Pacific NW, skipping California and Texas, also in rush hour.</sub></td>
 <td align="center"><sub>Without vs with Terra, on real 2026 grid data the model never saw.</sub></td>
 </tr>
 </table>

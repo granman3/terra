@@ -157,3 +157,8 @@ one Utah AI site, plugged into Lasso. Let the grid's newest load be its most fle
 - **"The chart's two energy bases?"** Transformer vs Terra was timed back to back on one laptop CPU core (590×). The
   LLM vs Terra was total chip power on the same MacBook (690,000×). The LLM's accuracy (3% better than the utility) is
   from the earlier 4-region test; the other two are all 50 regions, 2026.
+- **"Why a 4-hour job?"** It's the benchmark length the router is scored on (`JOB_HOURS = 4` in `decide.ts`), picked
+  because that's where AI compute actually is: in Alibaba's PAI trace, jobs that run 4 hours or more hold 78% of all
+  GPU-hours (`data/collected/jobs/SOURCES.md`). It's long enough to sit right on Utah's afternoon peak if started at
+  the wrong time (1.14 rush hours if started now), and short enough that the wait options (now, +3, +6, +12 h) plus
+  4 hours fit a 16-hour overnight deadline. Longer training runs save checkpoints, so they can move in chunks like this.

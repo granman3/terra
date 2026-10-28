@@ -21,7 +21,7 @@
   .big .cu { color: var(--copper); } .big .sg { color: var(--sage); }
   .say { margin-top: 36px; font-size: 44px; font-weight: 300; line-height: 1.25; color: var(--stone-2); max-width: 1250px; position: relative; }
   .say b { color: var(--sand); font-weight: 500; }
-  .src { position: absolute; left: 110px; bottom: 34px; font: 15px "JetBrains Mono", monospace; color: #6f6a64; }
+  .src { position: absolute; left: 110px; bottom: 34px; font: 15px "JetBrains Mono", monospace; color: var(--stone); }
   .count { position: absolute; right: 48px; bottom: 30px; font: 15px "JetBrains Mono", monospace; color: #5c5853; }
   h1 { font-weight: 300; font-size: 170px; line-height: .92; letter-spacing: -.035em; position: relative; }
   .tagline { margin-top: 36px; font-size: 46px; font-weight: 300; line-height: 1.2; color: var(--stone-2); max-width: 1000px; position: relative; }
@@ -450,7 +450,7 @@ function peaks(P) {
   const NAME = { ERCO: "Texas", PACE: "Utah", CISO: "California", BPAT: "Pacific NW" }, COL = { PACE: "#c99068", ERCO: "#ece6da", CISO: "#9fb07e", BPAT: "#6e8fa0" };
   let g = "";
   for (const h of [0, 6, 12, 18, 23]) g += `<text x="${x(h)}" y="${H - 14}" fill="#9b9591" font-size="17" text-anchor="middle">${h === 0 ? "midnight" : h === 12 ? "noon" : h === 23 ? "11 PM" : h < 12 ? h + " AM" : h - 12 + " PM"}</text>`;
-  for (const v of [.7, .8, .9, 1]) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#34312b"/><text x="${L - 10}" y="${y(v) + 5}" fill="#6f6a64" font-size="15" text-anchor="end">${Math.round(v * 100)}%</text>`;
+  for (const v of [.7, .8, .9, 1]) g += `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#34312b"/><text x="${L - 10}" y="${y(v) + 5}" fill="#9b9591" font-size="15" text-anchor="end">${Math.round(v * 100)}%</text>`;
   const order = ["BPAT", "CISO", "ERCO", "PACE"];
   for (const k of order) { const p = P.profile[k]; if (!p) continue;
     g += `<polyline fill="none" stroke="${COL[k]}" stroke-width="${k === "PACE" ? 5 : 3}" stroke-opacity="${k === "PACE" ? 1 : .8}" points="${p.map((v, h) => `${x(h)},${y(v)}`).join(" ")}"/>`; }
@@ -478,12 +478,12 @@ function sizes(M) {
     const W = acc ? 700 : 650, L = 190, R = acc ? 210 : 130, rowH = 84, top = 26, svg = document.getElementById(id);
     const sx = v => L + (log ? Math.log10(Math.max(v, 1)) / Math.log10(max) : v / max) * (W - L - R);
     let g = "";
-    if (log) for (let e = 0; e <= Math.log10(max); e++) { const x = sx(10 ** e); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#6f6a64" font-size="15" text-anchor="middle">${e === 0 ? "1×" : e === 3 ? "1,000×" : e === 6 ? "1M×" : ""}</text>`; }
-    else for (const v of [0, 10, 20, 30]) { const x = sx(v); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#6f6a64" font-size="15" text-anchor="middle">${v}%</text>`; }
+    if (log) for (let e = 0; e <= Math.log10(max); e++) { const x = sx(10 ** e); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#9b9591" font-size="15" text-anchor="middle">${e === 0 ? "1×" : e === 3 ? "1,000×" : e === 6 ? "1M×" : ""}</text>`; }
+    else for (const v of [0, 10, 20, 30]) { const x = sx(v); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#9b9591" font-size="15" text-anchor="middle">${v}%</text>`; }
     M.forEach((m, k) => {
       const y = top + k * rowH + 12, v = val(m), x1 = Math.max(sx(v), L + 6), us = m.shipped;
       const size = m.params >= 1e9 ? `${(m.params / 1e9).toFixed(0)} billion parameters` : m.params >= 1e6 ? `${(m.params / 1e6).toFixed(1)} million parameters` : `${Math.round(m.params / 1000)},000 parameters`;
-      g += `<text x="0" y="${y + 22}" fill="${us ? "#ece6da" : "#bfbcb8"}" font-size="22" font-weight="${us ? 500 : 400}">${m.name}</text><text x="0" y="${y + 44}" fill="#6f6a64" font-size="15">${size}</text>`;
+      g += `<text x="0" y="${y + 22}" fill="${us ? "#ece6da" : "#bfbcb8"}" font-size="22" font-weight="${us ? 500 : 400}">${m.name}</text><text x="0" y="${y + 44}" fill="#9b9591" font-size="15">${size}</text>`;
       g += `<rect x="${L}" y="${y}" width="${x1 - L}" height="44" rx="4" fill="${us ? "#9fb07e" : "#6f6a64"}" fill-opacity="${us ? 1 : .55}"/>`;
       g += `<text x="${x1 + 12}" y="${y + 30}" fill="${us ? "#9fb07e" : "#ece6da"}" font-size="26" font-weight="500">${fmt(v)}${!log && m.earlier_test ? "*" : ""}</text>`;
       if (acc && k === 0) g += `<text x="${W}" y="${top - 12}" fill="#9b9591" font-size="15" text-anchor="end">fewer mistakes vs utility</text>`;

@@ -41,7 +41,7 @@ to build. Duke found 98 gigawatts of new data centers fit on today's grid if the
 **4 · What I built (1:15–1:45)**
 
 So I built a custom model for that one job: 33 million public data points, five training runs, three designs,
-trained at home on my own graphics card. Underneath is one equation: for every job, pick the region and hour with the
+trained at home on my own graphics card. 561,000 parameters, made for one job. Underneath is one equation: for every job, pick the region and hour with the
 least chance of rush hour. It makes 29 percent fewer mistakes than the utility's own forecast. And I tested going
 bigger: a 4-billion-parameter model used 690,000 times the energy and barely beat the utility. We don't spend energy
 to save energy.
@@ -93,7 +93,7 @@ one Utah AI site, plugged into Lasso. Let the grid's newest load be its most fle
   across all 50 regions, on 2026 data it never saw. A full year of forecasts for every region takes about 20 joules
   on this laptop.
 
-- **"Why such a small model? Wouldn't bigger be better?"** I tested that. A transformer 8× bigger (4.8 million settings)
+- **"Why such a small model? Wouldn't bigger be better?"** I tested that. A transformer 8× bigger (4.8 million parameters)
   was only about 2% more accurate, and used about 590 times the energy per forecast. A 4-billion-parameter AI model
   fine-tuned on the same question was *less* accurate than the small one, about as good as the official forecast,
   at roughly 1.8 million times the energy per forecast. Small wins. *(The 590× is from timing both small models back to back on the same laptop core; slide 3's 20 joules comes from a
@@ -101,7 +101,7 @@ one Utah AI site, plugged into Lasso. Let the grid's newest load be its most fle
   everything on screen.)*
 
 - **"How efficient is it, really?"** On one CPU core of this MacBook it makes about 300,000 forecasts a second, at
-  about 45 millionths of a joule each (chip power above idle; `demo/measure_tiny.py`). The 4-billion-setting model on
+  about 45 millionths of a joule each (chip power above idle; `demo/measure_tiny.py`). The 4-billion-parameter model on
   the same laptop needs about 39 J per forecast: roughly 700,000× more (measured 10-27, page in front). On the earlier 4-region test it was also less
   accurate (error 0.100 vs 0.077).
 

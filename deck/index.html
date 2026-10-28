@@ -134,7 +134,7 @@
   .sizes .charts h3 { font-size: 24px; font-weight: 400; color: var(--sand); margin-bottom: 4px; } .sizes .charts .sub { font-size: 18px; color: var(--stone); margin-bottom: 10px; }
   .sizes svg text { font-family: Figtree, sans-serif; }
   .sizes .point { margin-top: 30px; font-size: 29px; }
-  .built .head { font-size: 66px; } .built .pipe { margin-top: 22px; font-size: 24px; }
+  .built .head { font-size: 66px; } .built .pipe { margin-top: 22px; font-size: 22px; white-space: nowrap; } .built .pipe i { margin: 0 9px; }
   .bgrid { display: grid; grid-template-columns: 1fr 700px; gap: 50px; margin-top: 30px; position: relative; }
   .built .hero-eq { border: 1px solid var(--sage-dim); border-radius: 14px; padding: 18px 26px; background: rgba(27,26,23,.8); font-size: 30px; }
   .built .hero-eq .k { font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); } .built .hero-eq .katex-display { margin: 14px 0 10px; }
@@ -240,7 +240,7 @@
       <span>Grid demand + the utility's forecast</span><span>Fuel mix and carbon</span><span>Weather forecasts</span><span>Sun position</span><span>Holidays and calendar</span><span>Power and gas prices</span>
       <div class="k2"><b data-n="features_per_sample">492</b> numbers per decision · <b data-n="grids">50</b> regions</div></div>
     <div class="arrow">→</div>
-    <div class="mid"><div class="k">The Terra model</div><div class="t"><span data-n="tiny_params" data-f="k">561K</span> settings</div><div class="d">Designed, trained and tested by me at home on one RTX 4080: 5 training runs, 3 designs, the best one kept.</div></div>
+    <div class="mid"><div class="k">The Terra model</div><div class="t"><span data-n="tiny_params" data-f="k">561K</span> parameters</div><div class="d">Designed, trained and tested by me at home on one RTX 4080: 5 training runs, 3 designs, the best one kept.</div></div>
     <div class="arrow">→</div>
     <div class="out"><div class="k">Decision → Torus Lasso</div><div class="t">Where, when, how hard</div><div class="d">for every AI job, in a fraction of a millisecond. A dispatchable asset for Lasso.</div></div>
   </div>
@@ -259,7 +259,7 @@
   <div class="hero-eq"><div id="eq1"><span class="tex-fallback">(r*, s*) = argmin over regions r, start s ≤ D−4 of Σ_h [ p̂(r,h) + g(r,h)/4000 ]</span></div>
     <div class="lab">Pick the region <b>r</b> and start hour <b>s</b> (now, +3, +6 or +12 h, within the job's deadline <b>D</b>) where the job's 4 hours carry the <b>least chance of rush hour</b>, carbon as the tiebreak.</div></div>
   <div class="cols">
-    <div class="col"><div class="k">The forecast</div><div class="f" id="eq2"><span class="tex-fallback">p̂ = σ(f_θ(x) / T)</span></div><div class="d"><b>492</b> inputs per region per hour in, chance of rush hour for each of the next 24 h out. <b>561K</b> learned settings θ, calibrated by T.</div></div>
+    <div class="col"><div class="k">The forecast</div><div class="f" id="eq2"><span class="tex-fallback">p̂ = σ(f_θ(x) / T)</span></div><div class="d"><b>492</b> inputs per region per hour in, chance of rush hour for each of the next 24 h out. <b>561K</b> learned parameters θ, calibrated by T.</div></div>
     <div class="col"><div class="k">How it learned</div><div class="f" id="eq3"><span class="tex-fallback">min BCE + 4·MSE(share) + 4·MSE(CO₂)</span></div><div class="d">Rush hour, fuel share and carbon learned together, on <b>755K</b> examples from 2022–25.</div></div>
     <div class="col"><div class="k">How it's graded</div><div class="f" id="eq4"><span class="tex-fallback">Brier = (1/N) Σ (p̂ − y)²</span></div><div class="d">On 2026 hours it never saw: <b style="color:var(--sage)">0.050</b> vs <b>0.071</b> for the utility's own forecast.</div></div>
   </div>
@@ -279,7 +279,7 @@
 <section class="slide built" data-web data-step="2">
   <div class="eyebrow">What I built</div>
   <div class="head">A custom AI model, <span class="sg">trained on my own RTX 4080.</span></div>
-  <div class="pipe"><b data-n="raw_values" data-f="millions">33 million</b> public data points<i>→</i><b data-n="samples" data-f="mEx">1.04 million</b> examples<i>→</i><b>5</b> training runs, <b>3</b> designs<i>→</i><b data-n="tiny_params" data-f="k">561K</b>-setting model<i>→</i><b>Torus Lasso</b></div>
+  <div class="pipe"><b data-n="raw_values" data-f="millions">33 million</b> public data points<i>→</i><b data-n="samples" data-f="mEx">1.04 million</b> examples<i>→</i><b>5</b> training runs, <b>3</b> designs<i>→</i><b data-n="tiny_params" data-f="full">561,000</b>-parameter model<i>→</i><b>Torus Lasso</b></div>
   <div class="bgrid">
     <div>
       <div class="hero-eq"><div class="k">The math: every job, every hour</div><div id="eqB"><span class="tex-fallback">(r*, s*) = argmin Σ [ p̂(r,h) + g(r,h)/4000 ]</span></div>
@@ -330,7 +330,7 @@
   <div class="say">Terra vs Rocky Mountain Power's own day-ahead forecast, which put Utah's fall peak at <b data-n="fall_peak_forecast_hour" data-f="hour"></b>. It came at <b data-n="fall_peak_actual_hour" data-f="hour"></b>.</div>
   <div class="proof-nums">
     <div><b data-n="raw_values" data-f="millions">33 million</b>public data points it learned from</div>
-    <div><b data-n="tiny_params" data-f="k">561K</b>settings: small on purpose (big AI models have billions)</div>
+    <div><b data-n="tiny_params" data-f="k">561K</b>parameters: small on purpose (big AI models have billions)</div>
     <div><b data-n="tiny_efficiency" data-f="yearJ">20 joules</b>a full year of hourly forecasts for all 50 regions, on a laptop</div>
   </div>
   <div class="src"><span data-src="utah_catch"></span> · peak hours: EIA-930, PACE, Oct 2026, <span data-src="fall_peak_actual_hour"></span></div>
@@ -398,7 +398,7 @@ const hour = h => `${h % 12 || 12} ${h < 12 ? "AM" : "PM"}`;
 const F = {
   yearJ: v => `${Math.round(v.year_all_regions_joules)} joules`, effX: v => `${Math.round(v.vs_4b_ratio / 1000)},000×`,
   hour: v => hour(v), millions: v => `${(v / 1e6).toFixed(0)} million`, s: v => v >= 120 ? `${Math.round(v / 60)} minutes` : `${Math.round(v)} seconds`, wh: v => `${v} Wh`, bulb: v => { const m = v / 10 * 60; return m < 1.5 ? "one minute" : `${Math.round(m)} minutes`; },
-  k: v => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1000)}K`, pct: v => `${v}%`, "model%": v => `${v.model}%`, "eia%": v => `${v.eia}%`,
+  full: v => `${Math.round(v / 1000)},000`, k: v => v >= 1e6 ? `${(v / 1e6).toFixed(1)}M` : `${Math.round(v / 1000)}K`, pct: v => `${v}%`, "model%": v => `${v.model}%`, "eia%": v => `${v.eia}%`,
   err2026: v => `${v["2026"]}%`, ratio: v => `${v.energy_ratio.toLocaleString()}×`, bigB: v => `${(v.big_params / 1e9).toFixed(1)}B-parameter`,
   bigBrier: v => v.big_brier.toFixed(3), tinyBrier: v => v.tiny_brier.toFixed(3), rows: v => v.test_rows.toLocaleString(),
   drop: v => v.power_drop_pct, macBig: v => `${Math.round(v.big.watts)} W`, macTiny: v => `${v.tiny.watts < 10 ? v.tiny.watts.toFixed(1) : Math.round(v.tiny.watts)} W`, speed: v => v.speed_drop_pct, naive: v => v.run_now_in_utah.toFixed(2), ours: v => v.mycelium.toFixed(2),
@@ -482,7 +482,7 @@ function sizes(M) {
     else for (const v of [0, 10, 20, 30]) { const x = sx(v); g += `<line x1="${x}" x2="${x}" y1="${top - 10}" y2="${top + rowH * 3}" stroke="#34312b"/><text x="${x}" y="${top + rowH * 3 + 22}" fill="#6f6a64" font-size="15" text-anchor="middle">${v}%</text>`; }
     M.forEach((m, k) => {
       const y = top + k * rowH + 12, v = val(m), x1 = Math.max(sx(v), L + 6), us = m.shipped;
-      const size = m.params >= 1e9 ? `${(m.params / 1e9).toFixed(0)}B settings` : m.params >= 1e6 ? `${(m.params / 1e6).toFixed(1)}M settings` : `${Math.round(m.params / 1000)}K settings`;
+      const size = m.params >= 1e9 ? `${(m.params / 1e9).toFixed(0)} billion parameters` : m.params >= 1e6 ? `${(m.params / 1e6).toFixed(1)} million parameters` : `${Math.round(m.params / 1000)},000 parameters`;
       g += `<text x="0" y="${y + 22}" fill="${us ? "#ece6da" : "#bfbcb8"}" font-size="22" font-weight="${us ? 500 : 400}">${m.name}</text><text x="0" y="${y + 44}" fill="#6f6a64" font-size="15">${size}</text>`;
       g += `<rect x="${L}" y="${y}" width="${x1 - L}" height="44" rx="4" fill="${us ? "#9fb07e" : "#6f6a64"}" fill-opacity="${us ? 1 : .55}"/>`;
       g += `<text x="${x1 + 12}" y="${y + 30}" fill="${us ? "#9fb07e" : "#ece6da"}" font-size="26" font-weight="500">${fmt(v)}${!log && m.earlier_test ? "*" : ""}</text>`;

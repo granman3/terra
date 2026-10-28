@@ -64,7 +64,10 @@ flowchart LR
 
 ## Results
 
-All scores are on held-out 2026 data the model never saw. "Without" means running the job right away in Utah,
+All scores are on held-out 2026 data the model never saw. Every number here and on the slides comes from
+[`deck/numbers.json`](deck/numbers.json), which `deck/make_numbers.py` builds from the test results in `out/` and the
+hourly grid table (`data/train/hourly_v2.parquet`, 117 MB, rebuilt by `train/build_dataset.py`). None are typed in by
+hand. The [model card](out/v2/MODEL_CARD.md) has the full breakdown, including where Terra doesn't beat the utility. "Without" means running the job right away in Utah,
 on the utility's own day-ahead forecast.
 
 | | Without Terra | With Terra | |
@@ -111,7 +114,7 @@ Terra also starts jobs a few chips at a time, so there's less sudden swing for S
 | Path | What |
 |---|---|
 | [`train/`](train/) | Data pipeline and training (Python, PyTorch). `build_dataset.py` turns 50 grids × 6 kinds of public data into 1.04M examples; `train.py` trains the model and exports ONNX; `train_big.py` fine-tunes the 4B comparison model |
-| [`out/v2/`](out/v2/) | **The shipped model**: `mycelium.onnx` (561K parameters, 2.2 MB) and its test metrics |
+| [`out/v2/`](out/v2/) | **The shipped model**: `mycelium.onnx` (561K parameters, 2.2 MB), its test metrics and [model card](out/v2/MODEL_CARD.md). Terra was called Mycelium during the build, so some file names still use it |
 | [`out/v3_candidate/`](out/v3_candidate/) | The 4.8M-parameter transformer: about 2% better, 590× the energy, so not shipped |
 | [`router/`](router/) | TypeScript server: runs the model, routes jobs (`decide.ts`), tracks room at each site (`capacity.ts`), staggers starts (`surge.ts`), serves the live map and deck |
 | [`web/`](web/) | The phone demo: a replay of a held-out week, with routing running in the browser on the same rule as `decide.ts` |
@@ -133,7 +136,7 @@ python3 -m http.server -d web 8798
 node router/src/export-web.ts
 ```
 
-Retraining needs the full dataset (`data/train/dataset_v2.npz`, 2.5 GB, not in the repo). Rebuild it with
+Retraining: `pip install -r requirements.txt` (Python 3.13, pinned to the training environment). It needs the full dataset (`data/train/dataset_v2.npz`, 2.5 GB, not in the repo). Rebuild it with
 `train/fetch_weather.py` and `train/build_dataset.py`, then run
 `OUT=out/v2 PYTHONPATH=train python train/train.py data/train/dataset_v2.npz` (about 80 seconds on an RTX 4080).
 The 4B fine-tune's weights (8 GB) aren't in the repo either; `train/train_big.py` rebuilds them from Qwen3-4B.

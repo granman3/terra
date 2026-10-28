@@ -15,15 +15,22 @@
   .brand { font-size: 30px; } .brand small { font-size: 15px; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-left: 14px; }
   .clock { font-family: "JetBrains Mono", monospace; font-size: 22px; color: var(--stone-2); } .clock b { font-weight: 500; }
   .count { position: absolute; left: 48px; top: 80px; font-size: 22px; color: var(--stone-2); } .count b { color: var(--sand); font-weight: 500; font-size: 28px; }
-  .panel { position: absolute; right: 36px; top: 80px; bottom: 28px; width: 500px; display: flex; flex-direction: column; gap: 16px; }
+  .panel { position: absolute; right: 36px; top: 80px; bottom: 52px; width: 500px; display: flex; flex-direction: column; gap: 16px; }
   .card { background: rgba(27,26,23,.9); border: 1px solid var(--line); border-radius: 12px; padding: 20px 26px; }
   .card h3 { font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-bottom: 12px; }
-  .now { font-size: 30px; line-height: 1.25; } .now .to { color: var(--sage); } .now .sub { margin-top: 8px; font-size: 21px; color: var(--stone-2); }
-  .saved { flex: 1; display: flex; flex-direction: column; }
+  .go { flex: 1; display: flex; flex-direction: column; }
+  .dests { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; margin: 6px 0; }
+  .dest { display: grid; grid-template-columns: 1fr auto; align-items: baseline; row-gap: 10px; }
+  .dest .nm { font-size: 24px; color: var(--sand); } .dest .nm i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 12px; background: var(--sage); transition: background .4s; }
+  .dest .n { font: 500 30px "JetBrains Mono", monospace; color: var(--sand); font-variant-numeric: tabular-nums; } .dest .n small { font: 18px Figtree, sans-serif; color: var(--stone); margin-left: 8px; }
+  .dest .bar { grid-column: 1 / -1; height: 12px; border-radius: 6px; background: var(--soil-3); overflow: hidden; }
+  .dest .bar span { display: block; height: 100%; width: 0; border-radius: 6px; background: var(--sand); transition: width .6s cubic-bezier(.2,.7,.3,1); }
+  .go-note { font-size: 17px; color: var(--stone); }
+  .saved { display: flex; flex-direction: column; }
   .usd small { font-size: 36px; color: var(--stone-2); letter-spacing: 0; margin-left: 8px; }
   .usd-l b { color: var(--sand); font-weight: 500; }
   .saved .eq { margin-top: 12px; font: 14px/1.5 "JetBrains Mono", monospace; color: var(--stone); }
-  .live-h { margin-top: auto; padding-top: 18px; font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--sage); }
+  .live-h { padding-top: 22px; font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--sage); }
   .usd { font-size: 120px; font-weight: 300; letter-spacing: -.035em; line-height: 1; white-space: nowrap; color: var(--sage); font-variant-numeric: tabular-nums; }
   .usd-l { font-size: 24px; line-height: 1.3; color: var(--stone-2); margin-top: 12px; }
   table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 22px; }
@@ -35,6 +42,7 @@
   .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; }
   .foot { position: absolute; left: 48px; bottom: 26px; max-width: 1000px; font-size: 16px; color: var(--stone); }
   .node-label { font-size: 25px; font-weight: 500; fill: var(--sand); } .node-sub { font: 18px "JetBrains Mono", monospace; fill: var(--stone-2); }
+  .node-cnt { font-size: 20px; font-weight: 500; fill: var(--sand); } .plus { font: 600 26px Figtree, sans-serif; fill: var(--sand); }
 </style>
 </head>
 <body>
@@ -43,14 +51,16 @@
   <div class="hud-top"><div class="brand">Terra<small>Live</small></div><div class="clock" id="clock">connecting…</div></div>
   <div class="count" id="count"></div>
   <div class="panel">
-    <div class="card"><h3>Right now</h3><div class="now" id="now">—</div></div>
+    <div class="card go"><h3>Where Utah's AI work goes</h3>
+      <div class="dests" id="dests"></div>
+      <div class="go-note">since this map opened · each dot is one job</div>
+    </div>
     <div class="card saved"><h3>What Utah saves</h3>
       <div class="usd">$10M<small> a year</small></div>
       <div class="usd-l">per <b>100 MW</b> of AI work moved off Utah's rush hours</div>
       <div class="live-h" id="liveH">This week · one simulated site</div>
       <table>
         <tr><td>Power moved off the rush</td><td id="kwh">0 kWh</td></tr>
-        <tr><td>AI jobs moved</td><td id="jobs">0</td></tr>
         <tr class="total"><td>Saved so far</td><td id="tUsd">$0</td></tr>
       </table>
     </div>
@@ -78,7 +88,18 @@ function ledger(utc) {
   const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
   $("tUsd").textContent = usd(l.usd + cap);
   $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
-  $("jobs").textContent = `${l.moved} of ${l.jobs}`;
+}
+
+// jobs Utah has handed to each other site since this page opened: map labels, route lines and the panel bars
+const sent = {}, arcD = {}, flow = {};
+function tally(dest) {
+  sent[dest] = (sent[dest] ?? 0) + 1; const total = Object.values(sent).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(sent));
+  const n = sent[dest], f = flow[dest];
+  f?.transition().duration(500).attr("stroke-opacity", Math.min(.4 + n * .05, .85)).attr("stroke-width", Math.min(3 + n * .4, 10));
+  nodes[dest]?.cnt.text(`${n} job${n === 1 ? "" : "s"} from Utah`);
+  nodes.PACE?.cnt.text(`${total} job${total === 1 ? "" : "s"} sent out`);
+  for (const id in sent) { const row = $(`d-${id}`); if (!row) continue;
+    row.querySelector(".n").firstChild.textContent = sent[id]; row.querySelector(".bar span").style.width = `${sent[id] / top * 100}%`; }
 }
 
 const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
@@ -90,6 +111,14 @@ function draw(meta) {
     glow.append("feGaussianBlur").attr("stdDeviation", 4).attr("result", "b"); const m = glow.append("feMerge"); m.append("feMergeNode").attr("in", "b"); m.append("feMergeNode").attr("in", "SourceGraphic");
     svg.append("g").selectAll("path").data(states.features).join("path").attr("d", path).attr("fill", "#1f1d1a").attr("fill-opacity", .8).attr("stroke", "#3a362f").attr("stroke-opacity", .5);
     for (const id in meta) pos[id] = proj(meta[id].ll);
+    // the routes Utah can hand work to: faint dotted until used, then a sand line that thickens with each job
+    const rg = svg.append("g");
+    for (const id of route) { if (id === "PACE" || !pos[id]) continue;
+      const [x1, y1] = pos.PACE, [x2, y2] = pos[id], lift = 40 + Math.hypot(x2 - x1, y2 - y1) * .22;
+      arcD[id] = `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`;
+      rg.append("path").attr("d", arcD[id]).attr("fill", "none").attr("stroke", C.stone).attr("stroke-opacity", .45).attr("stroke-width", 2).attr("stroke-dasharray", "2 9").attr("stroke-linecap", "round");
+      flow[id] = rg.append("path").attr("d", arcD[id]).attr("fill", "none").attr("stroke", C.sand).attr("stroke-opacity", 0).attr("stroke-width", 2).attr("stroke-linecap", "round");
+      $("dests").insertAdjacentHTML("beforeend", `<div class="dest" id="d-${id}"><span class="nm"><i></i>${NAMES[id]}</span><span class="n">0<small>jobs</small></span><div class="bar"><span></span></div></div>`); }
     svg.append("g").attr("id", "arcs");
     const ng = svg.append("g");
     for (const id in meta) { if (route.includes(id)) continue; const [x, y] = pos[id];
@@ -101,22 +130,29 @@ function draw(meta) {
       const dot = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 9).attr("fill", C.sage).attr("filter", "url(#glow)");
       ng.append("text").attr("class", "node-label").attr("x", x + dx).attr("y", y - 4).attr("text-anchor", an).text(NAMES[id]);
       const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 22).attr("text-anchor", an);
-      nodes[id] = { ring, dot, sub }; }
+      const cnt = ng.append("text").attr("class", "node-cnt").attr("x", x + dx).attr("y", y + 46).attr("text-anchor", an);
+      nodes[id] = { ring, dot, sub, cnt }; }
   });
 }
 
-// an AI job leaving Utah: one clean arc that draws, carries a dot, and fades (same as web/index.html)
+// an AI job leaving Utah: its route lights up, a dot carries it over, and the site it lands on counts it
 function fly(dest) {
-  const a = pos.PACE, b = pos[dest]; if (!a || !b) return;
-  const [x1, y1, x2, y2] = [a[0], a[1], b[0], b[1]], lift = 40 + Math.hypot(x2 - x1, y2 - y1) * .22;
+  const b = pos[dest]; if (!arcD[dest] || !b) return;
   const g = d3.select("#arcs").append("g");
-  const arc = g.append("path").attr("d", `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 2.5).attr("stroke-opacity", .8);
+  const arc = g.append("path").attr("d", arcD[dest]).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 4).attr("stroke-opacity", .9).attr("stroke-linecap", "round");
   const L = arc.node().getTotalLength();
-  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(800).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
-  const dot = g.append("circle").attr("r", 8).attr("fill", C.sand).attr("filter", "url(#glow)");
-  dot.transition().duration(800).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
-    .on("end", () => dot.transition().duration(400).attr("r", 18).attr("opacity", 0));
-  g.transition().delay(1200).duration(400).attr("opacity", 0).remove();
+  arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(1000).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0);
+  const dot = g.append("circle").attr("r", 10).attr("fill", C.sand).attr("filter", "url(#glow)");
+  dot.transition().duration(1000).ease(d3.easeCubicInOut).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
+    .on("end", () => {
+      dot.remove(); tally(dest);
+      g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 10).attr("fill", "none").attr("stroke", C.sand).attr("stroke-width", 3)
+        .transition().duration(700).attr("r", 42).attr("stroke-opacity", 0);
+      g.append("text").attr("class", "plus").attr("x", b[0]).attr("y", b[1] - 22).attr("text-anchor", "middle").text("+1")
+        .transition().duration(900).attr("y", b[1] - 58).attr("opacity", 0);
+    });
+  arc.transition().delay(1000).duration(500).attr("stroke-opacity", 0);
+  g.transition().delay(1600).remove();
 }
 
 const es = new EventSource("/stream");
@@ -127,15 +163,12 @@ es.onmessage = e => {
   $("clock").innerHTML = `${t.toLocaleString("en-US", { timeZone: "America/Denver", weekday: "short", hour: "numeric" })} in Utah · power use at <b style="color:${inPeak ? C.copper : C.sage}">${Math.round(u.share * 100)}% of today's high${inPeak ? " · RUSH HOUR" : ""}</b>`;
   // d.grids = regions with data this replay hour (HST and WAUW have none in Oct 19–25); 50 = trained regions, as on the other slides
   $("count").innerHTML = `<b>50</b> regions forecast · <b style="color:${d.nPeak ? C.copper : C.sand}">${d.nPeak}</b> expecting rush hour`;
-  const j = d.job, name = j.label ?? JOB_NAMES[j.name] ?? j.name;  // labels come from router/src/jobs.ts
-  $("now").innerHTML = !j.deadlineHours
-    ? `${name} stays in Utah<div class="sub">${d.utilityCall ? "Utility called (simulated): power-saving mode" : "People are using it now"}</div>`
-    : d.ours.region
-      ? `${name} → <span class="to">${NAMES[d.ours.region]}, ${WAIT[d.ours.wait]}</span><div class="sub">Utah rush-hour chance ${Math.round(d.utahPeak * 100)}%</div>`
-      : `${name} waits<div class="sub">Every site is full</div>`;
+  const j = d.job;
   for (const id in d.regions) { const r = d.regions[id], n = nodes[id]; if (!n) continue; const hot = r.pPeakNow > .5, col = hot ? C.copper : C.sage;
-    n.dot.attr("fill", col); n.ring?.attr("stroke", col); n.sub?.text(hot ? "rush hour likely" : "room to run").attr("fill", hot ? C.copper : "#bfbcb8"); }
-  if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE" && d.ours.wait === "now") fly(d.ours.region);
+    n.dot.attr("fill", col); n.ring?.attr("stroke", col); n.sub?.text(hot ? "rush hour likely" : "room to run").attr("fill", hot ? C.copper : "#bfbcb8");
+    const pip = document.querySelector(`#d-${id} .nm i`); if (pip) pip.style.background = col; }
+  // every flexible job the router hands to another site flies there, whether it starts now or later in the day
+  if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE") fly(d.ours.region);
   ledger(d.utc);
 };
 

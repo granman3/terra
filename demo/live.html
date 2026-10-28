@@ -13,28 +13,28 @@
   svg.map { position: absolute; inset: 0; }
   .hud-top { position: absolute; left: 48px; top: 30px; right: 48px; display: flex; justify-content: space-between; align-items: baseline; }
   .brand { font-size: 30px; } .brand small { font-size: 15px; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-left: 14px; }
-  .clock { font-family: "JetBrains Mono", monospace; font-size: 19px; color: var(--stone-2); } .clock b { font-weight: 500; }
-  .count { position: absolute; left: 48px; top: 78px; font-size: 18px; color: var(--stone); } .count b { color: var(--sand); font-weight: 500; font-size: 22px; }
-  .panel { position: absolute; right: 36px; top: 76px; bottom: 24px; width: 500px; display: flex; flex-direction: column; gap: 14px; }
-  .card { background: rgba(27,26,23,.9); border: 1px solid var(--line); border-radius: 12px; padding: 18px 24px; }
-  .card h3 { font-size: 13px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-bottom: 10px; }
-  .now { font-size: 26px; line-height: 1.25; } .now .to { color: var(--sage); } .now .sub { margin-top: 6px; font-size: 17px; color: var(--stone); }
+  .clock { font-family: "JetBrains Mono", monospace; font-size: 22px; color: var(--stone-2); } .clock b { font-weight: 500; }
+  .count { position: absolute; left: 48px; top: 80px; font-size: 22px; color: var(--stone-2); } .count b { color: var(--sand); font-weight: 500; font-size: 28px; }
+  .panel { position: absolute; right: 36px; top: 80px; bottom: 28px; width: 500px; display: flex; flex-direction: column; gap: 16px; }
+  .card { background: rgba(27,26,23,.9); border: 1px solid var(--line); border-radius: 12px; padding: 20px 26px; }
+  .card h3 { font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--stone); margin-bottom: 12px; }
+  .now { font-size: 30px; line-height: 1.25; } .now .to { color: var(--sage); } .now .sub { margin-top: 8px; font-size: 21px; color: var(--stone-2); }
   .saved { flex: 1; display: flex; flex-direction: column; }
-  .usd small { font-size: 34px; color: var(--stone-2); letter-spacing: 0; margin-left: 6px; }
+  .usd small { font-size: 36px; color: var(--stone-2); letter-spacing: 0; margin-left: 8px; }
   .usd-l b { color: var(--sand); font-weight: 500; }
   .saved .eq { margin-top: 12px; font: 14px/1.5 "JetBrains Mono", monospace; color: var(--stone); }
-  .live-h { margin-top: auto; padding-top: 14px; font-size: 13px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--sage); }
-  .usd { font-size: 96px; font-weight: 300; letter-spacing: -.03em; line-height: 1; color: var(--sage); font-variant-numeric: tabular-nums; }
-  .usd-l { font-size: 19px; color: var(--stone-2); margin-top: 8px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 18px; }
-  td { padding: 7px 0; border-top: 1px solid var(--line); color: var(--stone-2); vertical-align: top; }
-  td:last-child { text-align: right; font: 500 18px "JetBrains Mono", monospace; color: var(--sand); white-space: nowrap; padding-left: 12px; }
-  td small { display: block; font-size: 14px; color: var(--stone); }
-  tr.total td { border-top: 2px solid var(--stone); color: var(--sand); font-weight: 500; } tr.total td:last-child { color: var(--sage); font-size: 22px; }
-  .legend { position: absolute; left: 48px; bottom: 76px; display: flex; gap: 24px; font-size: 16px; color: var(--stone); }
-  .legend i { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 8px; }
-  .foot { position: absolute; left: 48px; bottom: 16px; max-width: 1000px; font-size: 13px; color: #9b9591; }
-  .node-label { font-size: 19px; fill: var(--sand); } .node-sub { font: 14px "JetBrains Mono", monospace; fill: var(--stone-2); }
+  .live-h { margin-top: auto; padding-top: 18px; font-size: 16px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--sage); }
+  .usd { font-size: 120px; font-weight: 300; letter-spacing: -.035em; line-height: 1; white-space: nowrap; color: var(--sage); font-variant-numeric: tabular-nums; }
+  .usd-l { font-size: 24px; line-height: 1.3; color: var(--stone-2); margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 22px; }
+  td { padding: 10px 0; border-top: 1px solid var(--line); color: var(--stone-2); vertical-align: baseline; }
+  td:last-child { text-align: right; font: 500 24px "JetBrains Mono", monospace; color: var(--sand); white-space: nowrap; padding-left: 12px; }
+  td small { display: block; font-size: 17px; color: var(--stone); }
+  tr.total td { border-top: 2px solid var(--stone); color: var(--sand); font-weight: 500; font-size: 24px; padding-top: 12px; } tr.total td:last-child { color: var(--sage); font-size: 34px; }
+  .legend { position: absolute; left: 48px; bottom: 74px; display: flex; gap: 32px; font-size: 20px; color: var(--stone-2); }
+  .legend i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 10px; }
+  .foot { position: absolute; left: 48px; bottom: 26px; max-width: 1000px; font-size: 16px; color: var(--stone); }
+  .node-label { font-size: 25px; font-weight: 500; fill: var(--sand); } .node-sub { font: 18px "JetBrains Mono", monospace; fill: var(--stone-2); }
 </style>
 </head>
 <body>
@@ -100,7 +100,7 @@ function draw(meta) {
       ring.append("animate").attr("attributeName", "stroke-opacity").attr("values", ".7;0").attr("dur", "2.6s").attr("repeatCount", "indefinite");
       const dot = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 9).attr("fill", C.sage).attr("filter", "url(#glow)");
       ng.append("text").attr("class", "node-label").attr("x", x + dx).attr("y", y - 4).attr("text-anchor", an).text(NAMES[id]);
-      const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 16).attr("text-anchor", an);
+      const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 22).attr("text-anchor", an);
       nodes[id] = { ring, dot, sub }; }
   });
 }

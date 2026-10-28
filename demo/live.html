@@ -42,7 +42,9 @@
   .banner .b1 { font-size: 40px; font-weight: 500; letter-spacing: .02em; color: var(--sage); } .banner .b2 { margin-top: 2px; }
   .banner.hot .b1 { color: var(--copper); animation: hot 1.4s ease-in-out infinite; } .banner.hot .b2 { color: var(--sand); }
   .banner.call .b1 { color: #e0a37a; }
+  .banner .b3 { margin-top: 6px; font-size: 22px; color: var(--sage); opacity: 0; transition: opacity .3s; min-height: 28px; } .banner .b3 b { color: var(--sand); font-weight: 500; }
   @keyframes hot { 50% { opacity: .55; } }
+  @media (prefers-reduced-motion: reduce) { .banner.hot .b1 { animation: none; } }
   .tot { display: flex; align-items: baseline; gap: 14px; } .tot b { font: 300 84px Figtree, sans-serif; letter-spacing: -.03em; color: var(--sand); line-height: 1; font-variant-numeric: tabular-nums; }
   .tot span { font-size: 22px; color: var(--stone-2); line-height: 1.25; }
   /* fit both cards in the 768px panel */
@@ -66,7 +68,7 @@
     <div class="card go"><h3>Moved off Utah's rush hour</h3>
       <div class="tot"><b id="totN">0</b><span>AI jobs sent to grids<br>with room to spare</span></div>
       <div class="dests" id="dests"></div>
-      <div class="go-note">counted only during Utah's rush hours · since this map opened</div>
+      <div class="go-note">counted only during Utah's rush hours · this week so far</div>
     </div>
     <div class="card saved"><h3>What Utah saves</h3>
       <div class="usd">$10M<small> a year</small></div>
@@ -78,7 +80,7 @@
       </table>
     </div>
   </div>
-  <div class="banner" id="banner"><div class="b1">Utah has room</div><div class="b2">AI work can run anywhere</div></div>
+  <div class="banner" id="banner"><div class="b1">Utah has room</div><div class="b2">Utah takes work from grids in their rush hour</div><div class="b3" id="leaving"></div></div>
   <div class="foot">Real EIA grid data, Oct 19–25, 2026, unseen in training · real Utah prices (CAISO) · the data center and its jobs are simulated</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
@@ -101,19 +103,21 @@ function ledger(utc) {
   const cap = l.kwh * S.capacity_usd_week / S.kwh_off_utah_rush;  // capacity value builds up with each rush-hour kWh moved
   $("tUsd").textContent = usd(l.usd + cap);
   $("kwh").textContent = `${l.kwh.toLocaleString()} kWh`;
+  if (l.to && proj) counts(l.to);
 }
 
-// jobs Utah has handed to each other site since this page opened: map labels, route lines and the panel bars
-const sent = {}, arcD = {}, flow = {};
-function tally(dest) {
-  sent[dest] = (sent[dest] ?? 0) + 1; const total = Object.values(sent).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(sent));
-  const n = sent[dest], f = flow[dest];
-  f?.transition().duration(500).attr("stroke-opacity", Math.min(.4 + n * .05, .85)).attr("stroke-width", Math.min(3 + n * .5, 12));
-  nodes[dest]?.cnt.text(`+${n} from Utah's rush`);
-  nodes.PACE?.cnt.text(`${total} job${total === 1 ? "" : "s"} moved off the rush`);
+// jobs moved off Utah's rush hours this week so far, per site (deck/utah_savings.ts, same basis as the savings box):
+// map labels, route lines and the panel bars
+const arcD = {}, flow = {};
+function counts(to) {
+  const total = Object.values(to).reduce((a, b) => a + b, 0), top = Math.max(5, ...Object.values(to));
   $("totN").textContent = total;
-  for (const id in sent) { const row = $(`d-${id}`); if (!row) continue;
-    row.querySelector(".n").firstChild.textContent = sent[id]; row.querySelector(".bar span").style.width = `${sent[id] / top * 100}%`; }
+  nodes.PACE?.cnt.text(total ? `${total} job${total === 1 ? "" : "s"} moved off the rush` : "");
+  for (const id in to) { const n = to[id];
+    flow[id]?.attr("stroke-opacity", n ? Math.min(.4 + n * .02, .85) : 0).attr("stroke-width", Math.min(3 + n * .3, 12));
+    nodes[id]?.cnt.text(n ? `+${n} from Utah's rush` : "");
+    const row = $(`d-${id}`); if (!row) continue;
+    row.querySelector(".n").firstChild.textContent = n; row.querySelector(".bar span").style.width = `${n / top * 100}%`; }
 }
 
 const atlas = d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3.0.1/states-10m.json");
@@ -140,14 +144,15 @@ function draw(meta) {
     const ng = svg.append("g");
     for (const id in meta) { if (route.includes(id)) continue; const [x, y] = pos[id];
       nodes[id] = { dot: ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 4).attr("fill", C.sage).attr("fill-opacity", .5) }; }
-    for (const id of route) { const [x, y] = pos[id], left = id === "ERCO", dx = left ? -20 : 20, an = left ? "end" : "start";
+    for (const id of route) { const [x, y0] = pos[id], left = id === "ERCO", dx = left ? -20 : 20, an = left ? "end" : "start", x0 = x;
+      const y = y0, ly = id === "PACE" ? y0 - 34 : y0;
       const ring = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 10).attr("fill", "none").attr("stroke", C.sage);
       ring.append("animate").attr("attributeName", "r").attr("values", "10;34").attr("dur", "2.6s").attr("repeatCount", "indefinite");
       ring.append("animate").attr("attributeName", "stroke-opacity").attr("values", ".7;0").attr("dur", "2.6s").attr("repeatCount", "indefinite");
       const dot = ng.append("circle").attr("cx", x).attr("cy", y).attr("r", 9).attr("fill", C.sage).attr("filter", "url(#glow)");
-      ng.append("text").attr("class", "node-label").attr("x", x + dx).attr("y", y - 4).attr("text-anchor", an).text(NAMES[id]);
-      const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", y + 22).attr("text-anchor", an);
-      const cnt = ng.append("text").attr("class", "node-cnt").attr("x", x + dx).attr("y", y + 46).attr("text-anchor", an);
+      ng.append("text").attr("class", "node-label").attr("x", x + dx).attr("y", ly - 4).attr("text-anchor", an).text(NAMES[id]);
+      const sub = ng.append("text").attr("class", "node-sub").attr("x", x + dx).attr("y", ly + 22).attr("text-anchor", an);
+      const cnt = ng.append("text").attr("class", "node-cnt").attr("x", x + dx).attr("y", ly + 46).attr("text-anchor", an);
       nodes[id] = { ring, dot, sub, cnt }; }
     const [ux, uy] = pos.PACE;
     halo = ng.insert("circle", ":first-child").attr("cx", ux).attr("cy", uy).attr("r", 20).attr("fill", C.copper).attr("fill-opacity", 0);
@@ -164,13 +169,25 @@ function strip() {
   sg.append("g").attr("id", "bars"); sg.append("g").attr("id", "pips");
   sg.append("rect").attr("id", "nowMark").attr("y", SY0 - 4).attr("height", SY1 - SY0 + 8).attr("width", 3).attr("fill", C.sand).attr("opacity", 0);
 }
+const denver = t => new Date(t.toLocaleString("en-US", { timeZone: "America/Denver" }));
+function bar(h, share, peak, animate) {
+  const bw = (SX1 - SX0) / 24, x = SX0 + h * bw, ht = Math.max(4, (Math.min(share, 1) - .6) / .4 * (SY1 - SY0));
+  const r = d3.select("#bars").append("rect").attr("x", x + 2).attr("width", bw - 4).attr("rx", 3).attr("fill", peak ? C.copper : "#3d3a33");
+  if (animate) r.attr("y", SY1).attr("height", 0).transition().duration(500).attr("y", SY1 - ht).attr("height", ht); else r.attr("y", SY1 - ht).attr("height", ht);
+  return { x: x + bw / 2, top: SY1 - ht };
+}
 function stripHour(t, u) {
-  const local = new Date(t.toLocaleString("en-US", { timeZone: "America/Denver" })), key = local.toDateString(), h = local.getHours();
-  if (key !== day.key) { day.key = key; day.hours = {}; d3.select("#bars").selectAll("*").remove(); d3.select("#pips").selectAll("*").remove(); }
+  const local = denver(t), key = local.toDateString(), h = local.getHours();
+  if (key !== day.key || h < Math.max(-1, ...Object.keys(day.hours).map(Number))) {
+    day.key = key; day.hours = {}; d3.select("#bars").selectAll("*").remove(); d3.select("#pips").selectAll("*").remove();
+    // fill in the hours of this day before the map opened (or before a jump), from the week's ledger
+    for (const k in S?.ledger ?? {}) { const lt = denver(new Date(k * 1000)), lh = lt.getHours(), l = S.ledger[k];
+      if (lt.toDateString() === key && lh < h && l.share != null) { day.hours[lh] = { moved: 0 }; bar(lh, l.share, l.peak, false); } }
+  }
   day.hours[h] = { share: u.share, peak: u.inPeak, moved: day.hours[h]?.moved ?? 0 };
-  const bw = (SX1 - SX0) / 24, x = SX0 + h * bw, ht = Math.max(4, (Math.min(u.share, 1) - .6) / .4 * (SY1 - SY0));
-  d3.select("#bars").append("rect").attr("x", x + 2).attr("width", bw - 4).attr("y", SY1).attr("height", 0).attr("rx", 3)
-    .attr("fill", u.inPeak ? C.copper : "#3d3a33").transition().duration(500).attr("y", SY1 - ht).attr("height", ht);
+  const bw = (SX1 - SX0) / 24, x = SX0 + h * bw;
+  bar(h, u.share, u.inPeak, true);
+  const ht = Math.max(4, (Math.min(u.share, 1) - .6) / .4 * (SY1 - SY0));
   d3.select("#nowMark").attr("opacity", .9).transition().duration(400).attr("x", x + bw / 2 - 1.5);
   return { h, x: x + bw / 2, top: SY1 - ht };
 }
@@ -182,9 +199,9 @@ function stripPip(slot) {
 function setRush(on, call, u) {
   const b = $("banner");
   b.className = `banner${on ? " hot" : ""}${call ? " call" : ""}`;
-  b.querySelector(".b1").textContent = call ? "Rocky Mountain Power calls for cuts" : on ? "Utah rush hour" : "Utah has room";
+  b.querySelector(".b1").textContent = call ? "Rocky Mountain Power calls for cuts" : on ? (u.inPeak ? "Utah rush hour" : "Utah rush hour likely") : "Utah has room";
   b.querySelector(".b2").innerHTML = on || call ? `Power use at <b>${Math.round(u.share * 100)}%</b> of today's high · every AI job that can wait is leaving Utah`
-    : `Power use at ${Math.round(u.share * 100)}% of today's high · AI work can run anywhere`;
+    : `Power use at ${Math.round(u.share * 100)}% of today's high · Utah takes work from grids in their rush hour`;
   if (on === rush) return; rush = on;
   utahShape?.interrupt().transition().duration(600).attr("fill-opacity", on ? .38 : 0).attr("stroke-opacity", on ? .9 : 0);
   if (halo) { halo.selectAll("animate").remove();
@@ -194,10 +211,13 @@ function setRush(on, call, u) {
 }
 
 // an AI job leaving Utah: its route lights up, a dot carries it over, and the site it lands on counts it
-function fly(dest, big, label, gpus) {
-  const b = pos[dest]; if (!arcD[dest] || !b) return;
+const arcBetween = (a, b) => { const [x1, y1] = pos[a], [x2, y2] = pos[b], lift = 40 + Math.hypot(x2 - x1, y2 - y1) * .22;
+  return `M${x1},${y1} Q${(x1 + x2) / 2},${(y1 + y2) / 2 - lift} ${x2},${y2}`; };
+function fly(dest, big, label, gpus, from = "PACE") {
+  const b = pos[dest]; if (!b || !pos[from]) return;
+  const d0 = from === "PACE" ? arcD[dest] : arcBetween(from, dest); if (!d0) return;
   const g = d3.select("#arcs").append("g"), dur = big ? 1100 : 900;
-  const arc = g.append("path").attr("d", arcD[dest]).attr("fill", "none").attr("stroke", big ? C.copper : C.stone).attr("stroke-width", big ? 7 : 2).attr("stroke-opacity", big ? .95 : .4).attr("stroke-linecap", "round");
+  const arc = g.append("path").attr("d", d0).attr("fill", "none").attr("stroke", big ? C.copper : C.stone).attr("stroke-width", big ? 7 : 2).attr("stroke-opacity", big ? .95 : .4).attr("stroke-linecap", "round");
   const L = arc.node().getTotalLength();
   arc.attr("stroke-dasharray", `${L} ${L}`).attr("stroke-dashoffset", L).transition().duration(dur).ease(d3.easeCubicInOut).attr("stroke-dashoffset", 0).attr("stroke", big ? C.sage : C.stone);
   // during the rush the job leaves as a stream, one dot per 10 of its GPUs
@@ -207,15 +227,17 @@ function fly(dest, big, label, gpus) {
   const dot = g.append("circle").attr("r", big ? 14 : 5).attr("fill", big ? C.copper : C.stone).attr("fill-opacity", big ? 1 : .6).attr("filter", big ? "url(#glow)" : null);
   dot.transition().duration(dur).ease(d3.easeCubicInOut).attr("fill", big ? C.sage : C.stone).attrTween("transform", () => t => { const q = arc.node().getPointAtLength(t * L); return `translate(${q.x},${q.y})`; })
     .on("end", () => {
-      dot.remove(); if (!big) return; tally(dest);
+      dot.remove(); if (!big) return;
       g.append("circle").attr("cx", b[0]).attr("cy", b[1]).attr("r", 12).attr("fill", "none").attr("stroke", C.sage).attr("stroke-width", 4)
         .transition().duration(800).attr("r", 56).attr("stroke-opacity", 0);
       g.append("text").attr("class", "plus").attr("x", b[0]).attr("y", b[1] - 26).attr("text-anchor", "middle").text("+1")
         .transition().duration(1000).attr("y", b[1] - 66).attr("opacity", 0);
     });
-  if (big && label) { const mid = arc.node().getPointAtLength(L / 2);
-    g.append("text").attr("class", "node-cnt").attr("x", mid.x).attr("y", mid.y - 18).attr("text-anchor", "middle").attr("opacity", 0).text(`${label} → ${NAMES[dest]}`)
-      .transition().duration(250).attr("opacity", 1).transition().delay(900).duration(400).attr("opacity", 0); }
+  if (big && label) { const b3 = $("leaving");
+    b3.innerHTML = from === "PACE" ? `Leaving Utah now: <b>${label}</b> → <b>${NAMES[dest]}</b>`
+      : `${NAMES[from]} rush hour: <b>${label}</b> → <b${dest === "PACE" ? ' style="color:var(--sage)"' : ""}>${NAMES[dest]}${dest === "PACE" ? " (Utah takes it)" : ""}</b>`;
+    b3.style.opacity = 1;
+    clearTimeout(fly.t); fly.t = setTimeout(() => { b3.style.opacity = 0; }, 2400); }
   arc.transition().delay(dur).duration(big ? 900 : 300).attr("stroke-opacity", 0);
   g.transition().delay(dur + n * 110 + 1000).remove();
 }
@@ -237,6 +259,8 @@ es.onmessage = e => {
   // every flexible job the router hands to another site flies there, whether it starts now or later in the day
   // during Utah's real rush hours each move is big and counted; at other hours it's a faint dot
   if (j.deadlineHours && d.ours.region && d.ours.region !== "PACE") { fly(d.ours.region, hotU, j.label, d.ours.gpus); if (hotU && slot) stripPip(slot); }
+  // another grid in its rush hour hands a job on, often to Utah (same rule; jobs from AI sites there, simulated)
+  else if (d.inbound && !hotU) fly(d.inbound.to, true, d.inbound.label, 50, d.inbound.from);
   ledger(d.utc);
 };
 

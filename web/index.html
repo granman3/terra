@@ -19,6 +19,8 @@
   .brand { font-size: 26px; letter-spacing: -.01em; } .brand small { display: block; font-size: 12.5px; color: var(--stone); letter-spacing: 0; margin-top: 1px; }
   button { font: 500 16px Figtree, sans-serif; border-radius: 12px; cursor: pointer; border: 1px solid var(--line); background: var(--soil-3); color: var(--sand); }
   button:active { transform: scale(.985); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+  ::selection { background: var(--sage); color: var(--soil); }
   /* Without / With Terra: the autopilot switch */
   .mode { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; border-radius: 999px; border: 1px solid var(--line); background: var(--soil-2); flex: none; }
   .mode button { border: 0; background: none; border-radius: 999px; padding: 8px 12px; font-size: 13.5px; color: var(--stone); white-space: nowrap; }
@@ -34,6 +36,7 @@
   .m-doing { padding: 8px 16px 0; font-size: 14.5px; line-height: 1.35; color: var(--stone-2); min-height: 2.7em; } .m-doing b { color: var(--sand); font-weight: 500; } .m-doing .bad { color: var(--warn); }
   svg.map { display: block; width: 100%; height: auto; margin-top: -6px; }
   .glow { animation: glow 1.1s ease-in-out infinite alternate; } @keyframes glow { from { opacity: .25; } to { opacity: .8; } }
+  @media (prefers-reduced-motion: reduce) { .glow { animation: none; opacity: .6; } .bar i, .peakbar i { transition: none; } }
   .lanes { padding: 0 12px 4px; } .lanes svg { display: block; width: 100%; height: auto; }
   .key { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 8px 16px 11px; font-size: 12px; color: var(--stone); border-top: 1px solid var(--line); }
   .key i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
@@ -57,7 +60,7 @@
   .big { font-size: 48px; font-weight: 300; letter-spacing: -.03em; line-height: 1.05; color: var(--sage); font-variant-numeric: tabular-nums; margin-top: 6px; } .big small { font-size: 18px; color: var(--stone); letter-spacing: 0; }
   .sub { font-size: 14.5px; color: var(--stone-2); line-height: 1.4; } .sub b { color: var(--sand); font-weight: 500; }
   input[type=range] { width: 100%; margin: 14px 0 4px; accent-color: var(--sage); height: 28px; }
-  .peakbar { position: relative; height: 34px; border-radius: 8px; background: repeating-linear-gradient(135deg, #2a2521 0 6px, #231f1b 6px 12px); border: 1px solid #4a3a2e; margin-top: 12px; overflow: hidden; }
+  .peakbar { position: relative; height: 34px; border-radius: 8px; background: var(--soil-3); border: 1px solid #4a3a2e; margin-top: 12px; overflow: hidden; }
   .peakbar i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #7f8f62, var(--sage)); transition: width .25s; }
   .peakbar span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; font: 500 12px "JetBrains Mono", monospace; color: var(--sand); }
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; } .pair div { background: var(--soil-2); border-radius: 10px; padding: 10px 12px; }

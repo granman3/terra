@@ -32,6 +32,9 @@ const naive = new Map<number, number>(), terra = new Map<number, number>();
 const add = (m: Map<number, number>, t: number, kw: number) => m.set(t, (m.get(t) ?? 0) + kw);
 let jobs = 0, moved = 0, delayed = 0;
 const seen = new Map<number, [number, number]>(); // utc -> [flexible jobs so far, moved out of Utah so far]
+// jobs moved out while Utah was in rush hour (real, or forecast > 50%: the live map's copper state), per destination
+const toSoFar: Record<string, number> = Object.fromEntries(replay.route.filter((r: string) => r !== "PACE").map((r: string) => [r, 0]));
+const toAt = new Map<number, Record<string, number>>();
 for (let tick = 0; tick < TIMES.length; tick++) {
   const utc = TIMES[tick], job = JOBS[tick % JOBS.length];
   const hours = Object.fromEntries(replay.regions.flatMap((r: string) => (byUtc[r].has(utc) ? [[r, byUtc[r].get(utc)]] : [])));
@@ -43,27 +46,28 @@ for (let tick = 0; tick < TIMES.length; tick++) {
   jobs++;
   for (let h = 0; h < JOB_HOURS; h++) add(naive, utc + h * 3600, kw);
   if (best?.region === "PACE") { if (best.wait !== "now") delayed++; for (let h = 0; h < JOB_HOURS; h++) add(terra, utc + (WAIT[best.wait] + h) * 3600, kw); }
-  else moved++;
-  seen.set(utc, [jobs, moved]);
+  else { moved++; if (best && (rush(utc) || forecasts.PACE.pPeak[0] > 0.5)) toSoFar[best.region]++; }
+  seen.set(utc, [jobs, moved]); toAt.set(utc, { ...toSoFar });
 }
 
 // ledger over the replay hours, in order: what Terra kept off Utah's grid during Utah's real rush hours
 let kwh = 0, usd = 0, rushHours = 0, peakKw = 0;
-const ledger: Record<number, { kwh: number; usd: number; jobs: number; moved: number }> = {};
-let last: [number, number] = [0, 0];
+const ledger: Record<number, { kwh: number; usd: number; jobs: number; moved: number; to: Record<string, number>; share: number; peak: boolean }> = {};
+let last: [number, number] = [0, 0], lastTo: Record<string, number> = Object.fromEntries(Object.keys(toSoFar).map((r) => [r, 0]));
 for (const t of TIMES) {
   if (rush(t)) {
     const off = (naive.get(t) ?? 0) - (terra.get(t) ?? 0);
     rushHours++; kwh += off; usd += off * (price[t] ?? 0); peakKw = Math.max(peakKw, off);
   }
-  last = seen.get(t) ?? last;
-  ledger[t] = { kwh: Math.round(kwh), usd: +usd.toFixed(2), jobs: last[0], moved: last[1] };
+  last = seen.get(t) ?? last; lastTo = toAt.get(t) ?? lastTo;
+  // share + peak: Utah's real power use that hour vs the day's high, so the live map's strip can show the whole day
+  ledger[t] = { kwh: Math.round(kwh), usd: +usd.toFixed(2), jobs: last[0], moved: last[1], to: lastTo, share: +byUtc.PACE.get(t).actual.share.toFixed(3), peak: rush(t) };
 }
 const avgKw = kwh / rushHours, capUsdWeek = avgKw * USD_KW_YEAR / 52;
 const out = {
   week: `${new Date(TIMES[0] * 1000).toISOString().slice(0, 10)}..${new Date(TIMES.at(-1)! * 1000).toISOString().slice(0, 10)}`,
   site: "one simulated 1,000-chip AI data center in Utah (RTX 4080-class, 276 W each), jobs as on the map",
-  flexible_jobs: jobs, moved_out_of_utah: moved, delayed_in_utah: delayed,
+  flexible_jobs: jobs, moved_out_of_utah: moved, delayed_in_utah: delayed, moved_in_utah_rush: toSoFar,
   utah_rush_hours: rushHours, kwh_off_utah_rush: Math.round(kwh), avg_kw_off_rush: Math.round(avgKw), max_kw_off_rush: Math.round(peakKw),
   energy_usd: +usd.toFixed(2), avg_price_usd_kwh: +(usd / kwh).toFixed(4),
   capacity_usd_week: Math.round(capUsdWeek), capacity_usd_year: Math.round(avgKw * USD_KW_YEAR),

@@ -11,7 +11,9 @@ terra-live.granitetait.com/deck/.
 **Mirrored projector setup (during the room check):**
 - Plug in the charger, turn on Do Not Disturb, mirror the display, press `f` on the first slide.
 - On the live slide, **P** skips the replay to two hours before Rocky Mountain Power's call (simulated: Tue Oct 20,
-  noon–2 PM, the week's highest demand). Utah's rush hours start right there, so the savings ledger fills in.
+  noon–2 PM, the week's highest demand). Utah's rush hours start right there: Utah glows copper, the banner says
+  "Utah rush hour", the replay slows to 3 s an hour (`RUSH_SLOWDOWN`, other hours 1.2 s), and only rush-hour moves
+  are counted. The whole rush takes about 25 seconds. P moves the shared replay clock for every viewer of terra-live.
   Arrow keys still move on.
 - After any change to the replay or routing: `node deck/utah_savings.ts`, then
   `uv run --with pandas --with pyarrow python deck/make_numbers.py`, then reload.
@@ -49,9 +51,10 @@ to save energy.
 
 **5 · Live demo (1:45–2:30)**
 
-This is last week's real grid data, replayed at about a second an hour. Copper means rush hour is coming.
-*(press **P**)* Tuesday, Utah's highest demand of the week. Every job that can wait leaves Utah for a grid with room.
-Underneath is the proof, live: real power out of Utah's rush hour, at Utah's real prices. *(pause on the ledger)*
+This is last week's real grid data, replayed. *(press **P**)* Tuesday, Utah's highest demand of the week. Watch Utah
+turn copper: that's its rush hour, and the replay slows down so you can see it. Every AI job that can wait streams out
+of Utah to a grid with room, and each one lands as a dot right on top of Utah's worst hours, down here. On the right:
+the jobs moved off the rush, and what that saves at Utah's real prices. *(pause on the ledger)*
 
 **6 · Impact (2:30–3:05)**
 

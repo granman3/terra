@@ -49,6 +49,10 @@ const byUtc = Object.fromEntries(replay.regions.map((r) => [r, new Map(replay.ho
 const TIMES = replay.hours.PACE.map((h) => h.utc).filter((t) => replay.route.every((r) => byUtc[r].has(t)));
 
 const sites = new Sites(Object.fromEntries(replay.route.map((r) => [r, replay.meta[r].tz])));
+// the other direction, for the live map: when another grid is in rush hour, one flexible job from an AI site there is
+// routed by the same rule. Booked on its own copy of the sites, so Utah's jobs and deck/utah_savings.ts are unchanged.
+const inSites = new Sites(Object.fromEntries(replay.route.map((r) => [r, replay.meta[r].tz])));
+const FLEX = JOBS.filter((j) => j.deadlineHours > 0);
 
 // Utah solar, forecast from archived desert weather forecasts (train/solar.py), by UTC hour
 const solarReplay: { capacity_mw: number; hours: { utc: number; pred: number | null; actual: number | null }[] } =
@@ -100,7 +104,11 @@ async function step() {
   const utilityCall = EVENT_UTC.has(utc);
   const interactive = job.deadlineHours === 0;
   const routeF = Object.fromEntries(replay.route.map((r) => [r, forecasts[r]]));
-  sites.advance(utc);
+  sites.advance(utc); inSites.advance(utc);
+  const busy = replay.route.filter((r) => r !== "PACE" && forecasts[r].pPeak[0] > 0.5);
+  const from = busy.length ? busy[tick % busy.length] : null, inJob = FLEX[tick % FLEX.length];
+  const inCall = from ? inSites.decide(Object.fromEntries(replay.route.map((r) => [r, forecasts[r]])), inJob.deadlineHours, Math.round(inJob.gpuHours / JOB_HOURS)).best : undefined;
+  const inbound = from && inCall && inCall.region !== from ? { from, to: inCall.region, wait: inCall.wait, label: inJob.label } : null;
   const gpus = Math.round(job.gpuHours / JOB_HOURS);
   const call = interactive ? null : sites.decide(routeF, job.deadlineHours, gpus);
   const ours = interactive
@@ -119,7 +127,7 @@ async function step() {
     pPeakNow: +forecasts[r].pPeak[0].toFixed(3),
   }]));
   const nPeak = Object.values(regions).filter((r) => r.pPeakNow > 0.5).length;
-  send({ tick, utc, job, ours, utahPeak, utilityCall, drMode, autoDr: AUTO_DR, grids: Object.keys(hours).length, nPeak, regions,
+  send({ tick, utc, job, ours, inbound, utahPeak, utilityCall, drMode, autoDr: AUTO_DR, grids: Object.keys(hours).length, nPeak, regions,
     sites: sites.snapshot(), solar: solar(utc) });
   return regions.PACE?.inPeak || utahPeak > 0.5;
 }

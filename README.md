@@ -6,7 +6,7 @@ Built by Granite Tait for the Hard Tech Hackathon (Torus bounty, Salt Lake City,
 
 - **Live demo (phone):** https://terra.granitetait.com
 - **Live map + deck:** https://terra-live.granitetait.com (deck at [/deck/](https://terra-live.granitetait.com/deck/), arrow keys, `f` for full screen)
-- **Slides (PDF):** in the hackathon's Torus submission folder
+- **Slides (PDF):** [deck/Terra-slides.pdf](deck/Terra-slides.pdf)
 
 ## The idea
 
